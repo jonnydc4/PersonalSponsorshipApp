@@ -4,7 +4,7 @@
 ### Through the terminal
 1. Click on the code button to get an HTTP link or SSH key.
 
-![BranchExample](https://github.com/jonnydc4/PersonalSponsorshipApp/assets/71983496/ab2cb79b-2486-403f-89b4-8ff9bdef02e7)
+![BranchExample](https://github.com/jonnydc4/PersonalSponsorshipApp/assets/71983496/af2987ed-253e-489d-b076-862f9d0b6cc5)
 
 2. Use the terminal to clone the repository.
 
