@@ -7,6 +7,7 @@ server/package-lock.json
 # Client files to ignore
 
 # dependencies
+client/package-lock.json
 client/node_modules
 client/.pnp
 client/.pnp.js
