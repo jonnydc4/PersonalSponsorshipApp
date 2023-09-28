@@ -4,10 +4,8 @@ const express = require('express');
 // Initialize the express application
 const app = express();
 
-// Define a simple route
-app.get('/', (req, res) => {
-    res.send('Hello, World!');
-});
+// This makes our "/" endpoint render our react app
+app.use(express.static('../client/build'));
 
 // Start the server on port 3000
 const port = 3000;
