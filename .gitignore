@@ -1,8 +1,8 @@
 .idea
 
 # Server files to ignore
-server/node_modules
-server/package-lock.json
+node_modules
+package-lock.json
 
 # Client files to ignore
 
