@@ -5,7 +5,7 @@ const express = require('express');
 const app = express();
 
 // This makes our "/" endpoint render our react app
-app.use(express.static('../client/build'));
+app.use(express.static('client/build'));
 
 // Start the server on port 3000
 const port = 3000;

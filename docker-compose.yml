@@ -1,9 +1,11 @@
-version: '3'
+version: '3.8'
 services:
-  web:
-    build: ./server
+  node-app:
+    build: .
     ports:
-      - "3000:3000"
+      - "8080:3000"
     volumes:
       - .:/usr/src/app
+      # node_modules workaround for volumes
+      # https://stackoverflow.com/a/32785014
       - /usr/src/app/node_modules
