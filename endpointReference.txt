@@ -1,0 +1,146 @@
+// @ts-check
+
+const {Client} = require("pg");
+const express = require("express");
+const bodyParser = require('body-parser')
+const path = require('path');
+const app = express();
+const port = 8080;
+
+const dbClient = new Client({
+    password: "root",
+    user: "root",
+    host: "postgres",
+});
+
+app.use(express.static('client/build'));
+
+app.get("/allEmployees", async (req, res) => {
+    // Retrieve all employee information from the table
+    const results = await dbClient
+        .query("SELECT * FROM employees")
+        .then((payload) => {
+            return payload.rows;
+        })
+        .catch(() => {
+            throw new Error("Query failed");
+        });
+    res.setHeader("Content-Type", "application/json");
+    res.status(200);
+    res.send(JSON.stringify(results));
+});
+
+app.get("/getEmployee", async (req, res) => {
+    // Get ID from query parameters
+    const name = req.query.name
+
+    // Query database and retrieve employee information
+    const results = await dbClient
+        .query(`SELECT *
+                FROM employees
+                WHERE name = '${name}'`)
+        .then((payload) => {
+            console.log(payload.rows, 'payload rows')
+            return payload.rows;
+        })
+        .catch(() => {
+            throw new Error("Query failed");
+        });
+    res.setHeader("Content-Type", "application/json");
+    res.status(200);
+    res.send(JSON.stringify(results));
+});
+
+// Deletes employee based on ID input
+app.del("/deleteEmployee/:employeeId", async (req, res) => {
+    employeeIdToDelete = req.params.employeeId
+    console.log(`delete employee ${employeeIdToDelete}`)
+    const results = await dbClient
+        .query(`DELETE
+                FROM employees
+                WHERE id = ${employeeIdToDelete}`)
+        .then((payload) => {
+            console.log("***** Employee Deleted")
+            return payload.rowCount;
+        })
+        .catch(() => {
+            throw new Error("Query failed");
+        });
+    res.setHeader("Content-Type", "application/json");
+    res.status(200);
+    res.send(JSON.stringify(results));
+});
+
+app.post("/addEmployee", bodyParser.json(), async (req, res) => {
+
+    const body = req.body
+    const name = body.name
+    const title = body.title
+    const img = body.img
+
+    await dbClient
+        .query(`INSERT INTO employees (name, title, avatarURL)
+                VALUES ('${name}', '${title}', '${img}')`)
+        .then((payload) => {
+            return payload.rowCount;
+        })
+        .catch(() => {
+            throw new Error("Query failed");
+        });
+    res.sendStatus(200);
+});
+
+app.put("/editEmployee", bodyParser.json(), async (req, res) => {
+    // Get body and parse info to locate and edit employee
+    const body = req.body
+    const id = body.id
+    const name = body.name
+    const title = body.title
+    const img = body.img
+
+    // Connect to database and send query
+    await dbClient
+        .query(`UPDATE employees
+                SET name      = '${name}',
+                    title     = '${title}',
+                    avatarurl = '${img}'
+                WHERE id = '${id}'`)
+        .then((payload) => {
+            return payload.rowCount;
+        })
+        .catch(() => {
+            throw new Error("Query failed");
+        });
+    res.sendStatus(200)
+});
+
+app.put("/toggleActive", bodyParser.json(), async (req, res) => {
+    const body = req.body
+    const id = body.id
+    const isActive = body.isActive
+
+    // Connect to database and send query
+    await dbClient
+        .query(`UPDATE employees
+                SET isActive      = '${isActive}'
+                WHERE id = '${id}'`)
+        .then((payload) => {
+            return payload.rowCount;
+        })
+        .catch(() => {
+            throw new Error("Query failed");
+        });
+    res.sendStatus(200)
+});
+
+app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+});
+
+(async () => {
+    await dbClient.connect();
+
+    app.listen(port, () => {
+        console.log(`Example app listening at http://localhost:${port}`);
+    });
+})();
