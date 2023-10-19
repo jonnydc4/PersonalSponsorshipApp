@@ -20,7 +20,7 @@ Docker is now configured to monitor for changes made in your local server.js. Wh
 (Note: This works strictly in server.js. It does not monitor changes made to any file in the client directory.)
 
 ### Reloading for Front End Development.
-The client directory holds our react front end, however, our node app only utilizes the build files in client/build. For that reason, if you wish to see any changes you make in the client directory, you must follow these steps:
+The client directory holds our react front end, however, our backend only utilizes the build files in client/build. For that reason, if you wish to see any changes you make in the client directory, you must follow these steps:
 1. Rebuild the react static/build files.
    In the terminal under the client directory run $ npm run build    
 2. Restart the node-app container in docker.
