@@ -1,14 +1,16 @@
 version: '3.8'
 services:
   node-app:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
-      - "8080:3000"
+      - "3000:3000"
     volumes:
-      - .:/usr/src/app
-      # node_modules workaround for volumes
-      # https://stackoverflow.com/a/32785014
-      - /usr/src/app/node_modules
+      # Bind mounts (two way sync)
+      # One for backend and the other for frontend
+      - ./server/:/usr/src/app/server/
+      - ./client/build/:/usr/src/app/client/build/
     depends_on:
       - postgres
 

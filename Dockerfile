@@ -1,20 +1,28 @@
-# Use the official Node.js 14 image as a parent image
-FROM node:lts-alpine
+FROM node:14
 
-# Set the working directory in the container
+# Create app directory
+RUN mkdir /usr/src/app
+RUN chown node /usr/src/app
+
+# Make the container's directory structure
+USER node
+RUN mkdir /usr/src/app/server
+RUN mkdir /usr/src/app/client
+RUN mkdir /usr/src/app/client/build
+
+# Set the working directory
 WORKDIR /usr/src/app
 
-# Copy the package.json and package-lock.json files into the working directory
-COPY package*.json ./
-
-# Install the dependencies
+# Install app dependencies
+COPY package.json ./
+COPY package-lock.json ./
 RUN npm install
 
-# Copy the rest of the application code into the working directory
-COPY . .
-
-# Expose a port that the app will listen on
+# Expose Port
 EXPOSE 3000
 
-# Command to run the application
-CMD [ "npm", "run", "start" ]
+# for development
+CMD ["npm", "run", "dev"]
+
+# for production
+#CMD ["npm", "run", "start"]
