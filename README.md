@@ -12,18 +12,18 @@
    ![image](https://github.com/jonnydc4/PersonalSponsorshipApp/assets/71983496/d01a67f7-8f62-4e1a-9fcb-8d670737f0cc)
 
 ## Running the App
+1. Run $ docker-compose up
+2. Open the docker desktop to see the running containers
+   
+### Hot Reloading for Backend
+Docker is now configured to monitor for changes made in your local server.js. When a change is made and saved it should automatically restart the container.
+(Note: This works strictly in server.js. It does not monitor changes made to any file in the client directory.)
 
-1. Make sure you have docker desktop downloaded.
-https://www.docker.com/products/docker-desktop/
-
-3. run docker-compose up
-![image](https://github.com/jonnydc4/PersonalSponsorshipApp/assets/71983496/29091909-d237-4a7e-83e4-9720c0a3838f)
-
-4. This is what it should look like in docker desktop.
-![image](https://github.com/jonnydc4/PersonalSponsorshipApp/assets/71983496/d488c80d-fd66-4062-87b2-0c8ae49d190f)
-
-
-
-Go to http://localhost:3000/ to see it hosted.
+### Reloading for Front End Development.
+The client directory holds our react front end, however, our node app only utilizes the build files in client/build. For that reason, if you wish to see any changes you make in the client directory, you must follow these steps:
+1. Rebuild the react static/build files.
+   In the terminal under the client directory run $ npm run build    
+2. Restart the node-app container in docker.
+   You can do this either manually in the docker desktop or make a small change to server.js and save it so the container restarts automatically.
    
    
