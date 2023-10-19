@@ -27,3 +27,15 @@ The client directory holds our react front end, however, our backend only utiliz
    You can do this either manually in the docker desktop or make a small change to server.js and save it so the container restarts automatically.
    
    
+## Docker Help
+### Useful Commands
+1. $ docker-compose up
+   This command will spin everything up for our app so that you don't have to download anything yourself onto your computer. It affords us tons of flexibility for development and makes creating and sharing our dev environment much easier.
+   The con to using this command is that after its use your terminal will be used as a console to log everything for each container.
+   To avoid this, it is better to use the -d flag ex.) $ docker-compose up -d
+
+2. $ docker-compose down
+   This will take down the container you build using docker-compose up. (Note: This command does not delete images or volumes, so if desired, delete those manually for now until a workaround is found)
+
+3. $ docker-compose build
+   This will rebuild the images specified in our docker-compose.yml. If docker-compose up -d is not working the way you want, try this command first and hopefully it will work as expected. This applies mostly to if you are editing the dockerfile or docker-compose.yml.
