@@ -1,0 +1,16 @@
+/* client/src/components/Button.css */
+.custom-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    margin: auto;
+    display: block;
+}
+
+.custom-button:hover {
+    background-color: #45a049;
+}

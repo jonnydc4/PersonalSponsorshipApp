@@ -1,11 +1,24 @@
-import React from 'react'
+// client/src/App.js
+import React, { useState } from 'react';
+import Button from './components/Button';
+import Jobs from './components/Jobs';
 
 function App() {
-  return(
-      <div>
-        <h1>Hello world!!!</h1>
-      </div>
-  )
+    const [showJobs, setShowJobs] = useState(false);
+
+    const handleButtonClick = () => {
+        setShowJobs(true);
+    };
+
+    return (
+        <div style={{ textAlign: 'center' }}>
+            {!showJobs ? (
+                <Button label="Companies" onClick={handleButtonClick} />
+            ) : (
+                <Jobs />
+            )}
+        </div>
+    );
 }
 
-export default App
+export default App;

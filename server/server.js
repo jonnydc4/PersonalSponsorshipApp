@@ -21,7 +21,7 @@ dbClient.connect()
     .catch(err => console.error('Connection error', err.stack));
 
 // This makes our "/" endpoint render our react app
-// app.use(express.static('client/build'));
+app.use(express.static('client/build'));
 
 app.get("/allJobs", async (req, res) => {
     try {
