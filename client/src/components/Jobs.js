@@ -1,5 +1,6 @@
 // client/src/components/Jobs.js
 import React, { useEffect, useState } from 'react';
+import PostJobButton from './PostJobButton';
 
 const Jobs = () => {
     const [jobs, setJobs] = useState([]);
@@ -20,6 +21,7 @@ const Jobs = () => {
 
     return (
         <div>
+            <PostJobButton />
             {jobs.map(job => (
                 <div key={job.id} style={{ margin: '20px', padding: '10px', border: '1px solid #ccc', borderRadius: '5px' }}>
                     <h2>{job.title}</h2>
