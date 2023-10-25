@@ -8,6 +8,7 @@ const cors = require('cors');
 // Initialize the express application
 const app = express();
 app.use(cors());
+app.use(express.json());
 
 // Create a connection to the database
 const dbClient = new Client({
@@ -22,6 +23,31 @@ dbClient.connect()
 
 // This makes our "/" endpoint render our react app
 app.use(express.static('client/build'));
+
+// post a job to the database
+app.post('/postJob', async (req, res) => {
+
+    const { title, description, location } = req.body;
+    try {
+        // Construct SQL query
+        const company_id = 1; // temporary value for testing. Replace with actual company id later.
+        const query = `
+            INSERT INTO jobs (company_id, title, description, location)
+            VALUES ($1, $2, $3, $4)
+        `;
+
+        // Execute SQL query
+        const result = await dbClient.query(query, [company_id, title, description, location]);
+
+        // Send a success response back to the client
+        res.json({ status: 'success', message: 'Data added successfully' });
+    } catch (err) {
+        console.log(err);
+        console.error('Database error when executing jobPost:', err.stack);
+        res.status(500).json({ status: 'error', message: err.message });
+    }
+
+});
 
 app.get("/allJobs", async (req, res) => {
     try {
