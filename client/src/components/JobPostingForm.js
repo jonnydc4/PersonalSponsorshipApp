@@ -13,7 +13,6 @@ const JobPostingForm = () => {
         try {
             // Prepare data to be sent
             const formData = { title, description, location };
-
             // Send a POST request with the form data
             const response = await fetch('/postJob', {
                 method: 'POST',
