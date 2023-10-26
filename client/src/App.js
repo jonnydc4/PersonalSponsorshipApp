@@ -1,30 +1,22 @@
 // client/src/App.js
-import React, { useState } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Button from './components/Button';
 import Jobs from './components/Jobs';
-import JobPostingForm from './components/JobPostingForm'; // Import the JobPostingForm component
+import Login from './components/Login';
+import JobPostingForm from './components/JobPostingForm';
 
 function App() {
-    const [showJobs, setShowJobs] = useState(false);
-
-    const handleButtonClick = () => {
-        setShowJobs(true);
-    };
-
     return (
+        // Use the Router component to handle different routes in the app
         <Router>
             <div style={{ textAlign: 'center' }}>
-                <Routes> {}
+                <Routes>
+                    <Route path="/login" element={<Login />} />
                     <Route path="/post-job" element={<JobPostingForm />} />
-                    <Route path="/" element={
-                        !showJobs ? (
-                            <Button label="Companies" onClick={handleButtonClick} />
-                        ) : (
-                            <Jobs />
-                        )
-                    } />
-                </Routes> {}
+                    <Route path="/jobs" element={<Jobs />} />
+                    <Route path="/" element={<Button label="Companies" />} />
+                </Routes>
             </div>
         </Router>
     );

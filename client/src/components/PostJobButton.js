@@ -1,7 +1,7 @@
 // client/src/components/PostJobButton.js
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import Button from './Button';
+import './Button.css'; // Import the styles
 
 const PostJobButton = () => {
     const navigate = useNavigate();
@@ -10,7 +10,11 @@ const PostJobButton = () => {
         navigate('/post-job');
     };
 
-    return <Button label="Post Job" onClick={handlePostJobClick} />;
+    return (
+        <button className="custom-button" onClick={handlePostJobClick}>
+            Post Job
+        </button>
+    );
 };
 
 export default PostJobButton;

@@ -1,10 +1,19 @@
 // client/src/components/Button.js
 import React from 'react';
-import './Button.css'; // Importing styles
+import { useNavigate } from 'react-router-dom';
+import './Button.css';
 
-const Button = ({ label, onClick }) => {
+const Button = ({ label }) => {
+    const navigate = useNavigate();
+
+    const handleClick = () => {
+        if (label === "Companies") {
+            navigate('/login');
+        }
+    };
+
     return (
-        <button className="custom-button" onClick={onClick}>
+        <button className="custom-button" onClick={handleClick}>
             {label}
         </button>
     );

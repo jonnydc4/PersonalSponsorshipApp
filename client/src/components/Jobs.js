@@ -3,8 +3,10 @@ import React, { useEffect, useState } from 'react';
 import PostJobButton from './PostJobButton';
 
 const Jobs = () => {
+    // Create a state variable 'jobs' to store the list of jobs and its setter function 'setJobs'
     const [jobs, setJobs] = useState([]);
 
+    // Use the 'useEffect' hook to execute code after the component mounts
     useEffect(() => {
         const fetchData = async () => {
             try {
