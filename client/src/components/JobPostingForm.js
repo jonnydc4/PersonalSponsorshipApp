@@ -28,6 +28,16 @@ const JobPostingForm = () => {
                 setTitle('');
                 setDescription('');
                 setLocation('');
+
+                // If the job is posted successfully, call the "allJobs" endpoint to fetch all jobs
+                const allJobsResponse = await fetch('/allJobs');
+                if (allJobsResponse.ok) {
+                    const allJobsData = await allJobsResponse.json();
+                    console.log('All jobs:', allJobsData);
+                    // You can handle the fetched data here
+                } else {
+                    console.error('Error fetching all jobs:', allJobsResponse.statusText);
+                }
             } else {
                 console.error('Error posting the job:', response.statusText);
             }
