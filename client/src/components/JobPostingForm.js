@@ -1,8 +1,10 @@
 // client/src/components/JobPostingForm.js
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const JobPostingForm = () => {
     // Define state hooks for each form input
+    const navigate = useNavigate(); // creates variable to hold the history of webpages navigated to.
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [location, setLocation] = useState('');
@@ -28,16 +30,9 @@ const JobPostingForm = () => {
                 setTitle('');
                 setDescription('');
                 setLocation('');
-                
 
-                // If the job is posted successfully, call the "allJobs" endpoint to fetch all jobs
-                const allJobsResponse = await fetch('/allJobs');
-                if (allJobsResponse.ok) {
-                    const allJobsData = await allJobsResponse.json();
-                    //console.log('All jobs:', allJobsData);
-                } else {
-                    console.error('Error fetching all jobs:', response.statusText);
-                }
+                navigate(-1);
+
             } else {
                 console.error('Error posting the job:', response.statusText);
             }
