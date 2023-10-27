@@ -1,25 +1,25 @@
 // Import the express library
 const express = require('express');
-const {Client} = require("pg");
+// const {Client} = require("pg");
 const cors = require('cors');
 const bodyParser = require('body-parser'); //npm install body-parser
+const {Pool} = require("pg");
 // Use CORS middleware and allow any domain to access your API
 
+// fake
 
 // Initialize the express application
 const app = express();
 app.use(cors());
+app.use(express.json());
 
 // Create a connection to the database
-const dbClient = new Client({
+const dbPool = new Pool({
     password: "root",
     user: "root",
     host: "postgres",
 });
 
-dbClient.connect()
-    .then(() => console.log('Connected to the database'))
-    .catch(err => console.error('Connection error', err.stack));
 
 // This makes our "/" endpoint render our react app
 app.use(express.static('client/build'));
@@ -27,23 +27,47 @@ app.use(express.static('client/build'));
 // This line to use express.json middleware for the login page
 app.use(express.json());
 
-app.get("/allJobs", async (req, res) => {
+// post a job to the database
+app.post('/postJob', async (req, res) => {
+
+    const { title, description, location } = req.body;
     try {
-    const queryResults = await dbClient
-        .query("Select * FROM public.jobs")
-        .then((payload) => {
-            return payload.rows;
-        })
-    res.setHeader("Content-Type", "application/json");
-    res.status(200);
-    res.send(JSON.stringify(queryResults));
+        const client = await dbPool.connect();
+        // Construct SQL query
+        const company_id = 1; // temporary value for testing. Replace with actual company id later.
+        const query = `
+            INSERT INTO jobs (company_id, title, description, location)
+            VALUES ($1, $2, $3, $4)
+        `;
+
+        // Execute SQL query
+        const result = await client.query(query, [company_id, title, description, location]);
+        client.release();
+        // Send a success response back to the client
+        res.json({ status: 'success', message: 'Data added successfully' });
     }
     catch (err) {
         console.log(err);
-        res.status(500);
-        res.send(err);
+        console.error('Database error when executing jobPost:', err.stack);
+        res.status(500).json({ status: 'error', message: err.message });
     }
-})
+
+});
+
+app.get("/allJobs", async (req, res) => {
+    const client = await dbPool.connect();
+    try {
+            const queryResults = await client.query("SELECT * FROM public.jobs");
+            res.json(queryResults.rows);
+        }
+        catch (err) {
+            console.error('Error fetching jobs:', err);
+            res.status(500).send(err);
+        }
+        finally {
+            client.release();
+        }
+});
 
 //Endpoint to verify the Company email at login
 app.post("/verifyEmail", async (req, res) => {
@@ -75,3 +99,7 @@ app.listen(port, () => {
     console.log(`App is listening on port ${port}`);
 });
 
+process.on('exit', () => {
+    console.log("Closing db pool");
+    dbPool.end();
+})
