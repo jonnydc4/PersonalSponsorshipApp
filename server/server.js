@@ -71,6 +71,7 @@ app.get("/allJobs", async (req, res) => {
 
 //Endpoint to verify the Company email at login
 app.post("/verifyEmail", async (req, res) => {
+    const client = await dbPool.connect();
     const { email } = req.body;
 
     // Check if the email is provided in the request
@@ -80,7 +81,7 @@ app.post("/verifyEmail", async (req, res) => {
 
     try {
         // Query the database to check if the provided email exists in the 'companies' table
-        const queryResults = await dbClient.query("SELECT * FROM public.companies WHERE email = $1", [email]);
+        const queryResults = await client.query("SELECT * FROM public.companies WHERE email = $1", [email]);
 
         if (queryResults.rows.length > 0) {
             res.status(200).send({ message: "Email verified", isValid: true });
