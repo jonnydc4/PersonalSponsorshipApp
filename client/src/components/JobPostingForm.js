@@ -1,6 +1,7 @@
 // client/src/components/JobPostingForm.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import './JobPostingForm.css';
 
 const JobPostingForm = () => {
     // Define state hooks for each form input
