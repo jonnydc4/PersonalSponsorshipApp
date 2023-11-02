@@ -8,9 +8,13 @@ const CommonFrame = ({ items, children }) => {
             <div style={{ flex: 1, borderRight: '1px solid black', overflowY: 'auto' }}>
                 {items.map((item, index) => (
                     <div key={index}>
-                        <a href={item.link}>
-                            {item.name}
-                        </a>
+                        {item.link ? (
+                            <a href={item.link}>
+                                {item.name}
+                            </a>
+                        ) : (
+                            item.name
+                        )}
                     </div>
                 ))}
             </div>

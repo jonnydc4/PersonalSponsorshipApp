@@ -32,6 +32,7 @@ const items = [
         { name: 'Login', link: '/login' },
         { name: 'Post Job', link: '/post-job' },
         { name: 'Jobs', link: '/jobs' },
+        { name: 'fake'},
         // ... add more items as needed
     ];
     return (
