@@ -6,7 +6,7 @@ const bodyParser = require('body-parser'); //npm install body-parser
 const {Pool} = require("pg");
 // Use CORS middleware and allow any domain to access your API
 
-// fake
+//
 
 // Initialize the express application
 const app = express();
