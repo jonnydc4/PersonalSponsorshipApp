@@ -1,32 +1,32 @@
 import React, { useState } from 'react';
+import './CommonFrame.css';
 
 const CommonFrame = ({ items, children }) => {
     // State to keep track of the currently selected item
     const [selectedItem, setSelectedItem] = useState(null);
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
-
+        <div className="container">
             {/* Navigation Pane */}
-            <div style={{ padding: '10px', borderBottom: '1px solid black' }}>
+            <div className="navigation-pane">
                 Navigation Pane Content Here
             </div>
 
             {/* Content Area */}
-            <div style={{ display: 'flex', flex: 1 }}>
+            <div className="content-area">
                 {/* Selectable List */}
-                <div style={{ flex: 1, borderRight: '1px solid black', overflowY: 'auto' }}>
+                <div className="selectable-list">
                     {items.map((item, index) => (
-                        <div key={index} onClick={() => setSelectedItem(item)}>
+                        <div key={index} className="selectable-item" onClick={() => setSelectedItem(item)}>
                             {item.name}
                         </div>
                     ))}
                 </div>
 
                 {/* Main Area */}
-                <div style={{ flex: 2, padding: '20px', display: 'flex', flexDirection: 'column' }}>
+                <div className="main-area">
                     {/* Payload Area */}
-                    <div style={{ flex: 1, padding: '10px', border: '1px solid black', marginBottom: '10px' }}>
+                    <div className="payload-area">
                         {selectedItem ? (
                             <div>
                                 <h2>{selectedItem.name}</h2>
@@ -48,7 +48,7 @@ const CommonFrame = ({ items, children }) => {
                     </div>
 
                     {/* Additional Content Area */}
-                    <div>
+                    <div className="additional-content">
                         {children}
                     </div>
                 </div>
