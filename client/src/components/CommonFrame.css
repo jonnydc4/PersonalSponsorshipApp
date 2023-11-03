@@ -7,9 +7,15 @@
     height: 100vh;
 }
 
-.navigation-pane {
-    padding: 10px;
-    border-bottom: 1px solid black;
+.navigation-pane a {
+    margin-right: 20px;
+    text-decoration: none;
+    color: blue; /* or any color you prefer */
+}
+
+.navigation-pane a:hover {
+    text-decoration: underline;
+    background-color: aqua;
 }
 
 .content-area {

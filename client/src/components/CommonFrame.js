@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './CommonFrame.css';
+import { Link } from 'react-router-dom'; // Import the Link component at the top of your file
 
 const CommonFrame = ({ items, children }) => {
     // State to keep track of the currently selected item
@@ -9,7 +10,9 @@ const CommonFrame = ({ items, children }) => {
         <div className="container">
             {/* Navigation Pane */}
             <div className="navigation-pane">
-                Navigation Pane Content Here
+                <Link to="/">Home</Link>
+                <Link to="/login">Login</Link>
+                <Link to="/jobs">All Jobs</Link>
             </div>
 
             {/* Content Area */}
