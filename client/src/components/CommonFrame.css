@@ -27,6 +27,7 @@
     flex: 1;
     border-right: 1px solid black;
     overflow-y: auto;
+    max-height: 85vh;
 }
 
 .selectable-item {
@@ -51,6 +52,7 @@
     padding: 10px;
     border: 1px solid black;
     margin-bottom: 10px;
+    max-height: 50vh;
 }
 
 .additional-content {
