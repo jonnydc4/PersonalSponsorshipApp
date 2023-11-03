@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const CommonFrame = ({ items }) => {
+const CommonFrame = ({ items, children }) => {
     // State to keep track of the currently selected item
     const [selectedItem, setSelectedItem] = useState(null);
 
@@ -23,26 +23,34 @@ const CommonFrame = ({ items }) => {
                     ))}
                 </div>
 
-                {/* Payload/Main Area */}
-                <div style={{ flex: 2, padding: '20px' }}>
-                    {selectedItem ? (
-                        <div>
-                            <h2>{selectedItem.name}</h2>
-                            {Object.entries(selectedItem).map(([key, value]) => {
-                                // Exclude the 'id' property
-                                if (key !== 'id') {
-                                    return (
-                                        <div key={key}>
-                                            <strong>{key}:</strong> {value}
-                                        </div>
-                                    );
-                                }
-                                return null;
-                            })}
-                        </div>
-                    ) : (
-                        <p>Select an item from the list to view its details.</p>
-                    )}
+                {/* Main Area */}
+                <div style={{ flex: 2, padding: '20px', display: 'flex', flexDirection: 'column' }}>
+                    {/* Payload Area */}
+                    <div style={{ flex: 1, padding: '10px', border: '1px solid black', marginBottom: '10px' }}>
+                        {selectedItem ? (
+                            <div>
+                                <h2>{selectedItem.name}</h2>
+                                {Object.entries(selectedItem).map(([key, value]) => {
+                                    // Exclude the 'id' property
+                                    if (key !== 'id') {
+                                        return (
+                                            <div key={key}>
+                                                <strong>{key}:</strong> {value}
+                                            </div>
+                                        );
+                                    }
+                                    return null;
+                                })}
+                            </div>
+                        ) : (
+                            <p>Select an item from the list to view its details.</p>
+                        )}
+                    </div>
+
+                    {/* Additional Content Area */}
+                    <div>
+                        {children}
+                    </div>
                 </div>
             </div>
         </div>
@@ -50,5 +58,3 @@ const CommonFrame = ({ items }) => {
 };
 
 export default CommonFrame;
-
-
