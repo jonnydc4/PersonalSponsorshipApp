@@ -69,6 +69,43 @@ app.get("/allJobs", async (req, res) => {
         }
 });
 
+// Get all jobs for a specific company
+app.get("/jobs/:companyId", async (req, res) => {
+    const { companyId } = req.params;
+
+    // Validate the companyId, for example, check if it's a number
+    if (!companyId || isNaN(parseInt(companyId, 10))) {
+        return res.status(400).json({ status: 'error', message: 'Invalid company ID' });
+    }
+
+    const client = await dbPool.connect();
+    try {
+        const query = "SELECT * FROM public.jobs WHERE company_id = $1";
+        const queryResults = await client.query(query, [companyId]);
+        res.json(queryResults.rows);
+    } catch (err) {
+        console.error(`Error fetching jobs for company ${companyId}:`, err);
+        res.status(500).json({ status: 'error', message: 'An error occurred while fetching jobs' });
+    } finally {
+        client.release();
+    }
+});
+
+app.get("/allCompanies", async (req, res) => {
+    const client = await dbPool.connect();
+    try {
+            const queryResults = await client.query("SELECT * FROM public.companies");
+            res.json(queryResults.rows);
+        }
+        catch (err) {
+            console.error('Error fetching companies:', err);
+            res.status(500).send(err);
+        }
+        finally {
+            client.release();
+        }
+});
+
 //Endpoint to verify the Company email at login
 app.post("/verifyEmail", async (req, res) => {
     const client = await dbPool.connect();
