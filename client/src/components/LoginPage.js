@@ -29,7 +29,7 @@ export default function SignInSide() {
         setEmailError('');
         setPasswordError('');
 
-        ```Client-side validation```
+        /*----Client-side validation----*/
 
         // Empty field check
         if (!email || !password) {
@@ -52,7 +52,7 @@ export default function SignInSide() {
             return;
         }
 
-        ```Server-side validation```
+        /*----Server-side validation----*/
         //todo
 
     };
