@@ -5,20 +5,25 @@ import Button from './components/Button';
 import Jobs from './components/Jobs';
 import Login from './components/Login';
 import JobPostingForm from './components/JobPostingForm';
+import LoginPage from './components/LoginPage'
 
 function App() {
     return (
         // Use the Router component to handle different routes in the app
-        <Router>
-            <div style={{ textAlign: 'center' }}>
-                <Routes>
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/post-job" element={<JobPostingForm />} />
-                    <Route path="/jobs" element={<Jobs />} />
-                    <Route path="/" element={<Button label="Companies" />} />
-                </Routes>
-            </div>
-        </Router>
+        <div>
+            <LoginPage/>
+        </div>
+
+        // <Router>
+        //     <div style={{ textAlign: 'center' }}>
+        //         <Routes>
+        //             <Route path="/login" element={<Login />} />
+        //             <Route path="/post-job" element={<JobPostingForm />} />
+        //             <Route path="/jobs" element={<Jobs />} />
+        //             <Route path="/" element={<Button label="Companies" />} />
+        //         </Routes>
+        //     </div>
+        // </Router>
     );
 }
 
