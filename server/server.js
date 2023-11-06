@@ -4,6 +4,7 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser'); //npm install body-parser
 const {Pool} = require("pg");
+const userController = require('./userController')
 // Use CORS middleware and allow any domain to access your API
 
 // test comment
@@ -92,6 +93,54 @@ app.post("/verifyEmail", async (req, res) => {
         console.log(err);
         res.status(500).send(err);
     }
+});
+
+app.post("/api/login", async (req, res) => {
+    errorMessage = {}
+    try {
+        const {email, password} = req.body;
+
+        // Empty field check
+        if (!email || !password) {
+            errorMessage['error'] = 'Username and password are required.'
+            if (!email) errorMessage['emailError'] = 'Email is required.'
+            if (!password) errorMessage['passwordError'] = 'Password is required.'
+            res.status(400).json(errorMessage);
+        }
+
+        // Email format check
+        if (!/\S+@\S+\.\S+/.test(email)) {
+            errorMessage['error'] = 'Invalid Email.'
+            errorMessage['emailError'] = 'Invalid Email.';
+            res.status(400).json(errorMessage);
+        }
+
+        // Password length check
+        if (password.length < 8) {
+            errorMessage['error'] = 'Password too short.'
+            errorMessage['passwordError'] = 'Password minimum of 8 characters.';
+            res.status(400).json(errorMessage);
+        }
+
+        await userController.authenticateUser(email, password)
+        res.status(200).send({ message: "User verified" })
+
+    } catch (error) {
+        if (error.message === 'User does not exist.') {
+            errorMessage['error'] = error.message
+            errorMessage['emailError'] = error.message;
+            return res.status(401).json(errorMessage);
+        }
+        if (error.message === 'Incorrect Password.') {
+            errorMessage['error'] = error.message
+            errorMessage['passwordError'] = error.message;
+            return res.status(401).json(errorMessage);
+        }
+
+        console.error(error);
+        res.status(500).send('An error occurred during the login process.');
+    }
+
 });
 
 // Start the server on port 3000

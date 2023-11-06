@@ -7,7 +7,7 @@ const Button = ({ label }) => {
     const navigate = useNavigate();
 
     const handleClick = () => {
-        if (label === "Companies") {
+        if (label === "Log in") {
             navigate('/login');
         }
     };

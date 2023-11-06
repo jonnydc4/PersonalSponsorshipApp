@@ -11,56 +11,63 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import {createTheme, ThemeProvider} from '@mui/material/styles';
+import {useNavigate} from "react-router-dom";
+import { Link as RouterLink } from 'react-router-dom';
 
 const theme = createTheme();
 
 export default function SignInSide() {
+    const navigate = useNavigate();
+    const [error, setError] = useState('')
     const [emailError, setEmailError] = useState('');
     const [passwordError, setPasswordError] = useState('');
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        const email = data.get('email');
-        const password = data.get('password');
+        const formData = new FormData(event.currentTarget);
+        const email = formData.get('email');
+        const password = formData.get('password');
 
         // Reset error state on new submission
+
+        setError('')
         setEmailError('');
         setPasswordError('');
 
-        /*----Client-side validation----*/
+        // try {
+            const response = await fetch('/api/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({email, password})
+            })
 
-        // Empty field check
-        if (!email || !password) {
-            if (!email) {setEmailError('Email is required');}
-            if (!password) {setPasswordError('Password is required');}
-            return;
-        }
+            const data = await response.json();
 
-        // Email format check
-        if (!/\S+@\S+\.\S+/.test(email)) {
-            // Regex Translation:
-            // (1 or more non whitespace) @ (1 or more non whitespace) . (1 or more non whitespace)
-            setEmailError('Email is not valid');
-            return;
-        }
+            if (!response.ok) {
+                // Set the error message from the server to state
+                setError(data.error)
+                console.log(data.error)
+                if (data.hasOwnProperty('emailError')) setEmailError(data.emailError)
+                if (data.hasOwnProperty('passwordError')) setPasswordError(data.passwordError)
+            } else {
+                // Handle successful authentication
+                console.log('Success!')
+                navigate('/dashboard')
+            }
 
-        // Password length check
-        if (password.length < 8) {
-            setPasswordError('Password must be at least 8 characters long');
-            return;
-        }
-
-        /*----Server-side validation----*/
-        //todo
+        // } catch (networkError) {
+        //     console.log('Network Error')
+        // }
 
     };
 
     return (
         <ThemeProvider theme={theme}>
-            <Grid container component="main" sx={{ height: '100vh' }}>
-                <CssBaseline />
+            <Grid container component="main" sx={{height: '100vh'}}>
+                <CssBaseline/>
                 <Grid
                     item
                     xs={false}
@@ -85,13 +92,13 @@ export default function SignInSide() {
                             alignItems: 'center',
                         }}
                     >
-                        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                            <LockOutlinedIcon />
+                        <Avatar sx={{m: 1, bgcolor: 'secondary.main'}}>
+                            <LockOutlinedIcon/>
                         </Avatar>
                         <Typography component="h1" variant="h5">
                             Sign in to Sponsorship
                         </Typography>
-                        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+                        <Box component="form" noValidate onSubmit={handleSubmit} sx={{mt: 1}}>
                             <TextField
                                 margin="normal"
                                 required
@@ -119,25 +126,25 @@ export default function SignInSide() {
                                 onChange={() => setPasswordError('')}
                             />
                             <FormControlLabel
-                                control={<Checkbox value="remember" color="primary" />}
+                                control={<Checkbox value="remember" color="primary"/>}
                                 label="Remember me"
                             />
                             <Button
                                 type="submit"
                                 fullWidth
                                 variant="contained"
-                                sx={{ mt: 3, mb: 2 }}
+                                sx={{mt: 3, mb: 2}}
                             >
                                 Sign In
                             </Button>
                             <Grid container>
                                 <Grid item xs>
-                                    <Link href="#" variant="body2">
+                                    <Link component={RouterLink} to={"/forgotPassword"} variant="body2">
                                         Forgot password?
                                     </Link>
                                 </Grid>
                                 <Grid item>
-                                    <Link href="#" variant="body2">
+                                    <Link component={RouterLink} to={"/register"} variant="body2">
                                         {"Don't have an account? Sign Up"}
                                     </Link>
                                 </Grid>

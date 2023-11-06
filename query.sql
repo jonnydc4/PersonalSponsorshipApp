@@ -1,3 +1,11 @@
+CREATE TABLE users (
+                             id SERIAL PRIMARY KEY,
+                             email VARCHAR(255) UNIQUE,
+                             password VARCHAR(255) NOT NULL,
+                             account_type VARCHAR(255) NOT NULL
+    -- add other fields as necessary
+);
+
 CREATE TABLE companies (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
@@ -38,6 +46,9 @@ INSERT INTO companies (name, email, address) VALUES ('Google', 'contact@google.c
 -- Insert data into influencers table
 INSERT INTO influencers (name, email) VALUES ('John Doe', 'john@example.com');
 INSERT INTO influencers (name, email) VALUES ('Jane Smith', 'jane@example.com');
+
+-- Insert data into users table
+INSERT INTO users (email, password, account_type) VALUES ('john@example.com', 'password', 'influencer');
 
 -- Insert data into jobs table
 INSERT INTO jobs (company_id, title, description, location)
