@@ -10,6 +10,9 @@ const Button = ({ label }) => {
         if (label === "Companies") {
             navigate('/login');
         }
+        if (label === "ExamplePage") {
+            navigate('/example');
+        }
     };
 
     return (
