@@ -5,6 +5,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser'); //npm install body-parser
 const {Pool} = require("pg");
 const userController = require('./userController')
+const routes = require('./routes');
 // Use CORS middleware and allow any domain to access your API
 
 // test comment
@@ -13,6 +14,7 @@ const userController = require('./userController')
 const app = express();
 app.use(cors());
 app.use(express.json());
+
 
 // Create a connection to the database
 const dbPool = new Pool({
@@ -24,9 +26,8 @@ const dbPool = new Pool({
 
 // This makes our "/" endpoint render our react app
 app.use(express.static('client/build'));
+app.use(routes);
 
-// This line to use express.json middleware for the login page
-app.use(express.json());
 
 // post a job to the database
 app.post('/postJob', async (req, res) => {
@@ -95,53 +96,6 @@ app.post("/verifyEmail", async (req, res) => {
     }
 });
 
-app.post("/api/login", async (req, res) => {
-    errorMessage = {}
-    try {
-        const {email, password} = req.body;
-
-        // Empty field check
-        if (!email || !password) {
-            errorMessage['error'] = 'Username and password are required.'
-            if (!email) errorMessage['emailError'] = 'Email is required.'
-            if (!password) errorMessage['passwordError'] = 'Password is required.'
-            res.status(400).json(errorMessage);
-        }
-
-        // Email format check
-        if (!/\S+@\S+\.\S+/.test(email)) {
-            errorMessage['error'] = 'Invalid Email.'
-            errorMessage['emailError'] = 'Invalid Email.';
-            res.status(400).json(errorMessage);
-        }
-
-        // Password length check
-        if (password.length < 8) {
-            errorMessage['error'] = 'Password too short.'
-            errorMessage['passwordError'] = 'Password minimum of 8 characters.';
-            res.status(400).json(errorMessage);
-        }
-
-        await userController.authenticateUser(email, password)
-        res.status(200).send({ message: "User verified" })
-
-    } catch (error) {
-        if (error.message === 'User does not exist.') {
-            errorMessage['error'] = error.message
-            errorMessage['emailError'] = error.message;
-            return res.status(401).json(errorMessage);
-        }
-        if (error.message === 'Incorrect Password.') {
-            errorMessage['error'] = error.message
-            errorMessage['passwordError'] = error.message;
-            return res.status(401).json(errorMessage);
-        }
-
-        console.error(error);
-        res.status(500).send('An error occurred during the login process.');
-    }
-
-});
 
 // Start the server on port 3000
 const port = 3000;

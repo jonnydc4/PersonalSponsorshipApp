@@ -19,7 +19,6 @@ const theme = createTheme();
 
 export default function SignInSide() {
     const navigate = useNavigate();
-    const [error, setError] = useState('')
     const [emailError, setEmailError] = useState('');
     const [passwordError, setPasswordError] = useState('');
 
@@ -31,7 +30,6 @@ export default function SignInSide() {
 
         // Reset error state on new submission
 
-        setError('')
         setEmailError('');
         setPasswordError('');
 
@@ -48,8 +46,7 @@ export default function SignInSide() {
 
             if (!response.ok) {
                 // Set the error message from the server to state
-                setError(data.error)
-                console.log(data.error)
+                if (data.hasOwnProperty('error')) console.error(data.error)
                 if (data.hasOwnProperty('emailError')) setEmailError(data.emailError)
                 if (data.hasOwnProperty('passwordError')) setPasswordError(data.passwordError)
             } else {
