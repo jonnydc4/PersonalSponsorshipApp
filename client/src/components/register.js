@@ -14,7 +14,7 @@ export default function SignUp({ theme }) {
         const formData = new FormData(event.currentTarget);
         const email = formData.get('email');
         const password = formData.get('password');
-    
+        const accountType = "company"; // fill this in later
         setEmailError('');
         setPasswordError('');
     
@@ -24,7 +24,7 @@ export default function SignUp({ theme }) {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ email, password }),
+                body: JSON.stringify({ email, password, accountType}),
             });
     
             const data = await response.json();

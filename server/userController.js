@@ -51,21 +51,23 @@ const authenticateUserByPassword = async (username, password) => {
 };
 
 const performLogin = async (email, password) => {
-    checkLoginFieldsEmpty(email, password)
-    checkEmailFormat(email)
-    checkPasswordLength(password)
-    const user = await authenticateUserByPassword(email, password)
+    checkLoginFieldsEmpty(email, password);
+    checkEmailFormat(email);
+    checkPasswordLength(password);
+    const user = await authenticateUserByPassword(email, password);
     return user
 }
 
-const performRegister = async (email, password) => {
-    checkLoginFieldsEmpty(email, password)
-    checkEmailFormat(email)
-    checkPasswordLength(password)
+// Attempts to perform register for new user signing up for service
+const performRegister = async (email, password, accountType) => {
+    checkLoginFieldsEmpty(email, password);
+    checkEmailFormat(email);
+    checkPasswordLength(password);
     // userModel.findUser(email)
-    // const user = await userModel.createUser(email, password) // implment create user later
+    const user = await userModel.createUser(email, password, accountType)
     return user
 }
+
 
 function handleLoginError(error) {
     let errorMessage = {};
@@ -110,6 +112,8 @@ function handleLoginError(error) {
 
     return {errorMessage, statusCode};
 }
+
+
 
 
 module.exports = {performLogin, handleLoginError, performRegister};

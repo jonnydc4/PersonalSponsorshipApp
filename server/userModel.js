@@ -10,5 +10,9 @@ const resetUserPassword = async (email, newPassword) => {
     return db.updateUserPassword(email, newPassword);
 }
 
+// Create a new user in the database
+const createUser = async (email, password, accountType) => {
+    return db.createUserRegister(email, password, accountType);
+}
 
-module.exports = { findUser };
+module.exports = { findUser, createUser};
