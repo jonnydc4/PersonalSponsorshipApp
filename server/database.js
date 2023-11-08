@@ -22,8 +22,8 @@ const updateUserPassword = async (email, newPassword) => {
 
 // Creates and inserts data into database for new user. 
 const createUserRegister = async (email, password, accountType) => {
-    const queryText = 'INSERT INTO users (email, password) VALUES ($1, $2);';
-    await query(queryText, [email, password]);
+    const queryText = 'INSERT INTO users (email, password, account_type) VALUES ($1, $2, $3);';
+    await query(queryText, [email, password, accountType]);
 
 };
 
