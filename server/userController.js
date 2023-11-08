@@ -2,26 +2,44 @@
 
 const userModel = require('./userModel');
 
-/*---Login Functions---*/
-const checkLoginFields = (email, password) => {
-    // Empty field check
-    if (!email && !password) throw new Error('Email and password are required.');
-    if (!email) throw new Error('Email is required.');
-    if (!password) throw new Error('Password is required.');
-
-    // Email format check
+const checkEmailFormat = (email) => {
     if (!/\S+@\S+\.\S+/.test(email)) throw new Error('Invalid Email.');
-
-    // Password length check
-    if (password.length < 8) throw new Error('Password too short.');
 }
 
-const authenticateUser = async (username, password) => {
-    const user = await userModel.findUser(username);
+const checkEmailEmpty = (email) => {
+    if (!email) throw new Error('Email is required.');
+}
+
+const checkPasswordEmpty = (password) => {
+    if (!password) throw new Error('Password is required.');
+}
+
+const checkLoginFieldsEmpty = (email, password) => {
+    if (!email || !password) {
+        if (!email && !password) throw new Error('Email and password are required.');
+        checkEmailEmpty(email)
+        checkPasswordEmpty(password)
+    }
+}
+
+const checkPasswordLength = (password) => {
+    const MIN_PASSWORD_LENGTH = 8
+    if (password.length < MIN_PASSWORD_LENGTH) throw new Error('Password too short.');
+    //todo add a max password length
+}
+
+const verifyUserExists = async (email) => {
+    const user = await userModel.findUser(email);
 
     if (!user) {
         throw new Error('User does not exist.');
     }
+
+    return user
+}
+
+const authenticateUserByPassword = async (username, password) => {
+    const user = await verifyUserExists(username);
 
     // Here, you would check the password against a hashed password in a real application
     const isMatch = (password === user.password);
@@ -31,6 +49,14 @@ const authenticateUser = async (username, password) => {
 
     return user;
 };
+
+const performLogin = async (email, password) => {
+    checkLoginFieldsEmpty(email, password)
+    checkEmailFormat(email)
+    checkPasswordLength(password)
+    const user = await authenticateUserByPassword(email, password)
+    return user
+}
 
 function handleLoginError(error) {
     let errorMessage = {};
@@ -73,9 +99,8 @@ function handleLoginError(error) {
             break;
     }
 
-    return { errorMessage, statusCode };
+    return {errorMessage, statusCode};
 }
 
 
-
-module.exports = {authenticateUser, checkLoginFields, handleLoginError};
+module.exports = {performLogin, handleLoginError};

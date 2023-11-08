@@ -11,13 +11,11 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
-import {createTheme, ThemeProvider} from '@mui/material/styles';
+import {ThemeProvider} from '@mui/material/styles';
 import {useNavigate} from "react-router-dom";
-import { Link as RouterLink } from 'react-router-dom';
+import {Link as RouterLink} from 'react-router-dom';
 
-const theme = createTheme();
-
-export default function SignInSide() {
+export default function LoginPage({theme}) {
     const navigate = useNavigate();
     const [emailError, setEmailError] = useState('');
     const [passwordError, setPasswordError] = useState('');
@@ -34,26 +32,27 @@ export default function SignInSide() {
         setPasswordError('');
 
         // try {
-            const response = await fetch('/api/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({email, password})
-            })
+        const response = await fetch('/api/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({email, password})
+        })
 
-            const data = await response.json();
+        const data = await response.json();
 
-            if (!response.ok) {
-                // Set the error message from the server to state
-                if (data.hasOwnProperty('error')) console.error(data.error)
-                if (data.hasOwnProperty('emailError')) setEmailError(data.emailError)
-                if (data.hasOwnProperty('passwordError')) setPasswordError(data.passwordError)
-            } else {
-                // Handle successful authentication
-                console.log('Success!')
-                navigate('/dashboard')
-            }
+        if (!response.ok) {
+            // Set the error message from the server to state
+            if (data.hasOwnProperty('error')) console.error(data.error)
+            if (data.hasOwnProperty('emailError')) setEmailError(data.emailError)
+            if (data.hasOwnProperty('passwordError')) setPasswordError(data.passwordError)
+        } else {
+            // Handle successful authentication
+            console.log('Success!')
+            console.log(data.accountType)
+            navigate('/dashboard')
+        }
 
         // } catch (networkError) {
         //     console.log('Network Error')

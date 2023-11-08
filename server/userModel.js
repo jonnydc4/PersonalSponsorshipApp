@@ -2,8 +2,13 @@
 
 const db = require('./database');
 
-const findUser = async (username) => {
-    return db.findUserByUsername(username);
+const findUser = async (email) => {
+    return db.findUserByEmail(email);
 };
+
+const resetUserPassword = async (email, newPassword) => {
+    return db.updateUserPassword(email, newPassword);
+}
+
 
 module.exports = { findUser };

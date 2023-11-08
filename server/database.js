@@ -9,13 +9,19 @@ const pool = new Pool({
 // A function to query the database and return results
 const query = (text, params) => pool.query(text, params);
 
-const findUserByUsername = async (username) => {
+const findUserByEmail = async (email) => {
     const queryText = 'SELECT * FROM users WHERE email = $1';
-    const { rows } = await query(queryText, [username]);
+    const {rows} = await query(queryText, [email]);
     return rows[0]; // returns undefined if no user is found
+};
+
+const updateUserPassword = async (email, newPassword) => {
+    const queryText = 'UPDATE users SET password = $1 WHERE email = $2;';
+    await query(queryText, [newPassword, email]);
 };
 
 module.exports = {
     query,
-    findUserByUsername
+    findUserByEmail,
+    updateUserPassword
 };

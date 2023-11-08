@@ -32,7 +32,7 @@ app.use(routes);
 // post a job to the database
 app.post('/postJob', async (req, res) => {
 
-    const { title, description, location } = req.body;
+    const {title, description, location} = req.body;
     try {
         const client = await dbPool.connect();
         // Construct SQL query
@@ -46,12 +46,11 @@ app.post('/postJob', async (req, res) => {
         const result = await client.query(query, [company_id, title, description, location]);
         client.release();
         // Send a success response back to the client
-        res.json({ status: 'success', message: 'Data added successfully' });
-    }
-    catch (err) {
+        res.json({status: 'success', message: 'Data added successfully'});
+    } catch (err) {
         console.log(err);
         console.error('Database error when executing jobPost:', err.stack);
-        res.status(500).json({ status: 'error', message: err.message });
+        res.status(500).json({status: 'error', message: err.message});
     }
 
 });
@@ -59,26 +58,24 @@ app.post('/postJob', async (req, res) => {
 app.get("/allJobs", async (req, res) => {
     const client = await dbPool.connect();
     try {
-            const queryResults = await client.query("SELECT * FROM public.jobs");
-            res.json(queryResults.rows);
-        }
-        catch (err) {
-            console.error('Error fetching jobs:', err);
-            res.status(500).send(err);
-        }
-        finally {
-            client.release();
-        }
+        const queryResults = await client.query("SELECT * FROM public.jobs");
+        res.json(queryResults.rows);
+    } catch (err) {
+        console.error('Error fetching jobs:', err);
+        res.status(500).send(err);
+    } finally {
+        client.release();
+    }
 });
 
 //Endpoint to verify the Company email at login
 app.post("/verifyEmail", async (req, res) => {
     const client = await dbPool.connect();
-    const { email } = req.body;
+    const {email} = req.body;
 
     // Check if the email is provided in the request
     if (!email) {
-        return res.status(400).send({ message: "Email is required" });
+        return res.status(400).send({message: "Email is required"});
     }
 
     try {
@@ -86,9 +83,9 @@ app.post("/verifyEmail", async (req, res) => {
         const queryResults = await client.query("SELECT * FROM public.companies WHERE email = $1", [email]);
 
         if (queryResults.rows.length > 0) {
-            res.status(200).send({ message: "Email verified", isValid: true });
+            res.status(200).send({message: "Email verified", isValid: true});
         } else {
-            res.status(200).send({ message: "Email not found", isValid: false });
+            res.status(200).send({message: "Email not found", isValid: false});
         }
     } catch (err) {
         console.log(err);
