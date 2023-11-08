@@ -6,6 +6,7 @@ import Jobs from './components/Jobs';
 import Login from './components/Login';
 import JobPostingForm from './components/JobPostingForm';
 import ExamplePage from './components/ExamplePage'; // Example Page can be removed!
+import InfluencerSearch from './InfluencerSearch';
 
 
 function App() {
@@ -19,7 +20,9 @@ function App() {
                     <Route path="/post-job" element={<JobPostingForm />} />
                     <Route path="/jobs" element={<Jobs />} />
                     <Route path="/example" element={<ExamplePage />} /> // Example Page can be removed!
-                    <Route path="/" element={<div><Button label="Companies"/><br/><Button label="ExamplePage"/></div>}/>
+                    <Route path="/influencer-search" element={<InfluencerSearch />} /> //remove later
+                    <Route path="/" element={<div><Button label="Companies"/><br/><Button label="ExamplePage"/>
+                    <br/><Button label ="InfluencerSearch"/></div>}/>
                 </Routes>
             </div>
         </Router>

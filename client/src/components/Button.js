@@ -13,6 +13,9 @@ const Button = ({ label }) => {
         if (label === "ExamplePage") {
             navigate('/example');
         }
+        if (label === "InfluencerSearch") { //Will remove later once we connect components
+            navigate('/influencer-search')
+        }
     };
 
     return (
