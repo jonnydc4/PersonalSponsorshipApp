@@ -22,9 +22,9 @@ router.post('/api/register', async (req, res) => {
     try {
         const { email, password, accountType } = req.body;
         const user = await performRegister(email, password, accountType);
-        res.status(200).send({ message: 'User created successfully', accountType: user.account_type });
+        res.status(200).send({message: "User created successfully", accountType: user.account_type });
     } catch (error) {
-        const { errorMessage, statusCode } = userController.handleLoginError(error);
+        const { errorMessage, statusCode } = userController.handleaccountSignupError(error);
         return res.status(statusCode).json(errorMessage);
     }
 });

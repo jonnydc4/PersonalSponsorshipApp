@@ -28,6 +28,7 @@ const checkPasswordLength = (password) => {
     //todo add a max password length
 }
 
+// This does not work - morgan (11/8/2023)
 const verifyUserExists = async (email) => {
     const user = await userModel.findUser(email);
 
@@ -36,6 +37,14 @@ const verifyUserExists = async (email) => {
     }
 
     return user
+}
+
+const verifyUserDoesNotExist = async (email) => {
+    const user = await userModel.findUser(email);
+
+    if (user === undefined) {
+        throw new Error('User already exists.');
+    }
 }
 
 const authenticateUserByPassword = async (username, password) => {
@@ -63,8 +72,8 @@ const performRegister = async (email, password, accountType) => {
     checkLoginFieldsEmpty(email, password);
     checkEmailFormat(email);
     checkPasswordLength(password);
-    // userModel.findUser(email)
-    const user = await userModel.createUser(email, password, accountType)
+    verifyUserDoesNotExist(email);
+    const user = await userModel.createUser(email, password, accountType);
     return user
 }
 
@@ -113,7 +122,50 @@ function handleLoginError(error) {
     return {errorMessage, statusCode};
 }
 
+// Refactor later with the one above (addded check for throwing error for user that already exists)
+function handleaccountSignupError(error) {
+    let errorMessage = {};
+    let statusCode;
+
+    switch (error.message) {
+        case 'Email and password are required.':
+            errorMessage['emailError'] = 'Email is required.';
+            errorMessage['passwordError'] = 'Password is required.';
+            statusCode = 400;
+            break;
+        case 'Email is required.':
+            errorMessage['emailError'] = error.message;
+            statusCode = 400;
+            break;
+        case 'Password is required.':
+            errorMessage['passwordError'] = error.message;
+            statusCode = 400;
+            break;
+        case 'Invalid Email.':
+            errorMessage['emailError'] = error.message;
+            statusCode = 400;
+            break;
+        case 'Password too short.':
+            errorMessage['passwordError'] = 'Password minimum of 8 characters.';
+            statusCode = 400;
+            break;
+        case 'User already exists.':
+            errorMessage['emailError'] = error.message;
+            statusCode = 401;
+            break;
+        case 'Incorrect Password.':
+            errorMessage['passwordError'] = error.message;
+            statusCode = 401;
+            break;
+        default:
+            console.error(error.message);
+            errorMessage['error'] = 'An error occurred during the login process.';
+            statusCode = 500;
+            break;
+    }
+
+    return {errorMessage, statusCode};
+}
 
 
-
-module.exports = {performLogin, handleLoginError, performRegister};
+module.exports = {performLogin, handleLoginError, performRegister, handleaccountSignupError};
