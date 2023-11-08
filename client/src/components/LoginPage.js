@@ -92,7 +92,7 @@ export default function LoginPage({theme}) {
                             <LockOutlinedIcon/>
                         </Avatar>
                         <Typography component="h1" variant="h5">
-                            Sign in to Sponsorship
+                            Sign in to Sponsorship App
                         </Typography>
                         <Box component="form" noValidate onSubmit={handleSubmit} sx={{mt: 1}}>
                             <TextField
