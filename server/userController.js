@@ -58,6 +58,15 @@ const performLogin = async (email, password) => {
     return user
 }
 
+const performRegister = async (email, password) => {
+    checkLoginFieldsEmpty(email, password)
+    checkEmailFormat(email)
+    checkPasswordLength(password)
+    // userModel.findUser(email)
+    // const user = await userModel.createUser(email, password) // implment create user later
+    return user
+}
+
 function handleLoginError(error) {
     let errorMessage = {};
     let statusCode;
@@ -103,4 +112,4 @@ function handleLoginError(error) {
 }
 
 
-module.exports = {performLogin, handleLoginError};
+module.exports = {performLogin, handleLoginError, performRegister};
