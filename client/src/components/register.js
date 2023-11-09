@@ -14,11 +14,10 @@ export default function SignUp({ theme }) {
         const formData = new FormData(event.currentTarget);
         const email = formData.get('email');
         const password = formData.get('password');
-        const accountType = "companies"; // fill this in later
+        const accountType = 'companies'; // fill this in later
         setEmailError('');
         setPasswordError('');
     
-   
             const response = await fetch('/api/register', {
                 method: 'POST',
                 headers: {
@@ -26,7 +25,7 @@ export default function SignUp({ theme }) {
                 },
                 body: JSON.stringify({ email, password, accountType}),
             });
-    
+            
             const data = await response.json();
     
             if (!response.ok) {
