@@ -28,6 +28,7 @@ const checkPasswordLength = (password) => {
     //todo add a max password length
 }
 
+// Verify that an email is found in the user table in db. On success returns that user's info.
 const verifyUserExists = async (email) => {
     const user = await userModel.findUser(email);
 
@@ -38,10 +39,11 @@ const verifyUserExists = async (email) => {
     return user
 }
 
-const authenticateUserByPassword = async (username, password) => {
-    const user = await verifyUserExists(username);
+// Takes an email and password and returns the related user's info from user table in database if user exists and password is correct.
+const authenticateUserByPassword = async (email, password) => {
+    const user = await verifyUserExists(email);
 
-    // Here, you would check the password against a hashed password in a real application
+    // todo Here, you would check the password against a hashed password in a real application
     const isMatch = (password === user.password);
     if (!isMatch) {
         throw new Error('Incorrect Password.');
@@ -50,6 +52,7 @@ const authenticateUserByPassword = async (username, password) => {
     return user;
 };
 
+// Puts together the whole login process. On success returns a user's info.
 const performLogin = async (email, password) => {
     checkLoginFieldsEmpty(email, password)
     checkEmailFormat(email)
@@ -58,6 +61,7 @@ const performLogin = async (email, password) => {
     return user
 }
 
+// Takes an error object and returns a new error message object and an HTTP status code.
 function handleLoginError(error) {
     let errorMessage = {};
     let statusCode;

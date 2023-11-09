@@ -1,3 +1,5 @@
+// database.js - Database queries used in the application
+
 const {Pool} = require("pg");
 
 const pool = new Pool({

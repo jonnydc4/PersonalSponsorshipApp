@@ -1,8 +1,12 @@
+// routes.js - Express route definitions
+
 const express = require('express');
 const userController = require('./userController');
 const {performLogin} = require("./userController");
 
 const router = express.Router();
+
+// Login endpoint called by LoginPage.js (Handles Login)
 router.post("/api/login", async (req, res) => {
     try {
         const {email, password} = req.body;
