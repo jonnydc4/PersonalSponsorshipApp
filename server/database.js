@@ -20,12 +20,18 @@ const updateUserPassword = async (email, newPassword) => {
     await query(queryText, [newPassword, email]);
 };
 
-// Creates and inserts data into database for new user. 
+// Creates and inserts data into the database for a new user.
 const createUserRegister = async (email, password, accountType) => {
-    const queryText = 'INSERT INTO users (email, password, account_type) VALUES ($1, $2, $3);';
-    await query(queryText, [email, password, accountType]);
-
+    const queryText = 'INSERT INTO users (email, password, account_type) VALUES ($1, $2, $3) RETURNING id, email, account_type;';
+    try {
+        const result = await query(queryText, [email, password, accountType]);
+        return result.rows[0]; // Return the new user
+    } catch (error) {
+        console.error(error);
+        throw error; // Rethrow the error to handle it in the express route
+    }
 };
+
 
 module.exports = {
     query,
