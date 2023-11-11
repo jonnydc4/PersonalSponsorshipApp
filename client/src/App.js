@@ -23,6 +23,7 @@ function App() {
                         <Route path="/jobs" element={<Jobs />} />
                         <Route path="/example" element={<ExamplePage />} /> // Example Page can be removed!
                         <Route path="/" element={<div><Button label="Log in"/><br/><Button label="ExamplePage"/></div>}/>
+                        <Route path = "/view-jobs" element={<JobSearchPage />} />
                     </Routes>
                 </div>
                 <Routes>
