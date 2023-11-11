@@ -1,66 +1,62 @@
-// JobSearchPage.jsx
 import React, { useState, useEffect } from 'react';
-import CommonFrame from './CommonFrame'; // Adjust the path as needed
-import JobList from './JobList'; // Adjust the path as needed
-import JobDetails from './JobDetails'; // Adjust the path as needed
+import CommonFrame from './CommonFrame';
+import JobList from './JobList'; // Make sure this component is designed to accept a list of jobs
+import JobPostingForm from './JobPostingForm';
+import JobEditForm from './JobEditForm'; // or any other form you use for editing
+import { useParams } from 'react-router-dom';
 
-const BASE_URL = 'http://localhost:3000'; // Your server URL
-
-const fetchJobsForCompany = async (companyId) => {
-  try {
-    const response = await fetch(`${BASE_URL}/jobs/${companyId}`);
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-    const jobs = await response.json();
-    return jobs;
-  } catch (error) {
-    console.error("There was a problem with the fetch operation:", error);
-    throw error;
-  }
-};
-
-
-const JobSearchPage = () => {
+const JobsPage = ({ companyId }) => {
   const [jobs, setJobs] = useState([]);
   const [selectedJob, setSelectedJob] = useState(null);
-
-  // Replace `companyId` with the actual logged-in company ID retrieved from the user's session or authentication context
-  const companyId = 1;//retrieveLoggedInCompanyId(); 
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const { companyId } = useParams();
 
   useEffect(() => {
-    const loadJobs = async () => {
+    const fetchJobs = async () => {
+      setLoading(true);
       try {
-        const companyJobs = await fetchJobsForCompany(companyId);
-        setJobs(companyJobs);
-      } catch (error) {
-        console.error('Failed to load jobs', error);
-        // Handle error, maybe set some error state and show it in UI
+        const response = await fetch(`/jobs/${companyId}`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        setJobs(data); // Assuming the data is the array of jobs
+      } catch (e) {
+        setError(e.message);
+        console.error("Fetching jobs failed: ", e);
+      } finally {
+        setLoading(false);
       }
     };
 
-    loadJobs();
+    fetchJobs();
   }, [companyId]);
+
+  const handleJobSelect = (job) => {
+    setSelectedJob(job);
+  };
+
+  // Render loading, error, or the full component based on the state
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   return (
     <CommonFrame>
-      <JobList jobs={jobs} onSelectJob={setSelectedJob} />
-      {selectedJob && <JobDetails job={selectedJob} onSave={handleSave} />}
-      {/* Button and other UI components */}
+      <div className="jobsPageContainer">
+        <aside className="jobListPanel">
+          <JobList jobs={jobs} onJobSelect={handleJobSelect} />
+        </aside>
+        <main className="jobFormPanel">
+          {selectedJob ? (
+            <JobEditForm job={selectedJob} />
+          ) : (
+            <JobPostingForm />
+          )}
+        </main>
+      </div>
     </CommonFrame>
   );
 };
 
-// This function simulates the retrieval of the logged-in company's ID
-function retrieveLoggedInCompanyId() {
-  // TODO: Implement logic to retrieve company ID from the user's session or authentication context
-  return 'company-id-from-session';
-}
-
-// This function handles saving the job description
-function handleSave(updatedJob) {
-  // TODO: Implement logic to save the updated job description to the database
-  console.log('Save job description:', updatedJob);
-}
-
-export default JobSearchPage;
+export default JobsPage;

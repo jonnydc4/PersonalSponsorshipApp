@@ -9,6 +9,7 @@ import ResetPassword from "./components/ResetPassword";
 import SignUp from "./components/register";
 import {createTheme} from "@mui/material/styles";
 import ExamplePage from './components/ExamplePage'; // Example Page can be removed!
+import JobsPage from './components/ViewExistingJobs';
 
 const theme = createTheme();
 
@@ -23,7 +24,7 @@ function App() {
                         <Route path="/jobs" element={<Jobs />} />
                         <Route path="/example" element={<ExamplePage />} /> // Example Page can be removed!
                         <Route path="/" element={<div><Button label="Log in"/><br/><Button label="ExamplePage"/></div>}/>
-                        <Route path = "/view-jobs" element={<JobSearchPage />} />
+                        <Route path = "/jobs/:companyId" element={<JobsPage />} />
                     </Routes>
                 </div>
                 <Routes>
