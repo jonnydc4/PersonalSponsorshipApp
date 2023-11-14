@@ -6,6 +6,12 @@ const CommonFrame = ({ items, children }) => {
     // State to keep track of the currently selected item
     const [selectedItem, setSelectedItem] = useState(null);
 
+    //const handleJobSelection = (item) => {
+    //    setSelectedItem(item);
+        // Logic to mark the notification as read
+        // ...
+    // };
+
     return (
         <div className="container">
             {/* Navigation Pane */}
