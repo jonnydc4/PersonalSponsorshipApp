@@ -1,0 +1,8 @@
+.nav-bar-container {
+    width: 100%;
+    padding: 1rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}

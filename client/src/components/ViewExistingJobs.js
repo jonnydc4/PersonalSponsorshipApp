@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import CommonFrame from './CommonFrame';
 import JobList from './JobList'; // Make sure this component is designed to accept a list of jobs
 import JobPostingForm from './JobPostingForm';
-import JobEditForm from './JobEditForm'; // or any other form you use for editing
+import JobEditForm from './JobEditForm'; // or any other form you use for editing TODO
 import { useParams } from 'react-router-dom';
 
 const JobsPage = ({ companyId }) => {
@@ -16,7 +16,7 @@ const JobsPage = ({ companyId }) => {
     const fetchJobs = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`/jobs/${companyId}`);
+        const response = await fetch(`api/jobs/${companyId}`);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }

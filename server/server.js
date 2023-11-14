@@ -69,7 +69,7 @@ app.get("/allJobs", async (req, res) => {
 });
 
 // Get all jobs for a specific company
-app.get("/jobs/:companyId", async (req, res) => {
+app.get("api/jobs/:companyId", async (req, res) => {
     const { companyId } = req.params;
 
     // Validate the companyId, for example, check if it's a number

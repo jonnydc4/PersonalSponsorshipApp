@@ -1,0 +1,25 @@
+
+.container {
+    display: flex;
+    min-height: 100vh; /* Full height of the viewport */
+  }
+  
+  .list {
+    width: 300px; /* Fixed width for the sidebar */
+    background-color: #f3f3f3; /* Light grey background */
+    padding: 20px; /* Padding around the content */
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Shadow for some depth */
+    overflow-y: auto; /* Enables vertical scroll if content is too long */
+    outline-color: black;
+    outline-width: 2px;
+  }
+  
+  .detail {
+    flex-grow: 1; /* Takes up the remaining width */
+    background-color: #fff; /* White background */
+    padding: 20px; /* Padding around the content */
+    overflow-y: auto; /* Enables vertical scroll if content is too long */
+    outline-color: black;
+    outline-width: 2px;
+  }
+  
