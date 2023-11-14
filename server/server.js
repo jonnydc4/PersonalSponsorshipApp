@@ -81,10 +81,11 @@ app.post("/verifyEmail", async (req, res) => {
 
     try {
         // Query the database to check if the provided email exists in the 'companies' table
-        const queryResults = await client.query("SELECT * FROM public.companies WHERE email = $1", [email]);
+            const queryResults = await client.query("SELECT id FROM public.companies WHERE email = $1", [email]);
 
         if (queryResults.rows.length > 0) {
-            res.status(200).send({ message: "Email verified", isValid: true });
+            const userId = queryResults.rows[0].id;
+            res.status(200).send({ message: "Email verified", isValid: true, userId: userId });
         } else {
             res.status(200).send({ message: "Email not found", isValid: false });
         }

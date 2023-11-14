@@ -28,6 +28,9 @@ const Login = () => {
 
             // If the email is valid, navigate to the jobs page
             if (data.isValid) {
+                //Store the user ID in local storage
+                localStorage.setItem('userId', data.userId);
+
                 navigate('/jobs');
             } else {
                 setError(data.message || 'Email not found');
