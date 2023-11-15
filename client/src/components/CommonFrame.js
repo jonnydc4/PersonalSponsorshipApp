@@ -2,9 +2,17 @@ import React, { useState } from 'react';
 import './CommonFrame.css';
 import { Link } from 'react-router-dom'; // Import the Link component at the top of your file
 
-const CommonFrame = ({ items, children }) => {
+const CommonFrame = ({ items, children, onSelectItem, searchBar }) => {
     // State to keep track of the currently selected item
     const [selectedItem, setSelectedItem] = useState(null);
+
+    // Handle item selection and invoke the callback if provided
+    const handleItemClick = (item) => {
+        setSelectedItem(item);
+        if (onSelectItem) {
+            onSelectItem(item);
+        }
+    };
 
     return (
         <div className="container">
@@ -19,8 +27,9 @@ const CommonFrame = ({ items, children }) => {
             <div className="content-area">
                 {/* Selectable List */}
                 <div className="selectable-list">
+                    {searchBar} {/* This will render the search bar if provided */}
                     {items.map((item, index) => (
-                        <div key={index} className="selectable-item" onClick={() => setSelectedItem(item)}>
+                        <div key={index} className="selectable-item" onClick={() => handleItemClick(item)}>
                             {item.name}
                         </div>
                     ))}

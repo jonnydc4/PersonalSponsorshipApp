@@ -12,6 +12,7 @@ import ExamplePage from './components/ExamplePage'; // Example Page can be remov
 import JobManagerPage from './pages/job-manager/JobManagerPage';
 import "./reset.css";
 import "./App.css"
+import InfluencerSearch from './InfluencerSearch';
 
 const theme = createTheme();
 
@@ -23,14 +24,18 @@ function App() {
                 <Route path="/post-job" element={<JobPostingForm />} />
                 <Route path="/jobs" element={<Jobs />} />
                 <Route path="/example" element={<ExamplePage />} /> // Example Page can be removed!
-                <Route path="/" element={<div><Button label="Log in"/><br/><Button label="ExamplePage"/></div>}/>
+                        <Route path="/influencer-search" element={<InfluencerSearch />} /> //remove later
+                <Route path="/" element={<div><Button label="Log in"/><br/><Button label="ExamplePage"/>
+                        <br/><Button label ="InfluencerSearch"/></div>}/>                        
                 <Route path="/manage-jobs" element={<JobManagerPage />} />
+
                 <Route path="/login" element={<LoginPage theme={theme}/>}/>
                 <Route path="/devLogin" element={<Button label="Log in"/>}/>
                 <Route path="/dashboard" element={<h1>Dashboard</h1>}/>
                 <Route path="/forgotpassword" element={<ForgotPassword theme={theme}/>}/>
                 <Route path="/resetpassword" element={<ResetPassword theme={theme}/>}/>
                 <Route path="/register" element={<SignUp theme={theme}/>}/>
+
             </Routes>
         </Router>
     );

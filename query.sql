@@ -54,6 +54,7 @@ CREATE TABLE notifications (
     -- Additional fields can be added as necessary
 );
 
+
 -- Insert data into companies table
 INSERT INTO companies (name, email, address)
 VALUES ('Apple Inc', 'contact@apple.com', 'Cupertino, CA');
