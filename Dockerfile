@@ -14,8 +14,8 @@ RUN mkdir /usr/src/app/client/build
 WORKDIR /usr/src/app
 
 # Install app dependencies
-COPY package.json ./
-COPY package-lock.json ./
+COPY server/package.json ./
+COPY server/package-lock.json ./
 RUN npm install
 
 # Expose Port
