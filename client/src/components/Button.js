@@ -1,4 +1,3 @@
-// client/src/components/Button.js
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Button.css';
@@ -7,9 +6,10 @@ const Button = ({ label }) => {
     const navigate = useNavigate();
 
     const handleClick = () => {
-        if (label === "Companies") {
+        if (label === "Log in") {
             navigate('/login');
         }
+
         if (label === "ExamplePage") {
             navigate('/example');
         }
