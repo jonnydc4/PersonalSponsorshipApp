@@ -9,7 +9,7 @@ services:
     volumes:
       # Bind mounts (two way sync)
       # One for backend and the other for frontend
-      - ./server/:/usr/src/app/server/
+      - ./server/:/usr/src/app/
       - ./client/build/:/usr/src/app/client/build/
     depends_on:
       - postgres

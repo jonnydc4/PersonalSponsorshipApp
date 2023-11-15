@@ -2,11 +2,11 @@
   "name": "personalsponsorshipapp",
   "version": "1.0.0",
   "description": "A platform that manages relationships between businesses and the influencers that promote them.",
-  "main": "server/server.js",
+  "main": "src/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server/server.js",
-    "dev": "nodemon -L server/server.js"
+    "start": "node src/server.js",
+    "dev": "./node_modules/.bin/nodemon -L src/server.js"
   },
   "author": "Jon C, Michael H",
   "license": "ISC",

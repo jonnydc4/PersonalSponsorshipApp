@@ -94,6 +94,43 @@ app.post("/verifyEmail", async (req, res) => {
 });
 
 
+// Endpoint to get all influencers
+app.get("/influencers", async (req, res) => {
+    const client = await dbPool.connect();
+    try {
+        const queryResults = await client.query("SELECT id, name, email FROM public.influencers");
+        res.json(queryResults.rows);
+    } catch (err) {
+        console.error('Error fetching influencers:', err);
+        res.status(500).send(err);
+    } finally {
+        client.release();
+    }
+});
+
+
+// Endpoint to send a job offer
+app.post("/sendOffer", async (req, res) => {
+    const client = await dbPool.connect();
+    const { influencer_id, job_id, message } = req.body;
+    const company_id = 1; // hardcoded for now as per your instruction
+
+    try {
+        const query = `
+            INSERT INTO notifications (company_id, influencer_id, job_id, message)
+            VALUES ($1, $2, $3, $4)
+        `;
+        await client.query(query, [company_id, influencer_id, job_id, message]);
+        res.json({ status: 'success', message: 'Offer sent successfully' });
+    } catch (err) {
+        console.error('Error sending offer:', err);
+        res.status(500).send(err);
+    } finally {
+        client.release();
+    }
+});
+
+
 // Start the server on port 3000
 const port = 3000;
 app.listen(port, () => {
