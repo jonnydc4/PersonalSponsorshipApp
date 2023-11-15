@@ -1,25 +1,23 @@
 
-.container {
+.list-detail-container {
     display: flex;
-    min-height: 100vh; /* Full height of the viewport */
+    flex-grow: 1;
   }
   
-  .list {
-    width: 300px; /* Fixed width for the sidebar */
+ .list-detail-container .list {
+    width: 25%;
+    height: 100%;
+    min-width: 300px;
     background-color: #f3f3f3; /* Light grey background */
-    padding: 20px; /* Padding around the content */
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Shadow for some depth */
     overflow-y: auto; /* Enables vertical scroll if content is too long */
-    outline-color: black;
-    outline-width: 2px;
+    border-right: 1px solid #ddd;
   }
   
-  .detail {
+  .list-detail-container .detail {
     flex-grow: 1; /* Takes up the remaining width */
     background-color: #fff; /* White background */
-    padding: 20px; /* Padding around the content */
     overflow-y: auto; /* Enables vertical scroll if content is too long */
-    outline-color: black;
-    outline-width: 2px;
+    height: 100%;
   }
   

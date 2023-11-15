@@ -1,8 +1,9 @@
-.container {
+.nav-items-container {
     display: flex;
     flex-direction: row;
 }
 
-.container a {
+.nav-items-container .nav-link {
     margin-left: 1rem;
+    margin-right: 1rem;
 }

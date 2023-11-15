@@ -6,7 +6,7 @@ function ListDetailFrame ({ renderList, renderDetail }) {
 // use the render functions to render list in list section and detail in details section
 
 return (
-    <div className="container">
+    <div className="list-detail-container">
         <div className="list">
           {renderList}
         </div>

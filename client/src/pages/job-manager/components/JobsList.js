@@ -1,12 +1,24 @@
 import React from 'react';
 import JobListItem from './JobListItem';
 
-function JobsList ({ jobs }) {
+function JobsList ({ jobs, selectedJobId, onJobClick, onCreateJobClick }) {
     return (
-        <div>
-            {jobs.map(job => <JobListItem job={job} />)}
-        </div>
-  )
+        <>
+            <button onClick={onCreateJobClick}>Create new job</button>
+            {jobs.map(
+                job => {
+                    return (
+                        <JobListItem
+                            key={job.id}
+                            job={job}
+                            selected={job.id == selectedJobId}
+                            onClick={() => onJobClick(job)}
+                        />
+                    )
+                }
+            )}
+        </>
+    )
 }
 
 export default JobsList;

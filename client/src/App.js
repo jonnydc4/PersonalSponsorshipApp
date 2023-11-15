@@ -10,6 +10,8 @@ import SignUp from "./components/register";
 import {createTheme} from "@mui/material/styles";
 import ExamplePage from './components/ExamplePage'; // Example Page can be removed!
 import JobManagerPage from './pages/job-manager/JobManagerPage';
+import "./reset.css";
+import "./App.css"
 
 const theme = createTheme();
 
@@ -17,25 +19,19 @@ function App() {
     return (
         // Use the Router component to handle different routes in the app
         <Router>
-            <div>
-                <div style={{ textAlign: 'center' }}>
-                    <Routes>
-                        <Route path="/post-job" element={<JobPostingForm />} />
-                        <Route path="/jobs" element={<Jobs />} />
-                        <Route path="/example" element={<ExamplePage />} /> // Example Page can be removed!
-                        <Route path="/" element={<div><Button label="Log in"/><br/><Button label="ExamplePage"/></div>}/>
-                        <Route path="/manage-jobs" element={<JobManagerPage />} />
-                    </Routes>
-                </div>
-                <Routes>
-                    <Route path="/login" element={<LoginPage theme={theme}/>}/>
-                    <Route path="/devLogin" element={<Button label="Log in"/>}/>
-                    <Route path="/dashboard" element={<h1>Dashboard</h1>}/>
-                    <Route path="/forgotpassword" element={<ForgotPassword theme={theme}/>}/>
-                    <Route path="/resetpassword" element={<ResetPassword theme={theme}/>}/>
-                    <Route path="/register" element={<SignUp theme={theme}/>}/>
-                </Routes>
-            </div>
+            <Routes>
+                <Route path="/post-job" element={<JobPostingForm />} />
+                <Route path="/jobs" element={<Jobs />} />
+                <Route path="/example" element={<ExamplePage />} /> // Example Page can be removed!
+                <Route path="/" element={<div><Button label="Log in"/><br/><Button label="ExamplePage"/></div>}/>
+                <Route path="/manage-jobs" element={<JobManagerPage />} />
+                <Route path="/login" element={<LoginPage theme={theme}/>}/>
+                <Route path="/devLogin" element={<Button label="Log in"/>}/>
+                <Route path="/dashboard" element={<h1>Dashboard</h1>}/>
+                <Route path="/forgotpassword" element={<ForgotPassword theme={theme}/>}/>
+                <Route path="/resetpassword" element={<ResetPassword theme={theme}/>}/>
+                <Route path="/register" element={<SignUp theme={theme}/>}/>
+            </Routes>
         </Router>
     );
 }

@@ -5,8 +5,13 @@ import './NavBar.css';
 
 const navItems = [
   {
+    label: "Home",
     urlPath: '/home',
+  },{
+    label: "Jobs",
     urlPath: '/jobs',
+  },{
+    label: "Account",
     urlPath: '/account'
   }
 ]
