@@ -21,6 +21,7 @@ const Jobs = () => {
         fetchData();
     }, []);
 
+    // add the PostJobButton component and map the jobs to the left side
     return (
         <div>
             <PostJobButton />
