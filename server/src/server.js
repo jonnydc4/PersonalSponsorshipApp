@@ -24,8 +24,9 @@ const dbPool = new Pool({
 });
 
 
+
 // This makes our "/" endpoint render our react app
-app.use(express.static('client/build'));
+app.use(express.static('build'));
 app.use(routes);
 
 

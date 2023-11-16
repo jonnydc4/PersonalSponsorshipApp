@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node src/server.js",
-    "dev": "./node_modules/.bin/nodemon -L src/server.js"
+    "dev": "npx nodemon -L src/server.js"
   },
   "author": "Jon C, Michael H",
   "license": "ISC",
