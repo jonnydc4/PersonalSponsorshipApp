@@ -6,7 +6,11 @@ const InfluencerSearchButton = ({ jobId }) => {
 
   const handleSearchClick = () => {
     // Navigate to the influencer search route with the jobId
-    navigate(`/job/${jobId}/influencer-search`);
+    if (jobId) {
+      navigate(`/job/${jobId}/influencer-search`);
+    } else {
+      console.error("Job ID is undefined");
+    }
   };
 
   return (

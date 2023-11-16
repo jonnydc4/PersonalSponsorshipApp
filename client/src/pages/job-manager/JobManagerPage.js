@@ -42,7 +42,7 @@ function JobManagerPage() {
             <JobPostingForm />
             : <p>Edit job: {selectedJobId}</p>
             }
-            <InfluencerSearchButton/>
+            <InfluencerSearchButton jobId={selectedJobId}/>
           </div>
         }
       />

@@ -13,21 +13,27 @@ import JobManagerPage from './pages/job-manager/JobManagerPage';
 import "./reset.css";
 import "./App.css"
 import InfluencerSearch from './InfluencerSearch';
+import { Link } from 'react-router-dom';
+
 
 const theme = createTheme();
 
 function App() {
     return (
-        // Use the Router component to handle different routes in the app
+        // Use the Router component to handle different routes in the appdf
         <Router>
             <Routes>
                 <Route path="/post-job" element={<JobPostingForm />} />
                 <Route path="/jobs" element={<Jobs />} />
                 <Route path="/example" element={<ExamplePage />} /> // Example Page can be removed!
-                        <Route path="/influencer-search" element={<InfluencerSearch />} /> //remove later
+                <Route path="/influencer-search" element={<InfluencerSearch />} /> //remove later
                 <Route path="/" element={<div><Button label="Log in"/><br/><Button label="ExamplePage"/>
-                        <br/><Button label ="InfluencerSearch"/></div>}/>                        
+                        <br/><Button label ="InfluencerSearch"/>
+                        <br/><Button label = "JobManagerPage"/>
+                </div>}/>
                 <Route path="/manage-jobs" element={<JobManagerPage />} />
+
+                <Route path="/job/:jobId/influencer-search" element={<InfluencerSearch />} />
 
                 <Route path="/login" element={<LoginPage theme={theme}/>}/>
                 <Route path="/devLogin" element={<Button label="Log in"/>}/>

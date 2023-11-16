@@ -16,6 +16,9 @@ const Button = ({ label }) => {
         if (label === "InfluencerSearch") { //Will remove later once we connect components
             navigate('/influencer-search')
         }
+        if (label === "JobManagerPage") { // Will remove later once we connect components
+            navigate('/manage-jobs')
+        }
     };
 
     return (

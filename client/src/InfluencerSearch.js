@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import CommonFrame from './components/CommonFrame';
+import { useParams } from 'react-router-dom';
 
 const InfluencerSearch = () => {
+    const { jobId } = useParams(); // This will extract jobId from the URL
     const [influencers, setInfluencers] = useState([]);
     const [filteredInfluencers, setFilteredInfluencers] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
@@ -46,7 +48,7 @@ const InfluencerSearch = () => {
                 },
                 body: JSON.stringify({
                     influencer_id: selectedInfluencer.id,
-                    job_id: 1, // This should be the ID of the job that we will pass in later
+                    job_id: jobId, // This should be the ID of the job that we will pass in later
                     message: offerMessage,
                 }),
             });
