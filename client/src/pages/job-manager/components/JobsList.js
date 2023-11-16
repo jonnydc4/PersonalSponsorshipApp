@@ -1,6 +1,7 @@
 import React from 'react';
 import JobListItem from './JobListItem';
 
+//Generate the list of jobs on the left
 function JobsList ({ jobs, selectedJobId, onJobClick, onCreateJobClick }) {
     return (
         <>
