@@ -1,4 +1,4 @@
-FROM node:14
+FROM node:18
 
 # Create app directory
 RUN mkdir /usr/src/app
@@ -6,16 +6,13 @@ RUN chown node /usr/src/app
 
 # Make the container's directory structure
 USER node
-RUN mkdir /usr/src/app/server
-RUN mkdir /usr/src/app/client
-RUN mkdir /usr/src/app/client/build
 
 # Set the working directory
 WORKDIR /usr/src/app
 
 # Install app dependencies
-COPY package.json ./
-COPY package-lock.json ./
+COPY server/package.json ./
+COPY server/package-lock.json ./
 RUN npm install
 
 # Expose Port

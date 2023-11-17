@@ -1,6 +1,6 @@
 // userController.js - Controller that handles user-related operations
 
-const userModel = require('./userModel');
+const model = require('../models/model');
 
 const checkEmailFormat = (email) => {
     if (!/\S+@\S+\.\S+/.test(email)) throw new Error('Invalid Email.');
@@ -30,7 +30,7 @@ const checkPasswordLength = (password) => {
 
 // Verify that an email is found in the user table in db. On success returns that user's info.
 const verifyUserExists = async (email) => {
-    const user = await userModel.findUser(email);
+    const user = await model.findUser(email);
 
     if (!user) {
         throw new Error('User does not exist.');

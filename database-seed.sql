@@ -44,16 +44,15 @@ CREATE TABLE job_map
 );
 
 CREATE TABLE notifications (
-    id SERIAL PRIMARY KEY,
-    company_id INT REFERENCES companies(id) ON DELETE SET NULL,
-    influencer_id INT REFERENCES influencers(id) ON DELETE SET NULL,
-    job_id INT REFERENCES jobs(id) ON DELETE SET NULL,
-    message TEXT NOT NULL,
-    is_read BOOLEAN DEFAULT FALSE,
-    notification_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                               id SERIAL PRIMARY KEY,
+                               company_id INT REFERENCES companies(id) ON DELETE SET NULL,
+                               influencer_id INT REFERENCES influencers(id) ON DELETE SET NULL,
+                               job_id INT REFERENCES jobs(id) ON DELETE SET NULL,
+                               message TEXT NOT NULL,
+                               is_read BOOLEAN DEFAULT FALSE,
+                               notification_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     -- Additional fields can be added as necessary
 );
-
 
 -- Insert data into companies table
 INSERT INTO companies (name, email, address)

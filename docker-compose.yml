@@ -9,8 +9,8 @@ services:
     volumes:
       # Bind mounts (two way sync)
       # One for backend and the other for frontend
-      - ./server/:/usr/src/app/server/
-      - ./client/build/:/usr/src/app/client/build/
+      - ./server/src:/usr/src/app/src/
+      - ./server/build:/usr/src/app/build/
     depends_on:
       - postgres
 
@@ -29,12 +29,12 @@ services:
       # When the PostgresSQL container is started it will run any scripts
       # provided in the `docker-entrypoint-initdb.d` directory, this connects
       # our seed file to that directory so that it gets run
-      - ./query.sql:/docker-entrypoint-initdb.d/database-seed.sql
+      - ./database-seed.sql:/docker-entrypoint-initdb.d/database-seed.sql
 
   pgadmin-compose:
     image: dpage/pgadmin4
     environment:
-      PGADMIN_DEFAULT_EMAIL: "admin@email.com"
+      PGADMIN_DEFAULT_EMAIL: "admin@admin.com"
       PGADMIN_DEFAULT_PASSWORD: "admin"
     ports:
       - "16543:80"
