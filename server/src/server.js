@@ -1,20 +1,15 @@
 // Import the express library
 const express = require('express');
-// const {Client} = require("pg");
 const cors = require('cors');
 const bodyParser = require('body-parser'); //npm install body-parser
 const {Pool} = require("pg");
-const userController = require('./userController')
-const routes = require('./routes');
+const routes = require('./routes/routes');
 // Use CORS middleware and allow any domain to access your API
-
-// test comment
 
 // Initialize the express application
 const app = express();
 app.use(cors());
 app.use(express.json());
-
 
 // Create a connection to the database
 const dbPool = new Pool({
@@ -23,39 +18,11 @@ const dbPool = new Pool({
     host: "postgres",
 });
 
-
-
-// This makes our "/" endpoint render our react app
+// Use the static frontend build and define our routes.
 app.use(express.static('build'));
 app.use(routes);
 
-
-// post a job to the database
-app.post('/postJob', async (req, res) => {
-
-    const {title, description, location} = req.body;
-    try {
-        const client = await dbPool.connect();
-        // Construct SQL query
-        const company_id = 1; // temporary value for testing. Replace with actual company id later.
-        const query = `
-            INSERT INTO jobs (company_id, title, description, location)
-            VALUES ($1, $2, $3, $4)
-        `;
-
-        // Execute SQL query
-        const result = await client.query(query, [company_id, title, description, location]);
-        client.release();
-        // Send a success response back to the client
-        res.json({status: 'success', message: 'Data added successfully'});
-    } catch (err) {
-        console.log(err);
-        console.error('Database error when executing jobPost:', err.stack);
-        res.status(500).json({status: 'error', message: err.message});
-    }
-
-});
-
+/* Start of things to be refactored into other files */
 app.get("/allJobs", async (req, res) => {
     const client = await dbPool.connect();
     try {
@@ -131,6 +98,7 @@ app.post("/sendOffer", async (req, res) => {
     }
 });
 
+/* End of things to be refactored into other files */
 
 // Start the server on port 3000
 const port = 3000;

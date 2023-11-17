@@ -22,8 +22,22 @@ const updateUserPassword = async (email, newPassword) => {
     await query(queryText, [newPassword, email]);
 };
 
+const createNewJob = async (company_id, title, description, location) => {
+    const queryText = `
+            INSERT INTO jobs (company_id, title, description, location)
+            VALUES ($1, $2, $3, $4)
+        `
+    await query(queryText, [company_id, title, description, location]);
+}
+
+process.on('exit', () => {
+    console.log("Closing db pool");
+    pool.end();
+})
+
 module.exports = {
     query,
     findUserByEmail,
-    updateUserPassword
+    updateUserPassword,
+    createNewJob
 };
