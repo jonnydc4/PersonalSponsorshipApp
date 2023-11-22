@@ -4,4 +4,4 @@ function PageContainer({children}) {
 
 }
 
-export default
+export default PageContainer;
