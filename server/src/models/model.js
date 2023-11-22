@@ -14,5 +14,8 @@ const createNewJob = async (company_id, title, description, location) => {
     return db.createNewJob(company_id, title, description, location)
 }
 
+const getAllJobs = async () => {
+    return db.getAllJobs()
+}
 
-module.exports = { findUser, createNewJob };
+module.exports = { findUser, createNewJob, getAllJobs };

@@ -5,6 +5,11 @@ const postJob = async (company_id, title, description, location) => {
     const result = await model.createNewJob(company_id, title, description, location)
 }
 
+const allJobs = async () => {
+    const result = await model.getAllJobs()
+    return result
+}
+
 const handleError = () => {
     // todo later
     let errorMessage = 'Some error happened';
@@ -13,4 +18,4 @@ const handleError = () => {
     return {errorMessage, statusCode}
 }
 
-module.exports = { postJob, handleError }
+module.exports = { postJob, handleError, allJobs }

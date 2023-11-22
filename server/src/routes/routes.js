@@ -32,7 +32,17 @@ router.post('/postJob', async (req, res) => {
 
 });
 
-
+router.get("/allJobs", async (req, res) => {
+    // const client = await dbPool.connect();
+    try {
+        const result = await jobController.allJobs()
+        // console.log(result)
+        res.status(200).send(result)
+    } catch (error) {
+        const {errorMessage, statusCode} = jobController.handleError(error);
+        return res.status(statusCode).json(errorMessage);
+    }
+});
 
 
 module.exports = router;

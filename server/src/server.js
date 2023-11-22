@@ -22,18 +22,6 @@ app.use(express.static('build'));
 app.use(routes);
 
 /* Start of things to be refactored into other files */
-app.get("/allJobs", async (req, res) => {
-    const client = await dbPool.connect();
-    try {
-        const queryResults = await client.query("SELECT * FROM public.jobs");
-        res.json(queryResults.rows);
-    } catch (err) {
-        console.error('Error fetching jobs:', err);
-        res.status(500).send(err);
-    } finally {
-        client.release();
-    }
-});
 
 //Endpoint to verify the Company email at login
 app.post("/verifyEmail", async (req, res) => {

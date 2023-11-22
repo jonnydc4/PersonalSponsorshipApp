@@ -30,6 +30,12 @@ const createNewJob = async (company_id, title, description, location) => {
     await query(queryText, [company_id, title, description, location]);
 }
 
+const getAllJobs = async () => {
+    const queryText = await 'SELECT * FROM jobs';
+    const jobsTable = await query(queryText, [])
+    return jobsTable.rows
+}
+
 process.on('exit', () => {
     console.log("Closing db pool");
     pool.end();
@@ -39,5 +45,6 @@ module.exports = {
     query,
     findUserByEmail,
     updateUserPassword,
-    createNewJob
+    createNewJob,
+    getAllJobs
 };
