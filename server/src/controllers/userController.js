@@ -30,7 +30,7 @@ const checkPasswordLength = (password) => {
 
 // Verify that an email is found in the user table in db. On success returns that user's info.
 const verifyUserExists = async (email) => {
-    const user = await model.findUser(email);
+    const user = await model.findUserByEmail(email);
 
     if (!user) {
         throw new Error('User does not exist.');
