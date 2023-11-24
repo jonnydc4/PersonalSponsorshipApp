@@ -4,7 +4,7 @@
     "id": "zbfmw7gzyrx9t"
   },
   "info": {
-    "title": "capstone",
+    "title": "Personal Sponsorship App",
     "version": "1.0"
   },
   "host": "localhost:3000",
@@ -18,83 +18,31 @@
     "application/json"
   ],
   "paths": {
-    "/users/{userId}": {
-      "parameters": [
-        {
-          "type": "integer",
-          "name": "userId",
-          "in": "path",
-          "required": true,
-          "description": "Id of an existing user."
-        }
-      ],
+    "/postJob": {
       "get": {
-        "summary": "Get User Info by User ID",
+        "summary": "List job",
         "tags": [],
         "responses": {
           "200": {
-            "description": "User Found",
+            "description": "OK",
             "schema": {
-              "$ref": "#/definitions/User"
+              "type": "string"
             },
-            "examples": {
-              "Get User Alice Smith": {
-                "id": 142,
-                "firstName": "Alice",
-                "lastName": "Smith",
-                "email": "alice.smith@gmail.com",
-                "dateOfBirth": "1997-10-31",
-                "emailVerified": true,
-                "signUpDate": "2019-08-24"
-              }
-            }
+            "examples": [
+              "Data added successfully"
+            ]
           },
-          "404": {
-            "description": "User Not Found",
+          "500": {
+            "description": "Internal Server Error",
             "schema": {
-              "type": "null"
+              "type": "string"
             },
-            "examples": {}
+            "examples": [
+              "Error posting job"
+            ]
           }
         },
-        "operationId": "get-users-userId",
-        "description": "Retrieve the information of the user with the matching user ID."
-      },
-      "patch": {
-        "summary": "Update User Information",
-        "operationId": "patch-users-userId",
-        "responses": {
-          "200": {
-            "description": "User Updated",
-            "schema": {
-              "$ref": "#/definitions/User"
-            },
-            "examples": {
-              "Update User Rebecca Baker": {
-                "id": 13,
-                "firstName": "Rebecca",
-                "lastName": "Baker",
-                "email": "rebecca@gmail.com",
-                "dateOfBirth": "1985-10-02",
-                "emailVerified": false,
-                "createDate": "2019-08-24"
-              }
-            }
-          },
-          "404": {
-            "description": "User Not Found",
-            "schema": {
-              "type": "null"
-            }
-          },
-          "409": {
-            "description": "Email Already Taken",
-            "schema": {
-              "type": "null"
-            }
-          }
-        },
-        "description": "Update the information of an existing user.",
+        "operationId": "post-postJob",
         "parameters": [
           {
             "in": "body",
@@ -102,63 +50,53 @@
             "schema": {
               "type": "object",
               "properties": {
-                "firstName": {
-                  "type": "string"
-                },
-                "lastName": {
-                  "type": "string"
-                },
-                "email": {
+                "title": {
                   "type": "string",
-                  "description": "If a new email is given, the user's email verified property will be set to false."
+                  "x-stoplight": {
+                    "id": "p1g3xs9jpcabp"
+                  }
                 },
-                "dateOfBirth": {
-                  "type": "string"
+                "description": {
+                  "type": "string",
+                  "x-stoplight": {
+                    "id": "vzbhtt7smohu8"
+                  }
+                },
+                "location": {
+                  "type": "string",
+                  "x-stoplight": {
+                    "id": "rmm4mh2zf3ric"
+                  }
                 }
-              }
-            },
-            "description": "Patch user properties to update.",
-            "x-examples": {
-              "Update First Name": {
-                "firstName": "Rebecca"
-              },
-              "Update Email": {
-                "email": "rebecca@gmail.com"
-              },
-              "Update Last Name & Date of Birth": {
-                "lastName": "Baker",
-                "dateOfBirth": "1985-10-02"
               }
             }
           }
         ]
-      }
-    },
-    "/user": {
+      },
       "post": {
-        "summary": "Create User",
-        "operationId": "post-user",
+        "summary": "Create a job",
+        "tags": [],
         "responses": {
           "200": {
-            "description": "User Created",
+            "description": "OK",
             "schema": {
-              "$ref": "#/definitions/User"
-            }
+              "type": "string"
+            },
+            "examples": [
+              "Data added successfully"
+            ]
           },
-          "400": {
-            "description": "Missing Required Information",
+          "500": {
+            "description": "Internal Server Error",
             "schema": {
-              "type": "null"
-            }
-          },
-          "409": {
-            "description": "Email Already Taken",
-            "schema": {
-              "type": "null"
-            }
+              "type": "string"
+            },
+            "examples": [
+              "Error posting job"
+            ]
           }
         },
-        "description": "Create a new user.",
+        "operationId": "post-postJob",
         "parameters": [
           {
             "in": "body",
@@ -166,34 +104,24 @@
             "schema": {
               "type": "object",
               "properties": {
-                "firstName": {
-                  "type": "string"
-                },
-                "lastName": {
-                  "type": "string"
-                },
-                "email": {
-                  "type": "string"
-                },
-                "dateOfBirth": {
+                "title": {
                   "type": "string",
-                  "format": "date"
+                  "x-stoplight": {
+                    "id": "p1g3xs9jpcabp"
+                  }
+                },
+                "description": {
+                  "type": "string",
+                  "x-stoplight": {
+                    "id": "vzbhtt7smohu8"
+                  }
+                },
+                "location": {
+                  "type": "string",
+                  "x-stoplight": {
+                    "id": "rmm4mh2zf3ric"
+                  }
                 }
-              },
-              "required": [
-                "firstName",
-                "lastName",
-                "email",
-                "dateOfBirth"
-              ]
-            },
-            "description": "Post the necessary fields for the API to create a new user.",
-            "x-examples": {
-              "Create User Bob Fellow": {
-                "firstName": "Bob",
-                "lastName": "Fellow",
-                "email": "bob.fellow@gmail.com",
-                "dateOfBirth": "1996-08-24"
               }
             }
           }
@@ -201,48 +129,7 @@
       }
     }
   },
-  "definitions": {
-    "User": {
-      "title": "User",
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "integer",
-          "description": "Unique identifier for the given user."
-        },
-        "firstName": {
-          "type": "string"
-        },
-        "lastName": {
-          "type": "string"
-        },
-        "email": {
-          "type": "string",
-          "format": "email"
-        },
-        "dateOfBirth": {
-          "type": "string",
-          "format": "date",
-          "example": "1997-10-31"
-        },
-        "emailVerified": {
-          "type": "boolean",
-          "description": "Set to true if the user's email has been verified."
-        },
-        "createDate": {
-          "type": "string",
-          "format": "date",
-          "description": "The date that the user was created."
-        }
-      },
-      "required": [
-        "id",
-        "firstName",
-        "lastName",
-        "email",
-        "emailVerified"
-      ]
-    }
-  },
-  "securityDefinitions": {}
+  "definitions": {},
+  "securityDefinitions": {},
+  "basePath": "/api"
 }

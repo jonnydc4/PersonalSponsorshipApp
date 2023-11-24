@@ -4,24 +4,24 @@ const db = require('../database/database');
 
 /* ------------------------Create------------------------ */
 const createNewJob = async (company_id, title, description, location) => {
-    return db.createNewJob(company_id, title, description, location)
+    return await db.createNewJob(company_id, title, description, location)
 }
 
 const createNewNotification = async (company_id, influencer_id, job_id, message) => {
-    return db.createNewNotification(company_id, influencer_id, job_id, message)
+    return await db.createNewNotification(company_id, influencer_id, job_id, message)
 }
 
 /* ------------------------Read------------------------ */
 const findUserByEmail = async (email) => {
-    return db.findUserByEmail(email);
+    return await db.findUserByEmail(email);
 };
 
 const getAllJobs = async () => {
-    return db.getJobTable()
+    return await db.getJobTable()
 }
 
 const getAllCompanies = async () => {
-    return db.getCompanyTable()
+    return await db.getCompanyTable()
 }
 
 const getAllInfluencers = async () => {
@@ -30,13 +30,13 @@ const getAllInfluencers = async () => {
 }
 
 const getJobsByCompanyId = async (companyId) => {
-    const companyJobs = db.getJobsByCompany(companyId)
+    const companyJobs = await db.getJobsByCompany(companyId)
     return companyJobs.rows
 }
 
 /* ------------------------Update------------------------ */
 const resetUserPassword = async (email, newPassword) => {
-    return db.updateUserPassword(email, newPassword);
+    return await db.updateUserPassword(email, newPassword);
 }
 
 /* ------------------------Delete------------------------ */
