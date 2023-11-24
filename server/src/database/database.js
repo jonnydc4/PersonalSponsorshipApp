@@ -9,7 +9,17 @@ const pool = new Pool({
 });
 
 // A function to query the database and return results
-const query = (text, params) => pool.query(text, params);
+const query = async (text, params) => {
+    const client = await pool.connect();
+    try {
+        return await client.query(text, params);
+    } catch (error) {
+        console.error('Database query error', error);
+        throw error; // rethrow the error for further handling
+    } finally {
+        client.release(); // Ensure the client is released back to the pool
+    }
+};
 
 /* ------------------------User Table Queries------------------------ */
 const findUserByEmail = async (email) => {
