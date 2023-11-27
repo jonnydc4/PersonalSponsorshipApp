@@ -11,8 +11,8 @@ const postJob = async (company_id, title, description, location) => {
 }
 
 const allJobs = async () => {
-    const result = await model.getAllJobs()
-    return result
+    const allJobs = await model.getAllJobs()
+    return allJobs
 }
 
 const allCompanyJobs = async (companyId) => {
