@@ -1,5 +1,8 @@
 .idea
 
+# node files to ignore
+node_modules
+
 # Server files to ignore
 server/node_modules
 server/package-lock.json
