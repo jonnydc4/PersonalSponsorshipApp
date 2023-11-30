@@ -22,6 +22,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build && xcopy /Y build\\* ..\\server\\build /E",
+    "build-linux": "react-scripts build && cp -R build//* ..//server//build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "watch": "npm-watch"
