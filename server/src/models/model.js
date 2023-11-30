@@ -30,7 +30,7 @@ const getAllInfluencers = async () => {
 }
 
 const getJobsByCompanyId = async (companyId) => {
-    const companyJobs = await db.getJobsByCompany(companyId)
+    const companyJobs = await db.getJobsByCompanyId(companyId)
     return companyJobs.rows
 }
 
