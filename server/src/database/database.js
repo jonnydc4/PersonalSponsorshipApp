@@ -50,7 +50,7 @@ const getJobTable = async () => {
 }
 
 const getJobsByCompanyId = async (companyId) => {
-    const queryText = 'SELECT * FROM jobs WHERE company_id = $1'
+    const queryText = 'SELECT * FROM jobs WHERE id = $1'
     return await query(queryText, [companyId]);
 }
 
@@ -66,6 +66,10 @@ const getCompanyTable = async () => {
     const companiesTable = await query(queryText, [])
     return companiesTable.rows
 }
+const getCompanyById = async (companyId) => {
+    const queryText = 'SELECT * FROM companies WHERE id = $1'
+    return await query(queryText, [companyId]);
+}
 
 /* ------------------------Influencer Table Queries------------------------ */
 const getInfluencerTable = async () => {
@@ -73,6 +77,10 @@ const getInfluencerTable = async () => {
     return await query(queryText, [])
 }
 
+const getInfluencerById = async (influencerId) => {
+    const queryText = 'SELECT * FROM companies WHERE id = $1'
+    return await query(queryText, [influencerId]);
+}
 /* ------------------------Notification Table Queries------------------------ */
 const getNotificationTable = async () => {
     const queryText = 'SELECT * FROM notifications';
