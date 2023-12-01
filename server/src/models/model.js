@@ -34,6 +34,16 @@ const getJobsByCompanyId = async (companyId) => {
     return companyJobs.rows
 }
 
+const getCompanyById = async (companyId) => {
+    const company = await db.getCompanyById(companyId)
+    return company
+}
+
+const getInfluencerById = async (influencerId) => {
+    const influencer = await db.getInfluencerById(influencerId)
+    return influencer
+}
+
 /* ------------------------Update------------------------ */
 const resetUserPassword = async (email, newPassword) => {
     return await db.updateUserPassword(email, newPassword);
