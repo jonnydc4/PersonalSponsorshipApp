@@ -12,14 +12,15 @@ const isNotANumber = (string) => {
 }
 
 const encryptPassword = async (password) => {
-    // Encrypts password before saving to database.  
-    const saltRounds = 10; // You can adjust the number of rounds
+    // Encrypts password before saving to database (function returns a encrypted password) 
+    const saltRounds = 10; 
     const encryptedPassword = await bcrypt.hash(password, saltRounds);
     return encryptedPassword;
 };
 
 const comparePassword = async (password, hashedPassword) => {
-    // Used to compare password when user logs in, to the hashed password that is stored in the database.
+    // Used to pass in the password and the hashed password to compare them. 
+    // Returns true if they match, false if not.
     return await bcrypt.compare(password, hashedPassword);
 };
 
