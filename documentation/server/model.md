@@ -154,6 +154,45 @@ const jobs = await getJobsByCompanyId(123);
 ```
 
 
+### Function Name: `getCompanyById`
+
+#### Description
+The `getCompanyById` function is an asynchronous operation used to retrieve The specific company based on the id that's passed in.
+
+#### Parameters
+- `companyId` (`Number`): The unique identifier of the company
+
+#### Returns
+- `Object`: Returns an object representing the data for the company, This is pulled from the 'companies' table based on the id.
+
+#### Raises
+- The function relies on the `query` function to interact with the database and may throw errors if there are issues with the database connection or query execution. Common errors could include problems with the SQL query or difficulties in connecting to the database.
+
+#### Examples
+Retrieving company object from the `companies` table:
+```javascript
+const companiesData = await getCompanyById(companyId);
+```
+
+### Function Name: `getInfluencerById`
+
+#### Parameters
+- `influencerId` (`Number`): The unique identifier of the Influencer.
+
+#### Description
+The `getInfluencerById` function is an asynchronous operation used to retrieve The specific Influencer based on the id that's passed in.
+
+#### Returns
+- `Object`: Returns an object representing the data for the Influencer, This is pulled from the `influencers` table based on the id.
+
+#### Raises
+- The function relies on the `query` function to interact with the database and may throw errors if there are issues with the database connection or query execution. Common errors could include problems with the SQL query or difficulties in connecting to the database.
+
+#### Examples
+Retrieving company object from the `influencers` table:
+```javascript
+const influencer = await getInfluencerById(1);
+```
 
 ### Function Name: `resetUserPassword`
 
