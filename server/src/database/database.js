@@ -33,6 +33,11 @@ const updateUserPassword = async (email, newPassword) => {
     await query(queryText, [newPassword, email]);
 };
 
+const createNewUser = async (id, email, password, accountType) => {
+    const queryText = 'INSERT INTO users (id, email, password, account_type) VALUES ($1, $2, $3, $4) RETURNING id, email, account_type;';
+        const result = await query(queryText, [id, email, password, accountType]);
+        return result.rows[0];
+};
 
 /* ------------------------Job Table Queries------------------------ */
 const createNewJob = async (company_id, title, description, location) => {
@@ -67,11 +72,23 @@ const getCompanyTable = async () => {
     return companiesTable.rows
 }
 
+const createNewCompany = async (id, companyName, email, address) => {
+    const queryText = 'INSERT INTO companies (id, name, email, address) VALUES ($1, $2, $3, $4) RETURNING id, name, email, address;';
+    const result = await query(queryText, [id, companyName, email, address]);
+    return result.rows[0];
+};
+
 /* ------------------------Influencer Table Queries------------------------ */
 const getInfluencerTable = async () => {
     const queryText = 'SELECT * FROM influencers';
     return await query(queryText, [])
 }
+
+const createNewInfluencer = async (id, name, email) => {
+    const queryText = 'INSERT INTO influencers (id, name, email) VALUES ($1, $2, $3) RETURNING id, name, email;';
+    const result = await query(queryText, [id, name, email]);
+    return result.rows[0];
+};
 
 /* ------------------------Notification Table Queries------------------------ */
 const getNotificationTable = async () => {
@@ -103,5 +120,8 @@ module.exports = {
     getInfluencerTable,
     getJobsByCompanyId,
     getNotificationTable,
-    createNewNotification
+    createNewNotification,
+    createNewUser,
+    createNewInfluencer,
+    createNewCompany
 };

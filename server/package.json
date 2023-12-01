@@ -17,7 +17,8 @@
     "install": "^0.13.0",
     "npm": "^10.2.1",
     "pg": "^8.11.3",
-    "react-router-dom": "^6.17.0"
+    "react-router-dom": "^6.17.0",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "nodemon": "^3.0.1"
