@@ -2,6 +2,8 @@
 
 ## Functions:
 
+---
+
 ### Function Name: `createNewJob`
 
 #### Description
@@ -24,7 +26,7 @@ The `createNewJob` function is an asynchronous operation that adds a new job pos
 const newJob = await createNewJob(101, 'Front-End Developer', 'Developing user-facing features for web applications', 'San Francisco, CA');
 ```
 
-
+---
 
 ### Function Name: `createNewNotification`
 
@@ -48,7 +50,72 @@ The `createNewNotification` function is an asynchronous operation that facilitat
 const notification = await createNewNotification(200, 15, 5, 'New application received for your job posting');
 ```
 
+---
 
+### Function Name: `createNewUser`
+
+#### Description
+The `createNewUser` function is an asynchronous operation that facilitates the creation of a new user record in the database. It delegates to the `db.createNewUser` method, passing parameters such as a unique identifier (`id`), email, password, and account type. This function is instrumental in user registration processes, where it is necessary to store new user information securely in the database.
+
+#### Parameters
+- `id` (`uuid`): A unique identifier for the new user.
+- `email` (`String`): The email address of the new user.
+- `password` (`String`): The password for the new user. In a production environment, this would usually be a hashed password.
+- `accountType` (`String`): The type of account being created (e.g., 'influencer', 'company').
+
+#### Returns
+- The function returns the result of the `db.createNewUser` operation, which is typically an object containing details of the newly created user record, such as a confirmation message, user ID, or other relevant information.
+
+#### Examples
+```javascript
+const newUser = await createNewUser('123e4567-e89b-12d3-a456-426614174000', 'user@example.com', 'securePassword', 'influencer');
+// Creates a new user with the given details and returns the user information
+```
+
+---
+
+### Function Name: `createNewInfluencer`
+
+#### Description
+The `createNewInfluencer` function is an asynchronous operation designed to add a new influencer record to the database. It calls the `db.createNewInfluencer` method, passing along the influencer's unique identifier, name, and email. This function plays a key role in influencer management systems, allowing for the registration and tracking of influencers in various marketing or social media campaigns.
+
+#### Parameters
+- `id` (`uuid`): The unique identifier for the influencer.
+- `name` (`String`): The name of the influencer.
+- `email` (`String`): The email address associated with the influencer.
+
+#### Returns
+- The function returns the outcome of the `db.createNewInfluencer` method, typically an object containing details about the newly added influencer, such as their ID, name, or confirmation of the operation.
+
+#### Examples
+```javascript
+const newInfluencer = await createNewInfluencer('123e4567-e89b-12d3-a456-426614174000', 'Jane Doe', 'jane.doe@example.com');
+// Adds a new influencer to the database and returns the influencer's information
+```
+
+---
+
+### Function Name: `createNewCompany`
+
+#### Description
+The `createNewCompany` function is an asynchronous operation that facilitates the addition of a new company record into the database. It invokes the `db.createNewCompany` method, providing essential details such as the company's unique identifier, name, email, and address. This function is integral to systems managing company profiles, enabling the registration and maintenance of company-related information in a structured database.
+
+#### Parameters
+- `id` (`uuid`): A unique identifier for the company.
+- `companyName` (`String`): The name of the company.
+- `email` (`String`): The email address associated with the company.
+- `address` (`String`): The physical address of the company.
+
+#### Returns
+- The function returns the result of the `db.createNewCompany` operation, which usually includes details of the newly created company record, such as a confirmation message or the company's ID.
+
+#### Examples
+```javascript
+const newCompany = await createNewCompany('123e4567-e89b-12d3-a456-426614174000', 'Acme Corp', 'contact@acmecorp.com', '123 Business St.');
+// Creates a new company record in the database and returns the company's details
+```
+
+---
 
 ### Function Name: `findUserByEmail`
 
@@ -69,7 +136,7 @@ The `findUserByEmail` function is an asynchronous operation designed to retrieve
 const user = await findUserByEmail('example@email.com');
 ```
 
-
+---
 
 ### Function Name: `getAllJobs`
 
@@ -90,7 +157,7 @@ The `getAllJobs` function is an asynchronous operation that retrieves all job re
 const jobs = await getAllJobs();
 ```
 
-
+---
 
 ### Function Name: `getAllCompanies`
 
@@ -111,7 +178,7 @@ The `getAllCompanies` function is an asynchronous operation designed to retrieve
 const companies = await getAllCompanies();
 ```
 
-
+---
 
 ### Function Name: `getAllInfluencers`
 
@@ -132,7 +199,7 @@ The `getAllInfluencers` function is an asynchronous operation aimed at fetching 
 const influencers = await getAllInfluencers();
 ```
 
-
+---
 
 ### Function Name: `getJobsByCompanyId`
 
@@ -153,6 +220,7 @@ The `getJobsByCompanyId` function is an asynchronous operation designed to retri
 const jobs = await getJobsByCompanyId(123);
 ```
 
+---
 
 ### Function Name: `getCompanyById`
 
@@ -174,6 +242,8 @@ Retrieving company object from the `companies` table:
 const companiesData = await getCompanyById(companyId);
 ```
 
+---
+
 ### Function Name: `getInfluencerById`
 
 #### Parameters
@@ -194,6 +264,8 @@ Retrieving company object from the `influencers` table:
 const influencer = await getInfluencerById(1);
 ```
 
+---
+
 ### Function Name: `resetUserPassword`
 
 #### Description
@@ -213,3 +285,5 @@ The `resetUserPassword` function is an asynchronous operation that updates a use
 ```javascript
 const resetResult = await resetUserPassword('user@example.com', 'newSecurePassword123');
 ```
+
+---

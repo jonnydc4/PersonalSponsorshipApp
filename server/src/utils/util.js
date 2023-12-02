@@ -1,5 +1,6 @@
 // Functions here should be 100% reusable
 const model = require('../models/model');
+const {v4 : uuidv4} = require('uuid')
 
 const isUserEmail = async (email) => {
     const user = await model.findUserByEmail(email)
@@ -24,9 +25,14 @@ const comparePassword = async (password, hashedPassword) => {
     return await bcrypt.compare(password, hashedPassword);
 };
 
+const generateUniqueId = () => {
+    return uuidv4()
+}
+
 module.exports = {
     isUserEmail,
     isNotANumber,
     encryptPassword,
-    comparePassword
+    comparePassword,
+    generateUniqueId
 }

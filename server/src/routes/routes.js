@@ -92,4 +92,17 @@ router.post("/api/sendOffer", async (req, res) => {
     }
 });
 
+// Endpoint to handle user registration
+router.post('/api/register', async (req, res) => {
+    try {
+        const accountInfo = req.body;
+        const user = await userController.performRegister(accountInfo);
+        res.status(201).send({message: "User created successfully", id: user.id, accountType: user.account_type });
+    } catch (error) {
+        console.log(error);
+        const { errorMessage, statusCode } = userController.handleAccountSignupError(error);
+        return res.status(statusCode).json(errorMessage);
+    }
+});
+
 module.exports = router;

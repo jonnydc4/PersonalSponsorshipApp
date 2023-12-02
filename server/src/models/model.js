@@ -11,6 +11,18 @@ const createNewNotification = async (company_id, influencer_id, job_id, message)
     return await db.createNewNotification(company_id, influencer_id, job_id, message)
 }
 
+const createNewUser = async (id, email, password, accountType) => {
+    return db.createNewUser(id, email, password, accountType);
+}
+
+const createNewInfluencer = async (id, name, email) => {
+    return db.createNewInfluencer(id, name, email);
+}
+
+const createNewCompany = async (id, companyName, email, address) => {
+    return db.createNewCompany(id, companyName, email, address);
+}
+
 /* ------------------------Read------------------------ */
 const findUserByEmail = async (email) => {
     return await db.findUserByEmail(email);
@@ -70,5 +82,8 @@ module.exports = {
     getAllCompanies,
     getAllInfluencers,
     getJobsByCompanyId,
-    createNewNotification
+    createNewNotification,
+    createNewUser,
+    createNewInfluencer,
+    createNewCompany
 }
