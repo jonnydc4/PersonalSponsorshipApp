@@ -2,17 +2,63 @@
 
 const db = require('../database/database');
 
-const findUser = async (email) => {
-    return db.findUserByEmail(email);
+/* ------------------------Create------------------------ */
+const createNewJob = async (company_id, title, description, location) => {
+    return await db.createNewJob(company_id, title, description, location)
+}
+
+const createNewNotification = async (company_id, influencer_id, job_id, message) => {
+    return await db.createNewNotification(company_id, influencer_id, job_id, message)
+}
+
+/* ------------------------Read------------------------ */
+const findUserByEmail = async (email) => {
+    return await db.findUserByEmail(email);
 };
 
+const getAllJobs = async () => {
+    return await db.getJobTable()
+}
+
+const getAllCompanies = async () => {
+    return await db.getCompanyTable()
+}
+
+const getAllInfluencers = async () => {
+    const influencers = await db.getInfluencerTable()
+    return influencers.rows
+}
+
+const getJobsByCompanyId = async (companyId) => {
+    const companyJobs = await db.getJobsByCompanyId(companyId)
+    return companyJobs.rows
+}
+
+/* ------------------------Update------------------------ */
 const resetUserPassword = async (email, newPassword) => {
-    return db.updateUserPassword(email, newPassword);
+    return await db.updateUserPassword(email, newPassword);
 }
 
-const createNewJob = async (company_id, title, description, location) => {
-    return db.createNewJob(company_id, title, description, location)
+/* ------------------------Delete------------------------ */
+
+
+
+
+
+
+
+
+
+
+
+
+
+module.exports = {
+    findUserByEmail,
+    createNewJob,
+    getAllJobs,
+    getAllCompanies,
+    getAllInfluencers,
+    getJobsByCompanyId,
+    createNewNotification
 }
-
-
-module.exports = { findUser, createNewJob };

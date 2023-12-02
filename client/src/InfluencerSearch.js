@@ -14,7 +14,7 @@ const InfluencerSearch = () => {
     useEffect(() => {
         const fetchInfluencers = async () => {
             try {
-                const response = await fetch('/influencers');
+                const response = await fetch('/api/influencers');
                 const data = await response.json();
                 setInfluencers(data);
                 setFilteredInfluencers(data); // Initialize filtered list
@@ -41,7 +41,7 @@ const InfluencerSearch = () => {
 
     const handleSendOffer = async () => {
         if (selectedInfluencer) {
-            const response = await fetch('/sendOffer', {
+            const response = await fetch('/api/sendOffer', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

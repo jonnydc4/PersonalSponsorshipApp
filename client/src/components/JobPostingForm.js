@@ -17,7 +17,7 @@ const JobPostingForm = () => {
             // Prepare data to be sent
             const formData = { title, description, location };
             // Send a POST request with the form data
-            const response = await fetch('/postJob', {
+            const response = await fetch('/api/postJob', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
