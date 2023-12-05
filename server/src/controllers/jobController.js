@@ -34,4 +34,11 @@ const handleAllCompanyJobsErrors = (errorMessage) => {
     return {errorMessage, statusCode}
 }
 
+// Add an update function in jobController.js
+const updateJob = async (jobId, jobData) => {
+    // Logic to update the job in the database
+    // This depends on your ORM/Database
+};
+
+
 module.exports = { postJob, allJobs, allCompanyJobs, handleAllCompanyJobsErrors }

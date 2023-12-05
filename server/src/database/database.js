@@ -60,6 +60,17 @@ const getJobMapTable = async () => {
     return await query(queryText, [])
 }
 
+/**
+ * Updates a job in the database with the given data.
+ * @param {number} jobId - The ID of the job to be updated.
+ * @param {Object} jobData - The data to update in the job (e.g., title, description, location).
+ */
+const updateJob = async (jobId, jobData) => {
+    const { title, description, location } = jobData;
+    const queryText = 'UPDATE jobs SET title = $1, description = $2, location = $3 WHERE id = $4';
+    await query(queryText, [title, description, location, jobId]);
+};
+
 /* ------------------------Company Table Queries------------------------ */
 const getCompanyTable = async () => {
     const queryText = 'SELECT * FROM companies';
@@ -103,5 +114,6 @@ module.exports = {
     getInfluencerTable,
     getJobsByCompanyId,
     getNotificationTable,
-    createNewNotification
+    createNewNotification,
+    updateJob
 };

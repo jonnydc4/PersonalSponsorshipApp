@@ -6,6 +6,7 @@ const jobController = require('../controllers/jobController')
 const companyController = require('../controllers/companyController')
 const influencerController = require('../controllers/influencerController')
 const notificationController = require('../controllers/notificationController')
+const db = require( '../database/database');
 
 const router = express.Router()
 
@@ -89,6 +90,18 @@ router.post("/api/sendOffer", async (req, res) => {
     } catch (error) {
         console.error('Error sending offer:', error);
         res.status(500).send(error);
+    }
+});
+
+router.put('/api/jobs/:jobId', async (req, res) => {
+    try {
+        const jobId = req.params.jobId;
+        const jobData = req.body;
+        await db.updateJob(jobId, jobData);
+        res.status(200).json({ message: 'Job updated successfully' });
+    } catch (error) {
+        console.error('Error updating the job:', error);
+        res.status(500).json({ message: 'Internal server error' });
     }
 });
 
