@@ -21,6 +21,8 @@ import SignUpCompany from "./pages/SignUpCompany";
 const theme = createTheme();
 
 function App() {
+
+
     return (
         // Use the Router component to handle different routes in the app
         <Router>

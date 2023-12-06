@@ -19,6 +19,7 @@ export default function LoginPage({theme}) {
     const navigate = useNavigate();
     const [emailError, setEmailError] = useState('');
     const [passwordError, setPasswordError] = useState('');
+    const [userId, setUserId] = useState('');
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -49,9 +50,19 @@ export default function LoginPage({theme}) {
             if (data.hasOwnProperty('passwordError')) setPasswordError(data.passwordError)
         } else {
             // Handle successful authentication
-            console.log('Success!')
-            console.log(data.accountType)
-            navigate('/dashboard')
+
+            localStorage.setItem("userId", data.userId)
+
+            switch (data.accountType) {
+                case "influencer":
+                    navigate("/job-offers")
+                    break
+                case "company":
+                    navigate("/manage-jobs")
+                    break
+                default:
+                    throw new Error("Invalid account type")
+            }
         }
 
         // } catch (networkError) {

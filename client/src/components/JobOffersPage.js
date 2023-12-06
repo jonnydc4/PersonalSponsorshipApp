@@ -6,6 +6,9 @@ const JobOffersPage = () => {
     const [jobOffers, setJobOffers] = useState([]);
     const [selectedJob, setSelectedJob] = useState(null);
 
+    const userId = localStorage.getItem('userId')
+    console.log(userId)
+
     // Mock function to fetch job offers (replace with actual API call)
     useEffect(() => {
 
@@ -15,7 +18,7 @@ const JobOffersPage = () => {
 
     const fetchJobOffers = async () => {
         try {
-            const response = await fetch('/api/jobOffers/1'); // Update with your actual API endpoint
+            const response = await fetch(`/api/jobOffers/${userId}`); // Update with your actual API endpoint
             const data = await response.json();
             setJobOffers(data);
             const mappedData = data.map(offer => ({

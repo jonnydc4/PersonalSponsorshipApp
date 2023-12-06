@@ -14,7 +14,7 @@ router.post("/api/login", async (req, res) => {
     try {
         const {email, password} = req.body;
         const user = await userController.performLogin(email, password)
-        res.status(200).send({message: "User verified.", accountType: user.account_type})
+        res.status(200).send({message: "User verified.", userId: user.id, accountType: user.account_type})
     } catch (error) {
         const {errorMessage, statusCode} = userController.handleLoginError(error)
         return res.status(statusCode).json(errorMessage);
@@ -72,6 +72,7 @@ router.get("/api/jobs/:companyId", async (req, res) => {
     const {companyId} = req.params;
     try {
         const companyJobs = await jobController.allCompanyJobs(companyId)
+        console.log(companyJobs)
         res.status(200).send(companyJobs)
     } catch (error) {
         const {errorMessage, statusCode} = jobController.handleAllCompanyJobsErrors(error)
