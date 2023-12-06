@@ -34,4 +34,10 @@ const handleAllCompanyJobsErrors = (errorMessage) => {
     return {errorMessage, statusCode}
 }
 
-module.exports = { postJob, allJobs, allCompanyJobs, handleAllCompanyJobsErrors }
+//add job to influencer once accepted
+const acceptJob = async (influencerId, jobId) => {
+    await model.addJobToInfluencer(influencerId, jobId);
+};
+
+
+module.exports = { postJob, allJobs, allCompanyJobs, handleAllCompanyJobsErrors, acceptJob }

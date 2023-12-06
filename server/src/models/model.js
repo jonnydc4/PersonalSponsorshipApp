@@ -34,13 +34,23 @@ const getJobsByCompanyId = async (companyId) => {
     return companyJobs.rows
 }
 
+const getJobOffersForInfluencer = async (influencerId) => {
+    return db.getJobOffersForInfluencer(influencerId);
+};
+
 /* ------------------------Update------------------------ */
 const resetUserPassword = async (email, newPassword) => {
     return await db.updateUserPassword(email, newPassword);
 }
 
-/* ------------------------Delete------------------------ */
+const addJobToInfluencer = async (influencerId, jobId) => {
+    return await db.addJobToInfluencer(influencerId, jobId);
+};
 
+/* ------------------------Delete------------------------ */
+const removeNotification = async (offerId) => {
+    return await db.removeNotification(offerId);
+};
 
 
 
@@ -60,5 +70,8 @@ module.exports = {
     getAllCompanies,
     getAllInfluencers,
     getJobsByCompanyId,
-    createNewNotification
+    createNewNotification,
+    getJobOffersForInfluencer,
+    addJobToInfluencer,
+    removeNotification
 }

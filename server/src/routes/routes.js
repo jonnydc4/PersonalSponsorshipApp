@@ -92,4 +92,42 @@ router.post("/api/sendOffer", async (req, res) => {
     }
 });
 
+//Influencer get jobOffers API
+router.get("/api/jobOffers/:influencerId", async (req, res) => {
+    const { influencerId } = req.params;
+    try {
+        const jobOffers = await notificationController.getJobOffersForInfluencer(influencerId);
+        res.status(200).json(jobOffers);
+    } catch (error) {
+        console.error('Error fetching job offers:', error);
+        res.status(500).send(error);
+    }
+});
+
+//Influencer AcceptJobOffer API
+router.post("/api/acceptJob", async (req, res) => {
+    const { influencerId, jobId } = req.body;
+    try {
+        await jobController.acceptJob(influencerId, jobId);
+        res.status(200).json({ message: 'Job accepted successfully' });
+    } catch (error) {
+        console.error('Error accepting job:', error);
+        res.status(500).send(error);
+    }
+});
+
+ //Influencer RejectJobOffer API
+router.post("/api/rejectJobOffer", async (req, res) => {
+    const { offerId } = req.body; // offerId is the ID of the job offer (notification)
+    try {
+        await notificationController.rejectJobOffer(offerId);
+        res.status(200).json({ message: 'Job offer rejected successfully' });
+    } catch (error) {
+        console.error('Error rejecting job offer:', error);
+        res.status(500).send(error);
+    }
+});
+
+
+
 module.exports = router;
