@@ -32,3 +32,4 @@ const Button = ({ label }) => {
 };
 
 export default Button;
+

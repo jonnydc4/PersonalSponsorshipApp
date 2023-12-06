@@ -3,10 +3,10 @@ import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import Button from './components/Button';
 import Jobs from './components/Jobs';
 import JobPostingForm from './components/JobPostingForm';
-import LoginPage from './components/LoginPage'
-import ForgotPassword from "./components/ForgotPassword";
-import ResetPassword from "./components/ResetPassword";
-import SignUp from "./components/register";
+import LoginPage from './pages/LoginPage'
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
+import SignUpInfluencer from "./pages/SignUpInfluencer";
 import {createTheme} from "@mui/material/styles";
 import ExamplePage from './components/ExamplePage'; // Example Page can be removed!
 import JobOffersPage from "./components/JobOffersPage";
@@ -14,14 +14,15 @@ import JobManagerPage from './pages/job-manager/JobManagerPage';
 import "./reset.css";
 import "./App.css"
 import InfluencerSearch from './InfluencerSearch';
-import { Link } from 'react-router-dom';
+import LandingPage from "./pages/SignUpLanding";
+import SignUpCompany from "./pages/SignUpCompany";
 
 
 const theme = createTheme();
 
 function App() {
     return (
-        // Use the Router component to handle different routes in the appdf
+        // Use the Router component to handle different routes in the app
         <Router>
             <Routes>
                 <Route path="/post-job" element={<JobPostingForm />} />
@@ -44,8 +45,9 @@ function App() {
                 <Route path="/dashboard" element={<h1>Dashboard</h1>}/>
                 <Route path="/forgotpassword" element={<ForgotPassword theme={theme}/>}/>
                 <Route path="/resetpassword" element={<ResetPassword theme={theme}/>}/>
-                <Route path="/register" element={<SignUp theme={theme}/>}/>
-
+                <Route path="/signup-influencer" element={<SignUpInfluencer theme={theme}/>}/>
+                <Route path="/signup-company" element={<SignUpCompany theme={theme}/>}/>
+                <Route path="/signup-landing" element={<LandingPage theme={theme}/>}/>
             </Routes>
         </Router>
     );
