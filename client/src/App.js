@@ -9,6 +9,7 @@ import ResetPassword from "./pages/ResetPassword";
 import SignUpInfluencer from "./pages/SignUpInfluencer";
 import {createTheme} from "@mui/material/styles";
 import ExamplePage from './components/ExamplePage'; // Example Page can be removed!
+import JobOffersPage from "./components/JobOffersPage";
 import JobManagerPage from './pages/job-manager/JobManagerPage';
 import "./reset.css";
 import "./App.css"
@@ -20,6 +21,8 @@ import SignUpCompany from "./pages/SignUpCompany";
 const theme = createTheme();
 
 function App() {
+
+
     return (
         // Use the Router component to handle different routes in the app
         <Router>
@@ -28,9 +31,12 @@ function App() {
                 <Route path="/jobs" element={<Jobs />} />
                 <Route path="/example" element={<ExamplePage />} /> // Example Page can be removed!
                 <Route path="/influencer-search" element={<InfluencerSearch />} /> //remove later
+                <Route path="/job-offers" element={<JobOffersPage />} />
                 <Route path="/" element={<div><Button label="Log in"/><br/><Button label="ExamplePage"/>
                     <br/><Button label ="InfluencerSearch"/>
                     <br/><Button label = "JobManagerPage"/>
+                    <br/><Button label = "JobOffersPage"/>
+                    <br/>
                 </div>}/>
                 <Route path="/manage-jobs" element={<JobManagerPage />} />
 

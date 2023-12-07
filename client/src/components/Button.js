@@ -19,6 +19,9 @@ const Button = ({ label }) => {
         if (label === "JobManagerPage") { // Will remove later once we connect components
             navigate('/manage-jobs')
         }
+        if (label === "JobOffersPage") {
+            navigate('/job-offers')
+        }
     };
 
     return (
@@ -29,3 +32,4 @@ const Button = ({ label }) => {
 };
 
 export default Button;
+

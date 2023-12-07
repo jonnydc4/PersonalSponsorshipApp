@@ -10,12 +10,14 @@ const JobPostingForm = () => {
     const [description, setDescription] = useState('');
     const [location, setLocation] = useState('');
 
+    const userId = localStorage.getItem('userId')
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         // Will write this later where we send data to the server
         try {
             // Prepare data to be sent
-            const formData = { title, description, location };
+            const formData = { title, description, location, companyId: userId };
             // Send a POST request with the form data
             const response = await fetch('/api/postJob', {
                 method: 'POST',

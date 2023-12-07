@@ -3,7 +3,7 @@ const util = require('../utils/util')
 
 const validateCompanyId = (companyId) => {
     if (!companyId) throw new Error('Missing company id for input')
-    if (util.isNotANumber(companyId)) throw new Error('Company id must be a number')
+    // todo check if exists in database
 }
 const postJob = async (company_id, title, description, location) => {
     // todo throw errors if the process fails
@@ -34,4 +34,10 @@ const handleAllCompanyJobsErrors = (errorMessage) => {
     return {errorMessage, statusCode}
 }
 
-module.exports = { postJob, allJobs, allCompanyJobs, handleAllCompanyJobsErrors }
+//add job to influencer once accepted
+const acceptJob = async (influencerId, jobId) => {
+    await model.addJobToInfluencer(influencerId, jobId);
+};
+
+
+module.exports = { postJob, allJobs, allCompanyJobs, handleAllCompanyJobsErrors, acceptJob }

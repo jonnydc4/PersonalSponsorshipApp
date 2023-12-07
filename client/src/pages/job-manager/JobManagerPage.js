@@ -5,7 +5,7 @@ import PageContainer from '../../components/PageContainer';
 import InfluencerSearchButton from '../../components/InfluencerSearchButton';
 import JobPostingForm from '../../components/JobPostingForm';
 
-const COMPANY_ID = 1
+const COMPANY_ID = localStorage.getItem('userId')
 
 function JobManagerPage() {
   const [jobs, setJobs] = useState([])
@@ -14,8 +14,10 @@ function JobManagerPage() {
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/api/jobs/${COMPANY_ID}`);
+        const response = await fetch(`/api/jobs/${COMPANY_ID}`);
+        console.log("Data:")
         const data = await response.json();
+        console.log(data)
         setJobs(data);
       } catch (e) {
         console.error("Fetching jobs failed: ", e);

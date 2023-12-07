@@ -10,11 +10,12 @@ const InfluencerSearch = () => {
     const [selectedInfluencerId, setSelectedInfluencerId] = useState(null);
     const [offerMessage, setOfferMessage] = useState('');
 
+    const companyId = localStorage.getItem('userId');
 
     useEffect(() => {
         const fetchInfluencers = async () => {
             try {
-                const response = await fetch('/api/influencers');
+                const response = await fetch('/api/influencers/');
                 const data = await response.json();
                 setInfluencers(data);
                 setFilteredInfluencers(data); // Initialize filtered list
@@ -50,6 +51,7 @@ const InfluencerSearch = () => {
                     influencer_id: selectedInfluencer.id,
                     job_id: jobId, // This should be the ID of the job that we will pass in later
                     message: offerMessage,
+                    company_id: companyId,
                 }),
             });
 
