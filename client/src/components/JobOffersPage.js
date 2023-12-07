@@ -52,12 +52,13 @@ const JobOffersPage = () => {
             alert('Please select a job to accept.');
             return;
         }
-        console.log("Accepting job: ", selectedJob);
+
+        console.log(userId)
         try {
             const response = await fetch('/api/acceptJob', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ influencerId: 1, jobId: selectedJob.job_id }) // Replace 1 with actual influencerId
+                body: JSON.stringify({ influencerId: userId, jobId: selectedJob.job_id }) // Replace 1 with actual influencerId
             });
             const data = await response.json();
             if (data.message === 'Job accepted successfully') {

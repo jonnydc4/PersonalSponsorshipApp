@@ -6,6 +6,7 @@ const jobController = require('../controllers/jobController')
 const companyController = require('../controllers/companyController')
 const influencerController = require('../controllers/influencerController')
 const notificationController = require('../controllers/notificationController')
+const {locals} = require("express/lib/application");
 
 const router = express.Router()
 
@@ -24,9 +25,9 @@ router.post("/api/login", async (req, res) => {
 // post a job to the database
 router.post('/api/postJob', async (req, res) => {
     try {
-        const id = 1 // todo need to update this magic number to something real
-        const {title, description, location} = req.body;
-        await jobController.postJob(id, title, description, location)
+        // todo need to update this magic number to something real
+        const {title, description, location, companyId} = req.body;
+        await jobController.postJob(companyId, title, description, location)
         res.status(200).send({message: 'Data added successfully'})
     } catch (error) {
         console.error('Error posting job:', error);
@@ -80,12 +81,11 @@ router.get("/api/jobs/:companyId", async (req, res) => {
     }
 });
 
+//Test that the company id is working JONAH
 router.post("/api/sendOffer", async (req, res) => {
-    const { influencer_id, job_id, message } = req.body;
-    const company_id = 1; // hardcoded for now as per your instruction
-
+    const { influencer_id, job_id, message, company_id } = req.body;
     try {
-        notificationController.createNotification(company_id, influencer_id, job_id, message)
+        await notificationController.createNotification(company_id, influencer_id, job_id, message)
         res.json({ status: 'success', message: 'Offer sent successfully' });
     } catch (error) {
         console.error('Error sending offer:', error);
