@@ -1,5 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
 
 const InfluencerSearchButton = ({ jobId }) => {
   const navigate = useNavigate();
@@ -14,9 +17,14 @@ const InfluencerSearchButton = ({ jobId }) => {
   };
 
   return (
-    <button onClick={handleSearchClick}>
+    <Button
+      onClick={handleSearchClick}
+      variant="contained"
+      color="primary"
+      disableElevation
+    >
       Influencer Search
-    </button>
+    </Button>
   );
 };
 
