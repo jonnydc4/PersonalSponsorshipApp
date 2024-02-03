@@ -11,8 +11,8 @@ RUN mkdir /usr/src/app
 WORKDIR /usr/src/app
 
 # Install app dependencies
-COPY server/package.json ./
-COPY server/package-lock.json ./
+COPY package.json ./
+COPY package-lock.json ./
 RUN npm install
 
 # Change ownership to 'node' user and switch to it
