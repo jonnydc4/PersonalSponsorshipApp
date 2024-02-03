@@ -21,6 +21,7 @@ const InfluencerSearchButton = ({ jobId }) => {
       onClick={handleSearchClick}
       variant="contained"
       color="primary"
+      sx={{ width: '80%', mt: 2 }}
       disableElevation
     >
       Influencer Search
