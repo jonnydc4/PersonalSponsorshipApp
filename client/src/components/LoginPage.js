@@ -1,59 +1,69 @@
-import * as React from 'react';
-import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox, Link, Paper, Box, Grid, Typography, ThemeProvider } from '@mui/material';
+import React, {useState} from 'react';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import CssBaseline from '@mui/material/CssBaseline';
+import TextField from '@mui/material/TextField';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+import Link from '@mui/material/Link';
+import Paper from '@mui/material/Paper';
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import {Link as RouterLink, useNavigate} from 'react-router-dom';
-import {useState} from "react";
+import Typography from '@mui/material/Typography';
+import {ThemeProvider} from '@mui/material/styles';
+import {useNavigate} from "react-router-dom";
+import {Link as RouterLink} from 'react-router-dom';
 
-export default function SignUpCompany({theme}) {
+export default function LoginPage({theme}) {
     const navigate = useNavigate();
     const [emailError, setEmailError] = useState('');
     const [passwordError, setPasswordError] = useState('');
-    const [nameError, setNameError] = useState('');
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
         const email = formData.get('email');
         const password = formData.get('password');
-        const name = formData.get('companyName');
-        const address = formData.get('address');
-        const accountType = 'company'
+
+        // Reset error state on new submission
 
         setEmailError('');
         setPasswordError('');
-        setNameError('');
 
-        const response = await fetch('/api/register', {
+        // try {
+        const response = await fetch('/api/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ email, password, name, address, accountType }),
-        });
+            body: JSON.stringify({email, password})
+        })
 
         const data = await response.json();
 
         if (!response.ok) {
-            // THE ERROR IS IN HERE
-            // ERROR CODE 500, AN ERROR HAS OCCURED DURING THE LOGIN PROCESS
             // Set the error message from the server to state
-            if (data.emailError) setEmailError(data.emailError);
-            if (data.passwordError) setPasswordError(data.passwordError);
+            if (data.hasOwnProperty('error')) console.error(data.error)
+            if (data.hasOwnProperty('emailError')) setEmailError(data.emailError)
+            if (data.hasOwnProperty('passwordError')) setPasswordError(data.passwordError)
         } else {
-            // Handle successful registration
-            console.log('Registration successful!');
-            navigate('/login');
+            // Handle successful authentication
+            console.log('Success!')
+            console.log(data.accountType)
+            navigate('/dashboard')
         }
-        // } catch (error) {
-        //     // Handle fetch errors
-        //     console.error('Fetch error: ', error);
+
+        // } catch (networkError) {
+        //     console.log('Network Error')
         // }
+
     };
 
     return (
         <ThemeProvider theme={theme}>
-            <Grid container component="main" sx={{ height: '100vh' }}>
-                <CssBaseline />
+            <Grid container component="main" sx={{height: '100vh'}}>
+                <CssBaseline/>
                 <Grid
                     item
                     xs={false}
@@ -78,13 +88,13 @@ export default function SignUpCompany({theme}) {
                             alignItems: 'center',
                         }}
                     >
-                        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                            <LockOutlinedIcon />
+                        <Avatar sx={{m: 1, bgcolor: 'secondary.main'}}>
+                            <LockOutlinedIcon/>
                         </Avatar>
                         <Typography component="h1" variant="h5">
-                            Company Sign Up
+                            Log in to Sponsorship App
                         </Typography>
-                        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+                        <Box component="form" noValidate onSubmit={handleSubmit} sx={{mt: 1}}>
                             <TextField
                                 margin="normal"
                                 required
@@ -94,6 +104,9 @@ export default function SignUpCompany({theme}) {
                                 name="email"
                                 autoComplete="email"
                                 autoFocus
+                                error={!!emailError} // This will be true if error is a non-empty string
+                                helperText={emailError} // This will display the error message
+                                onChange={() => setEmailError('')}
                             />
                             <TextField
                                 margin="normal"
@@ -103,44 +116,32 @@ export default function SignUpCompany({theme}) {
                                 label="Password"
                                 type="password"
                                 id="password"
-                                autoComplete="new-password"
-                            />
-                            <TextField
-                                margin="normal"
-                                required
-                                fullWidth
-                                id="companyName"
-                                label="Company Name"
-                                name="companyName"
-                                autoComplete="companyName"
-                                autoFocus
-                            />
-                            <TextField
-                                margin="normal"
-                                required
-                                fullWidth
-                                id="address"
-                                label="address"
-                                name="address"
-                                autoComplete="address"
-                                autoFocus
+                                autoComplete="current-password"
+                                error={!!passwordError} // This will be true if error is a non-empty string
+                                helperText={passwordError} // This will display the error message
+                                onChange={() => setPasswordError('')}
                             />
                             <FormControlLabel
-                                control={<Checkbox value="agree" color="primary" />}
-                                label="I agree to the terms and conditions"
+                                control={<Checkbox value="remember" color="primary"/>}
+                                label="Remember me"
                             />
                             <Button
                                 type="submit"
                                 fullWidth
                                 variant="contained"
-                                sx={{ mt: 3, mb: 2 }}
+                                sx={{mt: 3, mb: 2}}
                             >
-                                Sign Up
+                                Sign In
                             </Button>
-                            <Grid container justifyContent="flex-end">
+                            <Grid container>
+                                <Grid item xs>
+                                    <Link component={RouterLink} to={"/forgotPassword"} variant="body2">
+                                        Forgot password?
+                                    </Link>
+                                </Grid>
                                 <Grid item>
-                                    <Link component={RouterLink} to={"/login"} variant="body2">
-                                        Already have an account? Sign in
+                                    <Link component={RouterLink} to={"/register"} variant="body2">
+                                        {"Don't have an account? Sign Up"}
                                     </Link>
                                 </Grid>
                             </Grid>

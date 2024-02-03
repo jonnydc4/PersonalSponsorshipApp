@@ -20,7 +20,7 @@
   "paths": {
     "/postJob": {
       "get": {
-        "summary": "Add job",
+        "summary": "List job",
         "tags": [],
         "responses": {
           "200": {

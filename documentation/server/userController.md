@@ -125,25 +125,6 @@ const user = await verifyUserExists('user@example.com');
 
 
 
-### Function Name: `verifyUserDoesNotExist`
-
-#### Description
-The `verifyUserDoesNotExist` function is an asynchronous operation that checks if a user with a given email address already exists in the database. It uses the `model.findUserByEmail` method to search for the user. If a user with the specified email is found, the function throws an error, indicating that the user already exists. This function is crucial in scenarios like user registration, where it's important to avoid creating duplicate accounts.
-
-#### Parameters
-- `email` (`String`): The email address to be checked against existing users in the database.
-
-#### Raises
-- `Error`: Throws an error with the message 'User already exists.' if a user with the provided email address is found in the database.
-
-#### Examples
-```javascript
-await verifyUserDoesNotExist('existinguser@example.com');
-// Throws an error if a user with this email already exists
-```
-
-
-
 ### Function Name: `authenticateUserByPassword`
 
 #### Description
@@ -219,71 +200,4 @@ The `handleLoginError` function is designed to handle and categorize errors that
 ```javascript
 const errorResult = handleLoginError(new Error('Email is required.'));
 // Returns: { errorMessage: { emailError: 'Email is required.' }, statusCode: 400 }
-```
-
-
-
-### Function Name: `performRegister`
-
-#### Description
-The `performRegister` function is an asynchronous operation designed to handle the registration of new users. It accepts an `accountInfo` object, extracts relevant data, and performs a series of validations. The function checks if the email and password fields are empty, validates the email format, and ensures the password length meets the criteria. It also verifies that the user does not already exist in the database. Depending on the `accountType` (influencer or company), the function creates a new user and the corresponding influencer or company account, using unique identifiers and provided details.
-
-#### Parameters
-- `accountInfo` (`Object`): An object containing the account details, including `accountType`, `email`, `password`, and other relevant information based on the account type.
-
-#### Returns
-- `Object`: Returns the user object created by the `model.createNewUser` method.
-
-#### Raises
-- Validation errors for empty fields, invalid email, and short password.
-- An error if the user already exists (`verifyUserDoesNotExist`).
-- An error with 'Invalid Account Type' if the `accountType` is neither 'influencer' nor 'company'.
-
-#### Logic
-- Validates user input for registration.
-- Generates a unique ID for the new user.
-- Creates a new user in the database.
-- Depending on the account type, creates either an influencer or a company record.
-
-#### Examples
-```javascript
-const newUser = await performRegister({
-    accountType: 'influencer',
-    email: 'influencer@example.com',
-    password: 'strongPassword123',
-    name: 'John Doe'
-});
-// Registers a new influencer and returns the user object
-```
-
-
-
-### Function Name: `handleAccountSignupError`
-
-#### Description
-The `handleAccountSignupError` function manages error handling specific to the account signup process. It interprets different types of errors based on their messages and categorizes them with appropriate HTTP status codes and custom error messages. This function is essential for providing clear, actionable feedback to users during the signup process, especially in web applications where understanding the nature of errors is crucial for user experience.
-
-#### Parameters
-- `error` (`Error`): The error object encountered during the signup process.
-
-#### Returns
-- `Object`: An object containing structured error messages (`errorMessage`) and an HTTP `statusCode`. The `errorMessage` object holds key-value pairs indicating specific error messages for various fields (like `emailError` and `passwordError`).
-
-#### Logic
-- Uses a `switch` statement to handle different error messages. Depending on the message, it assigns specific error messages to `errorMessage` and sets the `statusCode`.
-
-#### Error Handling Cases
-- **Email and Password Required**: Assigns error messages to both `emailError` and `passwordError` with a 400 status code.
-- **Email Required**: Sets `emailError` with a 400 status code.
-- **Password Required**: Sets `passwordError` with a 400 status code.
-- **Invalid Email**: Sets `emailError` with a 400 status code.
-- **Password Too Short**: Assigns a custom message to `passwordError` with a 400 status code.
-- **User Already Exists**: Sets `emailError` with a 401 status code.
-- **Incorrect Password**: Sets `passwordError` with a 401 status code.
-- **Default Case**: Logs the error, sets a general error message, and a 500 status code.
-
-#### Examples
-```javascript
-const errorResponse = handleAccountSignupError(new Error('Invalid Email.'));
-// Returns: { errorMessage: { emailError: 'Invalid Email.' }, statusCode: 400 }
 ```

@@ -2,8 +2,6 @@
 
 ## Helper Functions
 
----
-
 ### Function Name: `query`
 
 #### Description
@@ -36,11 +34,9 @@ const getJobsByCompanyId = async (companyId) => {
 }
 ```
 
----
+
 
 ## User Related Functions
-
----
 
 ### Function Name: `findUserByEmail`
 
@@ -62,7 +58,7 @@ Using the `findUserByEmail` function to find a user by email:
 const user = await findUserByEmail("john@example.com")
 ```
 
----
+
 
 ### Function Name: `updateUserPassword`
 
@@ -85,33 +81,9 @@ Updating a user's password:
 await updateUserPassword("john@example.com", "password123")
 ```
 
----
 
-### Function Name: `createNewUser`
-
-#### Description
-The `createNewUser` function is an asynchronous operation for creating a new user record in the database. It constructs an SQL `INSERT` query that inserts a user with specific details: id, email, password, and account type. The function executes this query using a `query` method, which is assumed to be a database interface function. It then returns the first row of the result, typically containing the newly created user's id, email, and account type.
-
-#### Parameters
-- `id` (`uuid`): A unique identifier for the new user, often a UUID.
-- `email` (`String`): The email address of the user.
-- `password` (`String`): The user's password. In real-world applications, this should be a securely hashed password.
-- `accountType` (`String`): The type of account being created (e.g., 'admin', 'user', 'influencer').
-
-#### Returns
-- `Object`: Returns the first row of the query result, generally containing the user's id, email, and account type.
-
-#### Examples
-```javascript
-const newUser = await createNewUser('123e4567-e89b-12d3-a456-426614174000', 'user@example.com', 'hashedPassword', 'user');
-// Inserts a new user into the database and returns the user's details
-```
-
----
 
 ## Job Related Functions
-
----
 
 ### Function Name: `createNewJob`
 
@@ -136,7 +108,7 @@ Creating a new job listing:
 await createNewJob(1, 'Web Developer', 'Develops the Web', 'Seatle')
 ```
 
----
+
 
 ### Function Name: `getJobTable`
 
@@ -159,7 +131,7 @@ Retrieving the entire jobs table:
 const allJobs = await getJobTable()
 ```
 
----
+
 
 ### Function Name: `getJobsByCompanyId`
 
@@ -181,11 +153,9 @@ Fetching job listings for a specific company:
 const companyJobList = await getJobsByCompanyId(1)
 ```
 
----
+
 
 ## Job Map Related Functions
-
----
 
 ### Function Name: `getJobsByCompanyId`
 
@@ -204,7 +174,7 @@ To fetch all records from the `job_map` table:
 const jobMapData = await getJobMapTable();
 ```
 
----
+
 
 ## Company Related Functions
 
@@ -225,63 +195,14 @@ Retrieving all records from the `companies` table:
 const companiesData = await getCompanyTable();
 ```
 
----
 
-### Function Name: `getCompanyById`
-
-#### Description
-The `getCompanyById` function is an asynchronous operation used to retrieve The specific company based on the id that's passed in.
-
-#### Parameters
-- `companyId` (`Number`): The unique identifier of the company
-
-#### Returns
-- `Object`: Returns an object representing the data for the company, This is pulled from the 'companies' table based on the id.
-
-#### Raises
-- The function relies on the `query` function to interact with the database and may throw errors if there are issues with the database connection or query execution. Common errors could include problems with the SQL query or difficulties in connecting to the database.
-
-#### Examples
-Retrieving company object from the `companies` table:
-```javascript
-const company = await getCompanyById(1);
-```
-
----
-
-### Function Name: `createNewCompany`
-
-#### Description
-The `createNewCompany` function is an asynchronous operation designed to create a new company record in the database. It constructs an SQL `INSERT` query to add a company with specific details: id, name, email, and address. The function then executes this query using a `query` function (assumed to be a database interface method) and returns the first row of the result, which typically includes the inserted company's details.
-
-#### Parameters
-- `id` (`uuid`): The unique identifier for the new company.
-- `companyName` (`String`): The name of the company.
-- `email` (`String`): The email address associated with the company.
-- `address` (`String`): The physical address of the company.
-
-#### Returns
-- `Object`: The function returns the first row of the query result, typically containing the newly created company's id, name, email, and address.
-
-#### Examples
-```javascript
-const newCompany = await createNewCompany('123e4567-e89b-12d3-a456-426614174000', 'Acme Corp', 'contact@acmecorp.com', '123 Business St.');
-// Creates a new company in the database and returns the details of the newly added company
-```
-
----
 
 ## Influencer Related Functions
-
----
 
 ### Function Name: `getInfluencerTable`
 
 #### Description
 The `getInfluencerTable` function is an asynchronous operation intended to fetch all records from the `influencers` table in a PostgreSQL database. This function performs a SQL query that selects all columns from the `influencers` table. It is primarily used to retrieve a comprehensive list of influencers, which is valuable for marketing, analysis, or social media management purposes.
-
-#### Parameters
-- `influencerId` (`Number`): The unique identifier of the influencer
 
 #### Returns
 - `Object`: The function returns an object containing the result of the database query. This object usually includes a `rows` property, which holds an array of records from the `influencers` table. Each element in this array is an object representing a single influencer record.
@@ -295,55 +216,9 @@ To retrieve all records from the `influencers` table:
 const influencerData = await getInfluencerTable();
 ```
 
----
 
-### Function Name: `getInfluencerById`
-
-#### Parameters
-- `influencerId` (`Number`): The unique identifier of the Influencer.
-
-#### Description
-The `getInfluencerById` function is an asynchronous operation used to retrieve The specific Influencer based on the id that's passed in.
-
-#### Returns
-- `Object`: Returns an object representing the data for the Influencer, This is pulled from the `influencers` table based on the id.
-
-#### Raises
-- The function relies on the `query` function to interact with the database and may throw errors if there are issues with the database connection or query execution. Common errors could include problems with the SQL query or difficulties in connecting to the database.
-
-#### Examples
-Retrieving company object from the `influencers` table:
-```javascript
-const influencer = await getInfluencerById(1);
-```
-
-
----
-
-### Function Name: `createNewInfluencer`
-
-#### Description
-The `createNewInfluencer` function is an asynchronous operation that adds a new influencer record to the database. It formulates an SQL `INSERT` query for inserting an influencer's details, including id, name, and email, into the `influencers` table. The function executes this query using a `query` method, which is assumed to be a database interface function. After execution, it returns the first row of the result, typically the inserted influencer's details.
-
-#### Parameters
-- `id` (`uuid`): The unique identifier for the influencer.
-- `name` (`String`): The name of the influencer.
-- `email` (`String`): The email address of the influencer.
-
-#### Returns
-- `Object`: An object representing the newly added influencer, containing fields such as id, name, and email, as returned by the database query.
-
-#### Examples
-```javascript
-const newInfluencer = await createNewInfluencer('123e4567-e89b-12d3-a456-426614174000', 'John Doe', 'john.doe@example.com');
-// Adds a new influencer to the database and returns the influencer's details
-```
-
----
 
 ## Notification Related Functions
-
----
 
 ### Function Name: `getNotificationTable`
 
@@ -362,7 +237,7 @@ Fetching all records from the `notifications` table:
 const notificationData = await getNotificationTable();
 ```
 
----
+
 
 ### Function Name: `createNewNotification`
 
@@ -387,5 +262,5 @@ Creating a new notification:
 const newNotification = await createNewNotification(1, 2, 3, 'New job assignment available');
 ```
 
----
+
 

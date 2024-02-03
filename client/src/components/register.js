@@ -1,54 +1,18 @@
-import React, { useState } from 'react';
+import * as React from 'react';
 import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox, Link, Paper, Box, Grid, Typography, ThemeProvider } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { Link as RouterLink } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
 
-export default function SignUp({ theme }) {
-    const navigate = useNavigate();
-    const [emailError, setEmailError] = useState('');
-    const [passwordError, setPasswordError] = useState('');
-    const [nameError, setNameError] = useState('');
-
-    const handleSubmit = async (event) => {
+export default function SignUp({theme}) {
+    const handleSubmit = (event) => {
         event.preventDefault();
-        const formData = new FormData(event.currentTarget);
-        const email = formData.get('email');
-        const password = formData.get('password');
-        const name = formData.get('name');
-        const accountType = 'influencer'
-
-        setEmailError('');
-        setPasswordError('');
-        setNameError('');
-
-        const response = await fetch('/api/register', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email, password, name, accountType }),
+        const data = new FormData(event.currentTarget);
+        // Implement your sign-up logic here
+        console.log({
+            email: data.get('email'),
+            password: data.get('password'),
         });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-            // THE ERROR IS IN HERE
-            // ERROR CODE 500, AN ERROR HAS OCCURED DURING THE LOGIN PROCESS
-            // Set the error message from the server to state
-            if (data.emailError) setEmailError(data.emailError);
-            if (data.passwordError) setPasswordError(data.passwordError);
-        } else {
-            // Handle successful registration
-            console.log('Registration successful!');
-            navigate('/login');
-        }
-        // } catch (error) {
-        //     // Handle fetch errors
-        //     console.error('Fetch error: ', error);
-        // }
     };
-
 
     return (
         <ThemeProvider theme={theme}>
@@ -82,7 +46,7 @@ export default function SignUp({ theme }) {
                             <LockOutlinedIcon />
                         </Avatar>
                         <Typography component="h1" variant="h5">
-                            Influencer Sign Up
+                            Sign up for Sponsorship App
                         </Typography>
                         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
                             <TextField
@@ -104,16 +68,6 @@ export default function SignUp({ theme }) {
                                 type="password"
                                 id="password"
                                 autoComplete="new-password"
-                            />
-                            <TextField
-                                margin="normal"
-                                required
-                                fullWidth
-                                name="name"
-                                label="Name"
-                                type="name"
-                                id="name"
-                                autoComplete="Company Name"
                             />
                             <FormControlLabel
                                 control={<Checkbox value="agree" color="primary" />}
