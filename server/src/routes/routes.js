@@ -6,6 +6,7 @@ const jobController = require('../controllers/jobController')
 const companyController = require('../controllers/companyController')
 const influencerController = require('../controllers/influencerController')
 const notificationController = require('../controllers/notificationController')
+const {locals} = require("express/lib/application");
 const db = require( '../database/database');
 
 const router = express.Router()
@@ -15,7 +16,7 @@ router.post("/api/login", async (req, res) => {
     try {
         const {email, password} = req.body;
         const user = await userController.performLogin(email, password)
-        res.status(200).send({message: "User verified.", accountType: user.account_type})
+        res.status(200).send({message: "User verified.", userId: user.id, accountType: user.account_type})
     } catch (error) {
         const {errorMessage, statusCode} = userController.handleLoginError(error)
         return res.status(statusCode).json(errorMessage);
@@ -25,9 +26,9 @@ router.post("/api/login", async (req, res) => {
 // post a job to the database
 router.post('/api/postJob', async (req, res) => {
     try {
-        const id = 1 // todo need to update this magic number to something real
-        const {title, description, location} = req.body;
-        await jobController.postJob(id, title, description, location)
+        // todo need to update this magic number to something real
+        const {title, description, location, companyId} = req.body;
+        await jobController.postJob(companyId, title, description, location)
         res.status(200).send({message: 'Data added successfully'})
     } catch (error) {
         console.error('Error posting job:', error);
@@ -73,6 +74,7 @@ router.get("/api/jobs/:companyId", async (req, res) => {
     const {companyId} = req.params;
     try {
         const companyJobs = await jobController.allCompanyJobs(companyId)
+        console.log(companyJobs)
         res.status(200).send(companyJobs)
     } catch (error) {
         const {errorMessage, statusCode} = jobController.handleAllCompanyJobsErrors(error)
@@ -80,16 +82,65 @@ router.get("/api/jobs/:companyId", async (req, res) => {
     }
 });
 
+//Test that the company id is working JONAH
 router.post("/api/sendOffer", async (req, res) => {
-    const { influencer_id, job_id, message } = req.body;
-    const company_id = 1; // hardcoded for now as per your instruction
-
+    const { influencer_id, job_id, message, company_id } = req.body;
     try {
-        notificationController.createNotification(company_id, influencer_id, job_id, message)
+        await notificationController.createNotification(company_id, influencer_id, job_id, message)
         res.json({ status: 'success', message: 'Offer sent successfully' });
     } catch (error) {
         console.error('Error sending offer:', error);
         res.status(500).send(error);
+    }
+});
+
+//Influencer get jobOffers API
+router.get("/api/jobOffers/:influencerId", async (req, res) => {
+    const { influencerId } = req.params;
+    try {
+        const jobOffers = await notificationController.getJobOffersForInfluencer(influencerId);
+        res.status(200).json(jobOffers);
+    } catch (error) {
+        console.error('Error fetching job offers:', error);
+        res.status(500).send(error);
+    }
+});
+
+//Influencer AcceptJobOffer API
+router.post("/api/acceptJob", async (req, res) => {
+    const { influencerId, jobId } = req.body;
+    try {
+        await jobController.acceptJob(influencerId, jobId);
+        res.status(200).json({ message: 'Job accepted successfully' });
+    } catch (error) {
+        console.error('Error accepting job:', error);
+        res.status(500).send(error);
+    }
+});
+
+ //Influencer RejectJobOffer API
+router.post("/api/rejectJobOffer", async (req, res) => {
+    const { offerId } = req.body; // offerId is the ID of the job offer (notification)
+    try {
+        await notificationController.rejectJobOffer(offerId);
+        res.status(200).json({ message: 'Job offer rejected successfully' });
+    } catch (error) {
+        console.error('Error rejecting job offer:', error);
+        res.status(500).send(error);
+    }
+});
+
+
+// Endpoint to handle user registration
+router.post('/api/register', async (req, res) => {
+    try {
+        const accountInfo = req.body;
+        const user = await userController.performRegister(accountInfo);
+        res.status(201).send({message: "User created successfully", id: user.id, accountType: user.account_type });
+    } catch (error) {
+        console.log(error);
+        const { errorMessage, statusCode } = userController.handleAccountSignupError(error);
+        return res.status(statusCode).json(errorMessage);
     }
 });
 

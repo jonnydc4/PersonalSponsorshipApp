@@ -33,6 +33,11 @@ const updateUserPassword = async (email, newPassword) => {
     await query(queryText, [newPassword, email]);
 };
 
+const createNewUser = async (id, email, password, accountType) => {
+    const queryText = 'INSERT INTO users (id, email, password, account_type) VALUES ($1, $2, $3, $4) RETURNING id, email, account_type;';
+        const result = await query(queryText, [id, email, password, accountType]);
+        return result.rows[0];
+};
 
 /* ------------------------Job Table Queries------------------------ */
 const createNewJob = async (company_id, title, description, location) => {
@@ -77,6 +82,16 @@ const getCompanyTable = async () => {
     const companiesTable = await query(queryText, [])
     return companiesTable.rows
 }
+const getCompanyById = async (companyId) => {
+    const queryText = 'SELECT * FROM companies WHERE id = $1'
+    return await query(queryText, [companyId]);
+}
+
+const createNewCompany = async (id, companyName, email, address) => {
+    const queryText = 'INSERT INTO companies (id, name, email, address) VALUES ($1, $2, $3, $4) RETURNING id, name, email, address;';
+    const result = await query(queryText, [id, companyName, email, address]);
+    return result.rows[0];
+};
 
 /* ------------------------Influencer Table Queries------------------------ */
 const getInfluencerTable = async () => {
@@ -84,11 +99,27 @@ const getInfluencerTable = async () => {
     return await query(queryText, [])
 }
 
+const getInfluencerById = async (influencerId) => {
+    const queryText = 'SELECT * FROM companies WHERE id = $1'
+    return await query(queryText, [influencerId]);
+}
+
+const createNewInfluencer = async (id, name, email) => {
+    const queryText = 'INSERT INTO influencers (id, name, email) VALUES ($1, $2, $3) RETURNING id, name, email;';
+    const result = await query(queryText, [id, name, email]);
+    return result.rows[0];
+};
+
 /* ------------------------Notification Table Queries------------------------ */
 const getNotificationTable = async () => {
     const queryText = 'SELECT * FROM notifications';
     return await query(queryText, [])
 }
+
+const addJobToInfluencer = async (influencerId, jobId) => {
+    const queryText = 'INSERT INTO job_map (job_id, influencer_id) VALUES ($1, $2)';
+    await query(queryText, [jobId, influencerId]);
+};
 
 const createNewNotification = async (company_id, influencer_id, job_id, message) => {
     const queryText = `
@@ -98,6 +129,25 @@ const createNewNotification = async (company_id, influencer_id, job_id, message)
     return await query(queryText, [company_id, influencer_id, job_id, message])
 }
 
+const getJobOffersForInfluencer = async (influencerId) => {
+    const queryText = `
+        SELECT n.id, n.company_id, n.job_id, n.message, n.is_read, n.notification_time,
+               j.title, j.description, j.location,
+               c.name as company_name
+        FROM notifications n
+        JOIN jobs j ON n.job_id = j.id
+        JOIN companies c ON j.company_id = c.id
+        WHERE n.influencer_id = $1;
+    `;
+    const result = await query(queryText, [influencerId]);
+    return result.rows;
+};
+
+//delete the notification from the table
+const removeNotification = async (offerId) => {
+    const queryText = 'DELETE FROM notifications WHERE id = $1';
+    await query(queryText, [offerId]);
+};
 
 process.on('exit', () => {
     console.log("Closing db pool");
@@ -115,5 +165,12 @@ module.exports = {
     getJobsByCompanyId,
     getNotificationTable,
     createNewNotification,
-    updateJob
+    updateJob,
+    getJobOffersForInfluencer,
+    addJobToInfluencer,
+    removeNotification,
+    createNewUser,
+    createNewInfluencer,
+    createNewCompany
 };
+
