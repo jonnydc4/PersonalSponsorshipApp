@@ -82,7 +82,7 @@ router.get("/api/jobs/:companyId", async (req, res) => {
 
 router.post("/api/sendOffer", async (req, res) => {
     const { influencer_id, job_id, message } = req.body;
-    const company_id = 1; // hardcoded for now as per your instruction
+    const company_id = 1; 
 
     try {
         notificationController.createNotification(company_id, influencer_id, job_id, message)
