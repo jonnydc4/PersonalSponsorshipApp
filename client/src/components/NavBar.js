@@ -1,6 +1,7 @@
 import React from 'react';
 import Logo from './Logo';
 import NavItems from './NavItems';
+import {FaBell} from 'react-icons/fa';
 import './NavBar.css';
 
 const navItems = [
@@ -16,11 +17,16 @@ const navItems = [
   }
 ]
 
-function NavBar() {
-  return (<div className="nav-bar-container">
+function NavBar({ onBellClick }) {
+  const showBellIcon = localStorage.getItem('userId') !== null;
+
+  return (
+    <div className="nav-bar-container">
       <Logo />
       <NavItems items={navItems} />
-    </div>)
+      {showBellIcon && <FaBell onClick={onBellClick} style={{ cursor: 'pointer' }} />}
+    </div>
+  );
 }
 
 export default NavBar;

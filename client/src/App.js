@@ -16,6 +16,7 @@ import "./App.css"
 import InfluencerSearch from './InfluencerSearch';
 import LandingPage from "./pages/SignUpLanding";
 import SignUpCompany from "./pages/SignUpCompany";
+import Dashboard from './pages/Dashboard';
 
 
 const theme = createTheme();
@@ -29,7 +30,7 @@ function App() {
             <Routes>
                 <Route path="/post-job" element={<JobPostingForm />} />
                 <Route path="/jobs" element={<Jobs />} />
-                <Route path="/example" element={<ExamplePage />} /> // Example Page can be removed!
+                <Route path="/example" element={<Dashboard />} /> // Example Page can be removed!
                 <Route path="/influencer-search" element={<InfluencerSearch />} /> //remove later
                 <Route path="/job-offers" element={<JobOffersPage />} />
                 <Route path="/" element={<div><Button label="Log in"/><br/><Button label="ExamplePage"/>
