@@ -26,8 +26,8 @@ function EditJobForm({ }) {
           throw new Error('Failed to fetch job details');
         }
         const data = await response.json();
-        console.log(data.title);
-        setJob(data); // Store the job details in state
+        // console.log(data.title);
+        setJob(data.rows[0]); // Store the job details in state
         setLoading(false); // Set loading to false after data is fetched
       } catch (error) {
         console.error('Error fetching job details:', error);
@@ -51,9 +51,12 @@ function EditJobForm({ }) {
       <p>Editing Job ID: {jobId}</p>
       <div>
         {/* <p>{JSON.stringify(job)}</p> */}
-        <p><strong>Title:</strong> {job.title}</p>
+        {/* <p><strong>Title:</strong> {job.title}</p>
         <p><strong>Description:</strong> {job.description}</p>
-        <p><strong>Location:</strong> {job.location}</p>
+        <p><strong>Location:</strong> {job.location}</p> */}
+        <p><strong>Title:</strong> {job?.title}</p>
+        <p><strong>Description:</strong> {job?.description}</p>
+        <p><strong>Location:</strong> {job?.location}</p>
       </div>
     </div>
   );
