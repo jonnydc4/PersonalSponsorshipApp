@@ -1,9 +1,11 @@
-import React, {useEffect, useState}  from 'react';
+import React, { useEffect, useState } from 'react';
 import ListDetailFrame from '../../components/ListDetailFrame';
 import JobsList from './components/JobsList';
 import PageContainer from '../../components/PageContainer';
 import InfluencerSearchButton from '../../components/InfluencerSearchButton';
 import JobPostingForm from '../../components/JobPostingForm';
+import EditJobButton from '../../components/EditJobButton'; // Ensure this is pointing to the correct file path
+
 
 const userId = localStorage.getItem('userId')
 
@@ -54,29 +56,34 @@ function JobManagerPage() {
   return (
     <PageContainer>
       {isLoading ? (
-          <p>Loading...</p>
+        <p>Loading...</p>
       ) : (
         <ListDetailFrame
           renderList={
             <JobsList
               jobs={jobs}
               selectedJobId={selectedJobId}
-              onJobClick={(job) => setSelectedJobId(job.id) }
+              onJobClick={(job) => setSelectedJobId(job.id)}
               onCreateJobClick={() => setSelectedJobId(null)}
             />
           }
           renderDetail={
-            <div style={{height: '100%', width: '100%'}}>
+            <div style={{ height: '100%', width: '100%' }}>
               {selectedJobId == null ?
-              <JobPostingForm />
-              : <p>Edit job: {selectedJobId}</p>
+                <JobPostingForm />
+                :
+                <React.Fragment>
+                  <p>Edit job: {selectedJobId}</p>
+                  <EditJobButton jobId={selectedJobId} />
+                  <InfluencerSearchButton jobId={selectedJobId} />
+                </React.Fragment>
               }
-              <InfluencerSearchButton jobId={selectedJobId}/>
             </div>
           }
         />
+
       )}
-      
+
     </PageContainer>
   )
 }
