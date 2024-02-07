@@ -52,6 +52,7 @@ router.get('/api/specificJob/:jobId', async (req, res) => {
     const { jobId } = req.params; // Extract jobId from the request URL
     try {
         const job = await jobController.getSpecificJob(jobId);
+        
         res.json(job); // Send the job data as a response
     } catch (error) {
         if (error.message === 'Job not found') {

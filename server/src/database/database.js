@@ -170,6 +170,7 @@ module.exports = {
     getCompanyTable,
     getInfluencerTable,
     getJobsByCompanyId,
+    getJobById,
     getNotificationTable,
     createNewNotification,
     getJobOffersForInfluencer,
