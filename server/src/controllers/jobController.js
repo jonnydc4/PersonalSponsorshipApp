@@ -20,6 +20,11 @@ const allCompanyJobs = async (companyId) => {
     return model.getJobsByCompanyId(companyId)
 }
 
+const getSpecificJob = async (jobId) => {
+    // Gets specific job by id assigned to it from databae.
+    return model.getJobById(jobId)
+}
+
 const handleAllCompanyJobsErrors = (errorMessage) => {
     let statusCode;
 
@@ -40,4 +45,4 @@ const acceptJob = async (influencerId, jobId) => {
 };
 
 
-module.exports = { postJob, allJobs, allCompanyJobs, handleAllCompanyJobsErrors, acceptJob }
+module.exports = { postJob, allJobs, allCompanyJobs, handleAllCompanyJobsErrors, acceptJob, getSpecificJob }

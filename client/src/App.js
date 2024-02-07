@@ -16,6 +16,9 @@ import "./App.css"
 import InfluencerSearch from './InfluencerSearch';
 import LandingPage from "./pages/SignUpLanding";
 import SignUpCompany from "./pages/SignUpCompany";
+import EditJobForm from './pages/job-manager/components/EditJobForm';
+
+
 
 
 const theme = createTheme();
@@ -41,6 +44,7 @@ function App() {
                 <Route path="/manage-jobs" element={<JobManagerPage />} />
 
                 <Route path="/job/:jobId/influencer-search" element={<InfluencerSearch />} />
+                <Route path="/job/:jobId/edit" element={<EditJobForm />} />
 
                 <Route path="/login" element={<LoginPage theme={theme}/>}/>
                 <Route path="/devLogin" element={<Button label="Log in"/>}/>

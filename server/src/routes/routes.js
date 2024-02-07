@@ -47,6 +47,22 @@ router.get("/api/allJobs", async (req, res) => {
     }
 });
 
+router.get('/api/specificJob/:jobId', async (req, res) => {
+    // Get a specific job by its ID (used in retrieving job details for a singular job)
+    const { jobId } = req.params; // Extract jobId from the request URL
+    try {
+        const job = await jobController.getSpecificJob(jobId);
+        res.json(job); // Send the job data as a response
+    } catch (error) {
+        if (error.message === 'Job not found') {
+            res.status(404).json({ message: 'Job not found' });
+        } else {
+            console.error('Server error:', error);
+            res.status(500).json({ message: 'Internal server error' });
+        }
+    }
+});
+
 router.get("/api/allCompanies", async (req, res) => {
     try {
         const companies = await companyController.allCompanies()

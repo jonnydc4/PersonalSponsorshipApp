@@ -74,7 +74,7 @@ function JobManagerPage() {
                 :
                 <React.Fragment>
                   <p>Edit job: {selectedJobId}</p>
-                  <EditJobButton jobId={selectedJobId} />
+                  <EditJobButton jobId={selectedJobId}/>
                   <InfluencerSearchButton jobId={selectedJobId} />
                 </React.Fragment>
               }

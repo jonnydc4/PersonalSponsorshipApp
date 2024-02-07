@@ -2,20 +2,20 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // Serves to edit the details of a job (from the company side)
-const EditJobButton = ({ jobId }) => {
+const EditJobButton = ({ jobId}) => {
   const navigate = useNavigate();
-
-  const handleSearchClick = () => {
+  console.log("Received Job ID in EditJobButton:", jobId);
+  const handleEditClick = () => {
     // Navigate to the edit job form with the jobId
     if (jobId) {
-      navigate(`/job/${jobId}/influencer-search`);
+      navigate(`/job/${jobId}/edit`);
     } else {
-      console.error("Job ID is undefined");
+      console.error("Job ID or User ID is undefined");
     }
   };
 
   return (
-    <button onClick={handleSearchClick}>
+    <button onClick={handleEditClick}>
       Edit Job
     </button>
   );

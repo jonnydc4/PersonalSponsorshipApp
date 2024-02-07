@@ -59,6 +59,24 @@ const getJobsByCompanyId = async (companyId) => {
     return await query(queryText, [companyId]);
 }
 
+const getJobById = async (jobId) => {
+    const queryText = 'SELECT * FROM jobs WHERE id = $1';
+    return await query(queryText, [jobId]);
+}
+
+const updateJobDescription = async (jobId, description) => {
+    // Updates existing job description using jobId proivded
+    const query = 'UPDATE jobs SET description = $1 WHERE id = $2 RETURNING *';
+    const values = [description, jobId];
+    try {
+      const { rows } = await db.query(query, values);
+      return rows[0];
+    } catch (err) {
+      console.error('Error updating job description:', err);
+      throw err;
+    }
+  };
+  
 /* ------------------------Job map Table Queries------------------------ */
 const getJobMapTable = async () => {
     const queryText = 'SELECT * FROM job_map';

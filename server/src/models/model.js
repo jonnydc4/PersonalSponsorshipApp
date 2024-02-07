@@ -45,7 +45,10 @@ const getJobsByCompanyId = async (companyId) => {
     const companyJobs = await db.getJobsByCompanyId(companyId)
     return companyJobs.rows
 }
-
+  
+const getJobById = async (jobId) => {
+    return db.getJobById(jobId);
+}
 
 const getJobOffersForInfluencer = async (influencerId) => {
     return db.getJobOffersForInfluencer(influencerId);
@@ -70,6 +73,10 @@ const addJobToInfluencer = async (influencerId, jobId) => {
     return await db.addJobToInfluencer(influencerId, jobId);
 };
 
+const updateJobDescription = async (jobId, newDescription) => {
+    return await db.updateJobDescription(jobId, newDescription);
+}
+
 /* ------------------------Delete------------------------ */
 const removeNotification = async (offerId) => {
     return await db.removeNotification(offerId);
@@ -93,6 +100,7 @@ module.exports = {
     getAllCompanies,
     getAllInfluencers,
     getJobsByCompanyId,
+    getJobById,
     createNewNotification,
     getJobOffersForInfluencer,
     addJobToInfluencer,
