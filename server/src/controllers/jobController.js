@@ -25,6 +25,11 @@ const getSpecificJob = async (jobId) => {
     return model.getJobById(jobId)
 }
 
+const updateJobDetails = async (jobId, title, description, location) => {
+    // Updates details of a job in the database
+    return await jobModel.updateJobDetails(jobId, title, description, location);
+};
+
 const handleAllCompanyJobsErrors = (errorMessage) => {
     let statusCode;
 
@@ -36,7 +41,7 @@ const handleAllCompanyJobsErrors = (errorMessage) => {
             statusCode = 400;
             break;
     }
-    return {errorMessage, statusCode}
+    return { errorMessage, statusCode }
 }
 
 //add job to influencer once accepted
@@ -45,4 +50,4 @@ const acceptJob = async (influencerId, jobId) => {
 };
 
 
-module.exports = { postJob, allJobs, allCompanyJobs, handleAllCompanyJobsErrors, acceptJob, getSpecificJob }
+module.exports = { postJob, allJobs, allCompanyJobs, handleAllCompanyJobsErrors, acceptJob, getSpecificJob, updateJobDetails }

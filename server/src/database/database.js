@@ -64,18 +64,19 @@ const getJobById = async (jobId) => {
     return await query(queryText, [jobId]);
 }
 
-const updateJobDescription = async (jobId, description) => {
-    // Updates existing job description using jobId proivded
-    const query = 'UPDATE jobs SET description = $1 WHERE id = $2 RETURNING *';
-    const values = [description, jobId];
+const updateJobDetails = async (jobId, title, description, location) => {
+    // Updates existing job title, description, and location using jobId provided
+    const query = 'UPDATE jobs SET title = $1, description = $2, location = $3 WHERE id = $4 RETURNING *';
+    const values = [title, description, location, jobId];
     try {
       const { rows } = await db.query(query, values);
-      return rows[0];
+      return rows[0]; // Returns the updated job object
     } catch (err) {
-      console.error('Error updating job description:', err);
+      console.error('Error updating job details:', err);
       throw err;
     }
-  };
+};
+
   
 /* ------------------------Job map Table Queries------------------------ */
 const getJobMapTable = async () => {
@@ -171,6 +172,7 @@ module.exports = {
     getInfluencerTable,
     getJobsByCompanyId,
     getJobById,
+    updateJobDetails,
     getNotificationTable,
     createNewNotification,
     getJobOffersForInfluencer,

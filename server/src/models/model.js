@@ -77,6 +77,10 @@ const updateJobDescription = async (jobId, newDescription) => {
     return await db.updateJobDescription(jobId, newDescription);
 }
 
+const updateJobDetails = async (jobId, title, description, location) => {
+    return await db.updateJobDetails(jobId, title, description, location);
+};
+
 /* ------------------------Delete------------------------ */
 const removeNotification = async (offerId) => {
     return await db.removeNotification(offerId);
@@ -104,6 +108,7 @@ module.exports = {
     createNewNotification,
     getJobOffersForInfluencer,
     addJobToInfluencer,
+    updateJobDetails,
     removeNotification,
     createNewUser,
     createNewInfluencer,

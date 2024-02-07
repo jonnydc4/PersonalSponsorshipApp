@@ -64,6 +64,28 @@ router.get('/api/specificJob/:jobId', async (req, res) => {
     }
 });
 
+router.patch('/api/updateJob/:jobId', async (req, res) => {
+    // Using JobId passed in the URL, update the job details with the new details passed in the request body
+    const { jobId } = req.params;
+    const { title, description, location } = req.body;
+
+    try {
+        const updatedJob = await jobController.updateJobDetails(jobId, title, description, location);
+        res.json(updatedJob);
+        console.log("Job Updated!");
+    } catch (error) {
+        if (error.message === 'Job not found') {
+            res.status(404).json({ message: 'Job not found' });
+        } else {
+            console.error('Server error:', error);
+            res.status(500).json({ message: 'Internal server error' });
+        }
+    }
+});
+
+
+
+
 router.get("/api/allCompanies", async (req, res) => {
     try {
         const companies = await companyController.allCompanies()

@@ -32,7 +32,7 @@ function EditJobForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`/api/jobs/${jobId}`, {
+      const response = await fetch(`/api/updateJob/${jobId}`, {
         method: 'PATCH', // or 'PUT', depending on your API
         headers: {
           'Content-Type': 'application/json',
