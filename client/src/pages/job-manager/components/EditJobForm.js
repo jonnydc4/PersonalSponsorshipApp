@@ -1,63 +1,73 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
-//Initial edit job form
-function EditJobForm({ }) {
-  // const companyName = localStorage.getItem('userId');
-  // const { jobId } = useParams();
-
-  // console.log("Received Job ID in EditJobForm:", jobId);
-  // return (
-  //   <div className="edit-job-container">
-  //     <h1>EDIT JOB FORM</h1>
-  //     <p>Editing Job ID: {jobId} &amp; Company Id: {companyName}</p>
-  //   </div>
-  // );
-  const { jobId } = useParams(); // Extract jobId from URL
-  const [job, setJob] = useState(null); // State to store the job details
-  const [loading, setLoading] = useState(true); // State to track loading status
+function EditJobForm() {
+  const { jobId } = useParams();
+  const navigate = useNavigate();
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [location, setLocation] = useState('');
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Define the function to fetch job details
     const fetchJobDetails = async () => {
       try {
         const response = await fetch(`/api/specificJob/${jobId}`);
-        if (!response.ok) {
-          throw new Error('Failed to fetch job details');
-        }
-        const data = await response.json();
-        // console.log(data.title);
-        setJob(data.rows[0]); // Store the job details in state
-        setLoading(false); // Set loading to false after data is fetched
+        if (!response.ok) throw new Error('Failed to fetch job details');
+        const { rows } = await response.json();
+        const job = rows[0]; // [rows[0] is imporant or the information wont display properly]
+        setTitle(job.title);
+        setDescription(job.description);
+        setLocation(job.location);
+        setLoading(false);
       } catch (error) {
         console.error('Error fetching job details:', error);
-        setLoading(false); // Ensure loading is false even if there's an error
+        setLoading(false);
       }
     };
 
-    if (jobId) {
-      fetchJobDetails(); // Call the function if jobId is available
+    if (jobId) fetchJobDetails();
+  }, [jobId]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch(`/api/jobs/${jobId}`, {
+        method: 'PATCH', // or 'PUT', depending on your API
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ title, description, location }),
+      });
+      if (!response.ok) throw new Error('Failed to update job details');
+      // Redirect or do something upon success
+      navigate('/path-to-redirect-after-success'); // Adjust the redirect path as needed
+    } catch (error) {
+      console.error('Error updating job details:', error);
     }
-  }, [jobId]); // This effect depends on jobId
+  };
 
-  if (loading) return <p>Loading...</p>; // Display loading state
+  if (loading) return <p>Loading...</p>;
+  if (!jobId) return <p>Job not found</p>;
 
-  if (!job) return <p>Job not found</p>; // Display if no job is found or if there was an error fetching
-
-  // Render the job details
   return (
     <div className="edit-job-container">
       <h1>Edit Job Form</h1>
-      <p>Editing Job ID: {jobId}</p>
-      <div>
-        {/* <p>{JSON.stringify(job)}</p> */}
-        {/* <p><strong>Title:</strong> {job.title}</p>
-        <p><strong>Description:</strong> {job.description}</p>
-        <p><strong>Location:</strong> {job.location}</p> */}
-        <p><strong>Title:</strong> {job?.title}</p>
-        <p><strong>Description:</strong> {job?.description}</p>
-        <p><strong>Location:</strong> {job?.location}</p>
-      </div>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label>Title:</label>
+          <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
+        </div>
+        <div>
+          <label>Description:</label>
+          <textarea value={description} onChange={(e) => setDescription(e.target.value)} />
+        </div>
+        <div>
+          <label>Location:</label>
+          <input type="text" value={location} onChange={(e) => setLocation(e.target.value)} />
+        </div>
+        <button type="submit">Save Changes</button>
+      </form>
     </div>
   );
 }
