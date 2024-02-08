@@ -41,7 +41,7 @@ function EditJobForm() {
       });
       if (!response.ok) throw new Error('Failed to update job details');
       // Redirect or do something upon success
-      navigate('/path-to-redirect-after-success'); // Adjust the redirect path as needed
+      navigate('/manage-jobs'); // Adjust the redirect path as needed
     } catch (error) {
       console.error('Error updating job details:', error);
     }
