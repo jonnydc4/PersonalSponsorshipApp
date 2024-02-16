@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import ListDetailFrame from '../../components/ListDetailFrame';
 import JobsList from './components/JobsList';
 import PageContainer from '../../components/PageContainer';
