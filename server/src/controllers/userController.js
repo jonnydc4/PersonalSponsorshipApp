@@ -47,6 +47,7 @@ const verifyUserExists = async (email) => {
 }
 
 // Used to verify that the user does not exist in the database. If the user already exists, it throws an error message.
+// For further details, see model.js
 const verifyUserDoesNotExist = async (email) => {
     const user = await model.findUserByEmail(email);
 
@@ -56,6 +57,7 @@ const verifyUserDoesNotExist = async (email) => {
 }
 
 // Authenticates the user by checking the password against the hashed password in the database.
+// For further details, see model.js
 const authenticateUserByPassword = async (username, password) => {
     const user = await verifyUserExists(username);
 
@@ -70,6 +72,7 @@ const authenticateUserByPassword = async (username, password) => {
 
 // Attempts to perform login for user signing into service by calling previous methods defined above 
 // or below in this controller (usercontroller.js).
+// For further details, see model.js
 const performLogin = async (email, password) => {
     checkLoginFieldsEmpty(email, password);
     checkEmailFormat(email);
@@ -79,6 +82,7 @@ const performLogin = async (email, password) => {
 }
 
 // Attempts to perform register for new user signing up for service
+// For further details, see model.js
 const performRegister = async (accountInfo) => {
     const accountType = accountInfo.accountType
     const email = accountInfo.email
@@ -97,6 +101,7 @@ const performRegister = async (accountInfo) => {
 
     // Depending on user type, create a new user in the database. 
     // This is because companies and influencers have different fields in the database.
+    // For further details, see model.js
     switch (accountType) {
         case "influencer":
             name = accountInfo.name
