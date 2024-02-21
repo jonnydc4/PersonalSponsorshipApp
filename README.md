@@ -22,7 +22,7 @@
     ![docker-up](https://github.com/jonnydc4/PersonalSponsorshipApp/assets/92762025/ff17b7e7-429c-463b-98f9-ca207e3ef09d)
 
 
-7. Open the docker desktop to see the running containers.
+6. Open the docker desktop to see the running containers.
    ![docker container](https://github.com/jonnydc4/PersonalSponsorshipApp/assets/92762025/5b97e5ba-2dd7-4e93-a739-1b1b4e726514)
 
 ### Hot Reloading for Backend
