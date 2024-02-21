@@ -1,4 +1,4 @@
-// <-------- companyController.js - contains all controllers used in company side operations -------->
+// <--------------- companyController.js - contains all controllers used in company side operations --------------->
 // Company controller acts as the middleman between the routes and the model.
 // It is responsible for handling the business logic and passing the data to the model.
 
