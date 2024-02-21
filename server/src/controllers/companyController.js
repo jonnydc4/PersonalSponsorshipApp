@@ -10,6 +10,8 @@ const allCompanies = async () => {
     return await model.getAllCompanies()
 }
 
+// Exporting the functions to be used in the routes 
+// (Important Note: You must add your function to the export, in order for the module to be used).
 module.exports = {
     allCompanies
 }

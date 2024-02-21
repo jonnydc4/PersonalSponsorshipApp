@@ -10,6 +10,8 @@ const allInfluencers = async () => {
     return await model.getAllInfluencers()
 }
 
+// Exporting the functions to be used in the routes 
+// (Important Note: You must add your function to the export, in order for the module to be used).
 module.exports = {
     allInfluencers
 }
