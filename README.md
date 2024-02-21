@@ -12,9 +12,19 @@
    ![image](https://github.com/jonnydc4/PersonalSponsorshipApp/assets/71983496/d01a67f7-8f62-4e1a-9fcb-8d670737f0cc)
 
 ## Running the App
-1. Run $ docker-compose up
-2. Open the docker desktop to see the running containers
-   
+1. CD into /client directory
+2. Run `$ npm run build` (Important Note: You must run this command every time before you docker-compose up.)
+   ![npm run build](https://github.com/jonnydc4/PersonalSponsorshipApp/assets/92762025/bd183646-a06e-4efd-903d-9eb436a60346)
+
+4. CD back into main directory. 
+5. Run `$ docker-compose up` to start the application. Check for any errors that might occur at startup, as this could indicate a missed step or that a container failed to launch properly.
+
+    ![docker-up](https://github.com/jonnydc4/PersonalSponsorshipApp/assets/92762025/ff17b7e7-429c-463b-98f9-ca207e3ef09d)
+
+
+7. Open the docker desktop to see the running containers.
+   ![docker container](https://github.com/jonnydc4/PersonalSponsorshipApp/assets/92762025/5b97e5ba-2dd7-4e93-a739-1b1b4e726514)
+
 ### Hot Reloading for Backend
 Docker is now configured to monitor for changes made in your local server.js. When a change is made and saved it should automatically restart the container.
 (Note: This works strictly in server.js. It does not monitor changes made to any file in the client directory.)
@@ -42,3 +52,4 @@ The client directory holds our react front end, however, our backend only utiliz
 4. $ docker-compose build  
    
    This will rebuild the images specified in our docker-compose.yml. If docker-compose up -d is not working the way you want, try this command first and hopefully it will work as expected. This applies mostly to if you are editing the dockerfile or docker-compose.yml.
+
