@@ -1,3 +1,9 @@
+// <--------------- influencerSearch.js -  --------------->
+// Used for searching and sending offers to influencers,
+// while allowing users to filter influencers, view details, and communicate
+// offers based on job ID. 
+// -------------------------------------------------------------
+
 import React, { useEffect, useState } from 'react';
 import CommonFrame from './components/CommonFrame';
 import { useParams } from 'react-router-dom';

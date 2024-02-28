@@ -15,3 +15,5 @@ const allCompanies = async () => {
 module.exports = {
     allCompanies
 }
+
+// <---------------  --------------->

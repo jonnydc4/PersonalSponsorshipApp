@@ -1,3 +1,6 @@
+// <--------------- JobManager.js - used in managing all the jobs currently avaiable for that account --------------->
+// Adds the ability to view all jobs, and modify them as needed.
+
 import React, {useEffect, useState}  from 'react';
 import ListDetailFrame from '../../components/ListDetailFrame';
 import JobsList from './components/JobsList';
