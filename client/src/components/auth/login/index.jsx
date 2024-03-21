@@ -1,11 +1,8 @@
 import React, { useState } from 'react'
-import { doSignInWithEmailAndPassword, doSignInWithGoogle } from '../../../firebase/auth'
+import { doSignInWithEmailAndPassword, doSignInWithGoogle} from '../../../firebase/auth'
 import { useAuth } from '../../../contexts/authContext'
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import Link from '@mui/material/Link';
+import {Box, Typography, TextField, Button, Link} from '@mui/material';
+import ForgotPassword from "../forgot_password/index";
 import {useNavigate} from "react-router-dom";
 
 const Login = () => {
@@ -22,8 +19,8 @@ const Login = () => {
             setIsSigningIn(true)
             await doSignInWithEmailAndPassword(email, password).then(() => {
                 navigate('/home')
-            }).catch(() => {
-                console.log("Login failed")
+            }).catch((err) => {
+                alert(`Login failed\nError: ${err.code}`)
                 setIsSigningIn(false)
             })
             // doSendEmailVerification()
@@ -37,8 +34,8 @@ const Login = () => {
             doSignInWithGoogle().then(() => {
                 navigate('/home')
             }).catch(err => {
-                console.log(err)
-                console.log("Google login failed")
+                console.log(err.code)
+                alert(`Google login failed\nError: ${err.code}`)
                 setIsSigningIn(false)
             })
         }
@@ -95,6 +92,8 @@ const Login = () => {
                             variant="outlined"
                             fullWidth
                         />
+                        <ForgotPassword/>
+
                         {errorMessage && (
                             <Typography color="error" fontWeight="bold">
                                 {errorMessage}
@@ -131,11 +130,6 @@ const Login = () => {
                         variant="outlined"
                         fullWidth
                         sx={{ mt: 1, py: 1.25, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 1 }}
-                        startIcon={
-                            <svg width="20" height="20" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                {/* Google SVG icon */}
-                            </svg>
-                        }
                     >
                         {isSigningIn ? 'Signing In...' : 'Continue with Google'}
                     </Button>

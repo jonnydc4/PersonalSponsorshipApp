@@ -92,7 +92,9 @@ function App() {
             element: <Home />,
         },
     ];
+
     let routesElement = useRoutes(routesArray);
+
     return (
         <AuthProvider>
             <Header />
