@@ -69,46 +69,78 @@ import Register from "./components/auth/register";
 import Header from "./components/header";
 import Home from "./components/home";
 
-import { AuthProvider } from "./contexts/authContext";
-import { useRoutes } from "react-router-dom";
+import {AuthProvider} from "./contexts/authContext";
+import {useRoutes} from "react-router-dom";
 import {Box} from "@mui/material";
+import LandingPage from "./components/landing_page/LandingPage";
+import {createTheme, ThemeProvider} from "@mui/material/styles";
 
 function App() {
+    const theme = createTheme({
+        palette: {
+            // Base colors
+            background: {
+                default: '#f5f5f5', // A light, neutral background
+            },
+            primary: {
+                main: '#8e44ad', // A bold, distinctive purple for accents
+            },
+            secondary: {
+                main: '#34495e', // A deep, rich blue for contrasting elements
+            },
+            // Additional colors as needed
+        },
+        typography: {
+            // Custom typography for that unique hipster feel
+            fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+            fontWeightLight: 400,
+            fontWeightRegular: 500,
+            fontWeightMedium: 600,
+            fontWeightBold: 700
+
+            // Add more styles as needed
+        },
+        // Additional theming options as needed
+    });
+
     const routesArray = [
         {
             path: "*",
-            element: <Login />,
+            element: <LandingPage/>,
         },
         {
             path: "/login",
-            element: <Login />,
+            element: <Login/>,
         },
         {
             path: "/register",
-            element: <Register />,
+            element: <Register/>,
         },
         {
             path: "/home",
-            element: <Home />,
+            element: <Home/>,
         },
     ];
 
     let routesElement = useRoutes(routesArray);
 
     return (
-        <AuthProvider>
-            <Header />
-            <Box
-                sx={{
-                    width: '100%', // Full width
-                    height: '100vh', // Full viewport height
-                    display: 'flex', // Use flexbox
-                    flexDirection: 'column', // Column direction
-                }}
-            >
-                {routesElement}
-            </Box>
-        </AuthProvider>
+        <ThemeProvider theme={theme}>
+            <AuthProvider>
+                <Header />
+                <Box
+                    sx={{
+                        width: '100%', // Full width
+                        height: '100vh', // Full viewport height
+                        display: 'flex', // Use flexbox
+                        flexDirection: 'column', // Column direction
+                        paddingTop: "50px"
+                    }}
+                >
+                    {routesElement}
+                </Box>
+            </AuthProvider>
+        </ThemeProvider>
     );
 }
 
