@@ -40,3 +40,13 @@ services:
       - "16543:80"
     depends_on:
       - postgres
+  mongodb:
+      image: mongo:latest
+      restart: always
+      ports:
+        - "27018:27017"
+      volumes:
+        - mongodb_nfluencr:/data/db
+
+volumes:
+  mongodb_nfluencr:

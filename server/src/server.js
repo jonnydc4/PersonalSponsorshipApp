@@ -22,3 +22,21 @@ process.on('exit', () => {
     console.log("Closing db pool");
     dbPool.end();
 })
+
+const db = require('./database/mongo-db');
+
+db.start('mongodb://localhost:27018/nfluencr', (database) => {
+    console.log('Connected to Database');
+
+    // Set up your express server, routes, etc.
+    const express = require('express');
+    const app = express();
+
+
+    const PORT = process.env.PORT || 3000;
+    app.listen(PORT, () => {
+        console.log(`Server running on port ${PORT}`);
+    });
+});
+
+// Additional application logic
