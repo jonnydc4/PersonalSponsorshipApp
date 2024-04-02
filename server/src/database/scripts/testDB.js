@@ -1,12 +1,10 @@
 const database = require('../mongo-db.js');
 
 database.start('mongodb://localhost:27018/nfluencr', async () => {
-
     try {
-        // Perform database operations here
-        // For example:
-        await database.findOne(database.models.User, { 'id': 1 }).then(user => {
-            console.log(user);
+        // Fetch all users from the User model
+        await database.find(database.models.User, {}).then(users => {
+            console.log('Users:', users);
         }).catch(error => {
             console.error('Error:', error);
         });

@@ -1,147 +1,291 @@
 // database.js - Database queries used in the application
-
-const {Pool} = require("pg");
-
-const pool = new Pool({
-    password: "root",
-    user: "root",
-    host: "postgres",
-});
-
-// A function to query the database and return results
-const query = async (text, params) => {
-    const client = await pool.connect();
-    try {
-        return await client.query(text, params);
-    } catch (error) {
-        console.error('Database query error', error);
-        throw error; // rethrow the error for further handling
-    } finally {
-        client.release(); // Ensure the client is released back to the pool
-    }
-};
+const database = require('../database/mongo-db.js');
 
 /* ------------------------User Table Queries------------------------ */
 const findUserByEmail = async (email) => {
-    const queryText = 'SELECT * FROM users WHERE email = $1';
-    const {rows} = await query(queryText, [email]);
-    return rows[0]; // returns undefined if no user is found
+    return await database.findOne(database.models.User, { email }); // Using the model name as a string
 };
 
 const updateUserPassword = async (email, newPassword) => {
-    const queryText = 'UPDATE users SET password = $1 WHERE email = $2;';
-    await query(queryText, [newPassword, email]);
+    try {
+        // Find the user by email and update the password
+        const updatedUser = await database.findOneAndUpdate(
+            database.models.User, // Model
+            { email: email }, // Query to find the user
+            { $set: { password: newPassword } }, // Update operation
+            { new: true } // Options (return the updated document)
+        );
+        console.log('Updated User:', updatedUser);
+    } catch (error) {
+        console.error('Error:', error);
+    }
 };
 
 const createNewUser = async (id, email, password, accountType) => {
-    const queryText = 'INSERT INTO users (id, email, password, account_type) VALUES ($1, $2, $3, $4) RETURNING id, email, account_type;';
-        const result = await query(queryText, [id, email, password, accountType]);
-        return result.rows[0];
+    try {
+        const newUser = {
+            _id: id, // MongoDB typically uses _id as the primary key
+            email: email,
+            password: password,
+            accountType: accountType
+        };
+
+        // Save the new user to the database
+        const savedUser = await database.save(database.models.User, newUser);
+        console.log('New User Created:', savedUser);
+        return savedUser;
+    } catch (error) {
+        console.error('Error:', error);
+        throw error; // rethrow the error for further handling
+    }
 };
 
 /* ------------------------Job Table Queries------------------------ */
 const createNewJob = async (company_id, title, description, location) => {
-    const queryText = `
-            INSERT INTO jobs (company_id, title, description, location)
-            VALUES ($1, $2, $3, $4)
-        `
-    await query(queryText, [company_id, title, description, location]);
-}
+    try {
+        const newJob = {
+            companyId: company_id, // Assuming the company_id field in MongoDB is named companyId
+            title: title,
+            description: description,
+            location: location
+        };
+
+        // Save the new job to the database
+        const savedJob = await database.save(database.models.Job, newJob);
+        console.log('New Job Created:', savedJob);
+        return savedJob;
+    } catch (error) {
+        console.error('Error:', error);
+        throw error; // rethrow the error for further handling
+    }
+};
 
 const getJobTable = async () => {
-    const queryText = 'SELECT * FROM jobs';
-    const jobsTable = await query(queryText, [])
-    return jobsTable.rows
-}
+    try {
+        // Retrieve all job documents from the database
+        const jobs = await database.find(database.models.Job, {});
+        console.log('Retrieved Jobs:', jobs);
+        return jobs;
+    } catch (error) {
+        console.error('Error:', error);
+        throw error; // rethrow the error for further handling
+    }
+};
 
 const getJobsByCompanyId = async (companyId) => {
-    const queryText = 'SELECT * FROM jobs WHERE company_id = $1'
-    return await query(queryText, [companyId]);
-}
+    try {
+        // Retrieve all job documents from the database where company_id matches
+        const jobs = await database.find(database.models.Job, { company_id: companyId });
+        console.log('Retrieved Jobs for Company ID:', companyId, jobs);
+        return jobs;
+    } catch (error) {
+        console.error('Error:', error);
+        throw error; // rethrow the error for further handling
+    }
+};
 
 /* ------------------------Job map Table Queries------------------------ */
 const getJobMapTable = async () => {
-    const queryText = 'SELECT * FROM job_map';
-    return await query(queryText, [])
-}
+    try {
+        // Retrieve all documents from the JobMap collection in the database
+        const jobMaps = await database.find(database.models.JobMap);
+        console.log('Retrieved Job Map:', jobMaps);
+        return jobMaps;
+    } catch (error) {
+        console.error('Error:', error);
+        throw error; // rethrow the error for further handling
+    }
+};
 
 /* ------------------------Company Table Queries------------------------ */
 const getCompanyTable = async () => {
-    const queryText = 'SELECT * FROM companies';
-    const companiesTable = await query(queryText, [])
-    return companiesTable.rows
-}
+    try {
+        // Retrieve all documents from the Company collection in the database
+        const companies = await database.find(database.models.Company);
+        console.log('Retrieved Companies:', companies);
+        return companies;
+    } catch (error) {
+        console.error('Error:', error);
+        throw error; // rethrow the error for further handling
+    }
+};
 const getCompanyById = async (companyId) => {
-    const queryText = 'SELECT * FROM companies WHERE id = $1'
-    return await query(queryText, [companyId]);
-}
+    try {
+        // Find a specific company by its ID
+        const company = await database.findOne(database.models.Company, {_id: companyId});
+        console.log('Retrieved Company:', company);
+        return company;
+    } catch (error) {
+        console.error('Error:', error);
+        throw error; // rethrow the error for further handling
+    }
+};
 
 const createNewCompany = async (id, companyName, email, address) => {
-    const queryText = 'INSERT INTO companies (id, name, email, address) VALUES ($1, $2, $3, $4) RETURNING id, name, email, address;';
-    const result = await query(queryText, [id, companyName, email, address]);
-    return result.rows[0];
+    try {
+        // Create a new company object
+        const newCompany = {
+            _id: id,  // or simply use an autogenerated ObjectId by MongoDB
+            name: companyName,
+            email: email,
+            address: address
+        };
+
+        // Insert the new company into the 'Company' collection
+        const savedCompany = await database.save(database.models.Company, newCompany);
+        console.log('Company Created:', savedCompany);
+        return savedCompany;
+    } catch (error) {
+        console.error('Error:', error);
+        throw error; // rethrow the error for further handling
+    }
 };
 
 /* ------------------------Influencer Table Queries------------------------ */
 const getInfluencerTable = async () => {
-    const queryText = 'SELECT * FROM influencers';
-    return await query(queryText, [])
-}
+    try {
+        // Fetch all documents from the 'Influencer' collection
+        const influencers = await database.find(database.models.Influencer);
+        console.log('Fetched Influencers:', influencers);
+        return influencers;
+    } catch (error) {
+        console.error('Error:', error);
+        throw error; // rethrow the error for further handling
+    }
+};
 
 const getInfluencerById = async (influencerId) => {
-    const queryText = 'SELECT * FROM companies WHERE id = $1'
-    return await query(queryText, [influencerId]);
-}
+    try {
+        // Find the influencer document by its ID in the 'Influencer' collection
+        const influencer = await database.findOne(database.models.Influencer, {_id: influencerId});
+        console.log('Fetched Influencer:', influencer);
+        return influencer;
+    } catch (error) {
+        console.error('Error:', error);
+        throw error; // rethrow the error for further handling
+    }
+};
 
 const createNewInfluencer = async (id, name, email) => {
-    const queryText = 'INSERT INTO influencers (id, name, email) VALUES ($1, $2, $3) RETURNING id, name, email;';
-    const result = await query(queryText, [id, name, email]);
-    return result.rows[0];
+    try {
+        // Create a new influencer object
+        // This could realistically be made into a single line. But splitting it up is easier to read.
+        const newInfluencer = new database.models.Influencer({
+            _id: id, // MongoDB typically uses _id as the identifier
+            name: name,
+            email: email
+        });
+
+        // Save the new influencer document to the database
+        const savedInfluencer = await database.save(newInfluencer);
+        console.log('Influencer created:', savedInfluencer);
+        return savedInfluencer;
+    } catch (error) {
+        console.error('Error:', error);
+        throw error; // rethrow the error for further handling
+    }
 };
 
 /* ------------------------Notification Table Queries------------------------ */
 const getNotificationTable = async () => {
-    const queryText = 'SELECT * FROM notifications';
-    return await query(queryText, [])
-}
+    try {
+        // Fetch all notifications from the database
+        const notifications = await database.find(database.models.Notification);
+        console.log('All notifications:', notifications);
+        return notifications;
+    } catch (error) {
+        console.error('Error:', error);
+        throw error; // rethrow the error for further handling
+    }
+};
 
 const addJobToInfluencer = async (influencerId, jobId) => {
-    const queryText = 'INSERT INTO job_map (job_id, influencer_id) VALUES ($1, $2)';
-    await query(queryText, [jobId, influencerId]);
+    try {
+        // Update the influencer document to include the new job ID in their job list
+        await database.update(
+            database.models.Influencer,
+            {_id: influencerId},
+            {$addToSet: {jobs: jobId}}
+        );
+        console.log(`Job ${jobId} added to influencer ${influencerId}`);
+    } catch (error) {
+        console.error('Error:', error);
+        throw error; // rethrow the error for further handling
+    }
 };
 
 const createNewNotification = async (company_id, influencer_id, job_id, message) => {
-    const queryText = `
-            INSERT INTO notifications (company_id, influencer_id, job_id, message)
-            VALUES ($1, $2, $3, $4)
-        `
-    return await query(queryText, [company_id, influencer_id, job_id, message])
-}
+    try {
+        // Create a new notification document
+        const notification = {
+            company_id,
+            influencer_id,
+            job_id,
+            message,
+            is_read: false,
+            notification_time: new Date() // Current time
+        };
+
+        // Insert the notification into the database
+        await database.save(
+            database.models.Notification,
+            notification
+        );
+        console.log(`Notification created for influencer ${influencer_id}`);
+    } catch (error) {
+        console.error('Error:', error);
+        throw error; // rethrow the error for further handling
+    }
+};
 
 const getJobOffersForInfluencer = async (influencerId) => {
-    const queryText = `
-        SELECT n.id, n.company_id, n.job_id, n.message, n.is_read, n.notification_time,
-               j.title, j.description, j.location,
-               c.name as company_name
-        FROM notifications n
-        JOIN jobs j ON n.job_id = j.id
-        JOIN companies c ON j.company_id = c.id
-        WHERE n.influencer_id = $1;
-    `;
-    const result = await query(queryText, [influencerId]);
-    return result.rows;
+    try {
+        // Perform a query to fetch job offers for the influencer
+        const jobOffers = await database.find(
+            database.models.Notification,
+            { influencer_id: influencerId }
+        );
+
+        // Optionally, perform additional queries to fetch related job and company details
+        // This is necessary if the necessary job and company data is not embedded in the notifications
+
+        // For each notification, fetch the job and company details
+        const detailedJobOffers = await Promise.all(
+            jobOffers.map(async (offer) => {
+                const job = await database.findOne(database.models.Job, { _id: offer.job_id });
+                const company = await database.findOne(database.models.Company, { _id: job.company_id });
+
+                return {
+                    ...offer,
+                    jobTitle: job.title,
+                    jobDescription: job.description,
+                    jobLocation: job.location,
+                    companyName: company.name
+                };
+            })
+        );
+
+        return detailedJobOffers;
+    } catch (error) {
+        console.error('Error:', error);
+        throw error; // rethrow the error for further handling
+    }
 };
 
 //delete the notification from the table
 const removeNotification = async (offerId) => {
-    const queryText = 'DELETE FROM notifications WHERE id = $1';
-    await query(queryText, [offerId]);
+    try {
+        // Use the deleteOne method to remove the notification
+        await database.deleteOne(database.models.Notification, { _id: offerId });
+
+        // You can return a response or handle the result as needed
+        console.log(`Notification with ID ${offerId} has been successfully removed.`);
+    } catch (error) {
+        console.error('Error removing notification:', error);
+        throw error; // rethrow the error for further handling
+    }
 };
 
-process.on('exit', () => {
-    console.log("Closing db pool");
-    pool.end();
-})
 
 module.exports = {
     query,
