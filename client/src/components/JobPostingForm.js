@@ -34,8 +34,8 @@ const JobPostingForm = () => {
                 setDescription('');
                 setLocation('');
 
+                navigate('/');
                 navigate(-1);
-
             } else {
                 console.error('Error posting the job:', response.statusText);
             }

@@ -1,4 +1,3 @@
-// database.js - Database queries used in the application
 const database = require('../database/mongo-db.js');
 
 /* ------------------------User Table Queries------------------------ */

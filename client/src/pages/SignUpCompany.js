@@ -1,3 +1,7 @@
+// <--------------- SignUpCompany.js - Signup page used to creating an company account --------------->
+// This file serves as the sign-up page for companies. It contains a form that allows the user to input their email, password, and name.
+// When the user submits the form, the data is sent to the server and the user is registered.
+
 import * as React from 'react';
 import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox, Link, Paper, Box, Grid, Typography, ThemeProvider } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';

@@ -1,24 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import CommonFrame from './CommonFrame';
-import JobDetails from './JobDetails';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
 
 const JobOffersPage = () => {
     const [jobOffers, setJobOffers] = useState([]);
     const [selectedJob, setSelectedJob] = useState(null);
+    const [jobAccepted, setJobAccepted] = useState(false);
 
     const userId = localStorage.getItem('userId')
     console.log(userId)
 
     // Mock function to fetch job offers (replace with actual API call)
     useEffect(() => {
-
-
         fetchJobOffers();
     }, []);
 
     const fetchJobOffers = async () => {
         try {
-            const response = await fetch(`/api/jobOffers/${userId}`); // Update with your actual API endpoint
+            const response = await fetch(`/api/jobOffers/${userId}`);
             const data = await response.json();
             setJobOffers(data);
             const mappedData = data.map(offer => ({
@@ -37,6 +41,8 @@ const JobOffersPage = () => {
        // const selected = jobOffers.find(job => job.id === parseInt(jobId, 10));
        // console.log("Found Job: ", selected);
         setSelectedJob(jobObject);
+        const isAccepted = localStorage.getItem(`jobAccepted_${jobObject.job_id}`) === 'true';
+        setJobAccepted(isAccepted);
        // markNotificationAsRead(jobId);
     };
 
@@ -58,11 +64,13 @@ const JobOffersPage = () => {
             const response = await fetch('/api/acceptJob', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ influencerId: userId, jobId: selectedJob.job_id }) // Replace 1 with actual influencerId
+                body: JSON.stringify({ influencerId: userId, jobId: selectedJob.job_id })
             });
             const data = await response.json();
             if (data.message === 'Job accepted successfully') {
                 alert(`Accepted job: ${selectedJob.title}`);
+                localStorage.setItem(`jobAccepted_${selectedJob.job_id}`, 'true');
+                setJobAccepted(true);
             } else {
                 alert('Failed to accept job.');
             }
@@ -102,20 +110,39 @@ const JobOffersPage = () => {
     };
 
     // Job action UI (accept/reject buttons)
-    const jobActionUI = (
-        <div style={{ textAlign: 'center', marginTop: '2px' }}>
-            <h2>Selected Job: {selectedJob ? selectedJob.title : 'None'}</h2>
-            <button onClick={handleAcceptJob} style={{ marginRight: '10px' }}>Accept Job!</button>
-            <button onClick={handleRejectJob}>Reject Job</button>
-        </div>
+    const jobActionUI = jobAccepted ? (
+        <Typography variant="h5" textAlign="center" marginTop={2}>
+            You have accepted this job
+        </Typography>
+    ) : (
+        <Container maxWidth="sm" sx={{ marginTop: 2 }}>
+            <Typography variant="h6" textAlign="center">
+                Selected Job: {selectedJob ? selectedJob.title : 'None'}
+            </Typography>
+            <Card variant="outlined" sx={{ marginTop: 2 }}>
+                <CardContent>
+                    <Typography variant="body1">
+                        {selectedJob ? selectedJob.description : 'Please select a job to see details.'}
+                    </Typography>
+                </CardContent>
+                <CardActions sx={{ justifyContent: 'center', marginBottom: 2 }}>
+                    <Button variant="contained" color="primary" onClick={handleAcceptJob} sx={{ marginRight: '10px' }}>
+                        Accept Job!
+                    </Button>
+                    <Button variant="outlined" color="secondary" onClick={handleRejectJob}>
+                        Reject Job
+                    </Button>
+                </CardActions>
+            </Card>
+        </Container>
     );
 
     return (
-        <>
-            <CommonFrame items={jobOffers} onSelectItem={handleJobSelection} >
+        <Container maxWidth={false}>
+            <CommonFrame items={jobOffers} onSelectItem={handleJobSelection}>
                 {jobActionUI}
             </CommonFrame>
-        </>
+        </Container>
     );
 
 };

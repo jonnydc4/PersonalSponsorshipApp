@@ -6,7 +6,7 @@ import './NavBar.css';
 const navItems = [
   {
     label: "Home",
-    urlPath: '/home',
+    urlPath: '/',
   },{
     label: "Jobs",
     urlPath: '/jobs',

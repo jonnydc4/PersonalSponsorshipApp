@@ -1,18 +1,24 @@
+// <--------------- userController.js - contains all controllers dealing with user related operations --------------->
 const model = require('../models/model');
 const util = require('../utils/util')
 
+// Checks whether the email is in the correct format (ex. no spaces, @ symbol, and a domain)
+// Otherwise, it throws an error message.
 const checkEmailFormat = (email) => {
     if (!/\S+@\S+\.\S+/.test(email)) throw new Error('Invalid Email.');
 }
 
+// Checks whether the email is empty. If it is, it throws an error message.
 const checkEmailEmpty = (email) => {
     if (!email) throw new Error('Email is required.');
 }
 
+// Checks whether the password is empty. If it is, it throws an error message.
 const checkPasswordEmpty = (password) => {
     if (!password) throw new Error('Password is required.');
 }
 
+// Checks whether the email and password fields are empty. If they are, it throws an error message.
 const checkLoginFieldsEmpty = (email, password) => {
     if (!email || !password) {
         if (!email && !password) throw new Error('Email and password are required.');
@@ -21,6 +27,8 @@ const checkLoginFieldsEmpty = (email, password) => {
     }
 }
 
+// Checks whether the password is less than 8 characters. If it is, it throws an error message.
+// MIN PASSWORD length is 8 characters.
 const checkPasswordLength = (password) => {
     const MIN_PASSWORD_LENGTH = 8
     if (password.length < MIN_PASSWORD_LENGTH) throw new Error('Password too short.');
@@ -38,6 +46,8 @@ const verifyUserExists = async (email) => {
     return user
 }
 
+// Used to verify that the user does not exist in the database. If the user already exists, it throws an error message.
+// For further details, see model.js
 const verifyUserDoesNotExist = async (email) => {
     const user = await model.findUserByEmail(email);
 
@@ -46,6 +56,8 @@ const verifyUserDoesNotExist = async (email) => {
     }
 }
 
+// Authenticates the user by checking the password against the hashed password in the database.
+// For further details, see model.js
 const authenticateUserByPassword = async (username, password) => {
     const user = await verifyUserExists(username);
 
@@ -58,6 +70,9 @@ const authenticateUserByPassword = async (username, password) => {
     return user;
 };
 
+// Attempts to perform login for user signing into service by calling previous methods defined above 
+// or below in this controller (usercontroller.js).
+// For further details, see model.js
 const performLogin = async (email, password) => {
     checkLoginFieldsEmpty(email, password);
     checkEmailFormat(email);
@@ -67,6 +82,7 @@ const performLogin = async (email, password) => {
 }
 
 // Attempts to perform register for new user signing up for service
+// For further details, see model.js
 const performRegister = async (accountInfo) => {
     const accountType = accountInfo.accountType
     const email = accountInfo.email
@@ -75,7 +91,7 @@ const performRegister = async (accountInfo) => {
     checkLoginFieldsEmpty(email, password);
     checkEmailFormat(email);
     checkPasswordLength(password);
-    await verifyUserDoesNotExist(email);
+    await verifyUserDoesNotExist(email); 
 
     const uuid = util.generateUniqueId()
     const user = await model.createNewUser(uuid, email, password, accountType);
@@ -83,6 +99,9 @@ const performRegister = async (accountInfo) => {
     let name = ''
     let address = ''
 
+    // Depending on user type, create a new user in the database. 
+    // This is because companies and influencers have different fields in the database.
+    // For further details, see model.js
     switch (accountType) {
         case "influencer":
             name = accountInfo.name
@@ -101,6 +120,7 @@ const performRegister = async (accountInfo) => {
     return user
 }
 
+// Error handling used in dealing with login related errors.
 function handleLoginError(error) {
     let errorMessage = {};
     let statusCode;
