@@ -99,7 +99,7 @@ const InfluencerSearch = () => {
 
     return (
         <>
-            <h1 style={{ textAlign: 'center' }}>Influencer Search</h1>
+            <h1 style={{ textAlign: 'center' }}></h1>
             <CommonFrame items={filteredInfluencers} onSelectItem={handleSelectInfluencer} searchBar={searchBar}>
                 {offerSendingUI}
             </CommonFrame>
