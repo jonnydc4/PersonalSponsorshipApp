@@ -1,3 +1,8 @@
+// <--------------- LoginPage.js - Page that serves as the login portal into the web application --------------->
+// Users are prompted to enter their email and password in order to access the application.
+// If the user does not have an account, they are prompted to sign up.
+// Likewise, if there is an issue with any of the credentials, the user is prompted with an error message.
+
 import React, {useState} from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';

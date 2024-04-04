@@ -1,4 +1,6 @@
-// routes.js - Express route definitions
+// <--------------- routes.js contains all the routes for the server. --------------->
+// Incoporating the [MVC] design pattern, the routes.js file is responsible for handling the requests 
+// from the client and sending the appropriate responses.
 
 const express = require('express')
 const userController = require('../controllers/userController')
@@ -10,7 +12,8 @@ const {locals} = require("express/lib/application");
 
 const router = express.Router()
 
-// Login endpoint called by LoginPage.js (Handles Login)
+// Endpoint that services LoginPage.js - Used to handle the user login
+// For further details, see userController.js
 router.post("/api/login", async (req, res) => {
     try {
         const {email, password} = req.body;
@@ -22,7 +25,8 @@ router.post("/api/login", async (req, res) => {
     }
 });
 
-// post a job to the database
+// Endpoint that serves to post a job to the database
+// For further details, see jobController.js
 router.post('/api/postJob', async (req, res) => {
     try {
         // todo need to update this magic number to something real
@@ -35,6 +39,8 @@ router.post('/api/postJob', async (req, res) => {
     }
 });
 
+// Endpoint that fetches all available jobs from the database.
+// For further details, see jobController.js
 router.get("/api/allJobs", async (req, res) => {
     // const client = await dbPool.connect();
     try {
@@ -47,6 +53,8 @@ router.get("/api/allJobs", async (req, res) => {
     }
 });
 
+// Endpoint that fetches all companies currently created within the database.
+// For further details, see companyController.js
 router.get("/api/allCompanies", async (req, res) => {
     try {
         const companies = await companyController.allCompanies()
@@ -57,6 +65,8 @@ router.get("/api/allCompanies", async (req, res) => {
     }
 });
 
+// Endpoint that fetches all influencers currently created within the database.
+// For further details, see influencerController.js
 router.get("/api/influencers", async (req, res) => {
     try {
         const influencers = await influencerController.allInfluencers()
@@ -67,8 +77,9 @@ router.get("/api/influencers", async (req, res) => {
     }
 });
 
-// Get all jobs for a specific company
 
+// Endpoint that fetches all jobs posted from a certain company (provided an actual companyID is provided that matches within database).
+// For further details, see jobController.js
 router.get("/api/jobs/:companyId", async (req, res) => {
     const {companyId} = req.params;
     try {
@@ -94,6 +105,8 @@ router.post("/api/sendOffer", async (req, res) => {
 });
 
 //Influencer get jobOffers API
+// Endpoint that fetches all jobs offers currently sent to a certain influencer (providing influencerID matches actual influencer in database).
+// For further details, see notificationController.js
 router.get("/api/jobOffers/:influencerId", async (req, res) => {
     const { influencerId } = req.params;
     try {
@@ -106,6 +119,8 @@ router.get("/api/jobOffers/:influencerId", async (req, res) => {
 });
 
 //Influencer AcceptJobOffer API
+// Endpoint that updates database when influencer has accepted a job offer from a company.
+// For further details, see jobController.js
 router.post("/api/acceptJob", async (req, res) => {
     const { influencerId, jobId } = req.body;
     try {
@@ -118,19 +133,22 @@ router.post("/api/acceptJob", async (req, res) => {
 });
 
  //Influencer RejectJobOffer API
+ // Endpoint that updates database when influencer has rejected a job offer from a company.
+ // For further details, see notificationController.js
 router.post("/api/rejectJobOffer", async (req, res) => {
     const { offerId } = req.body; // offerId is the ID of the job offer (notification)
     try {
         await notificationController.rejectJobOffer(offerId);
         res.status(200).json({ message: 'Job offer rejected successfully' });
     } catch (error) {
-        console.error('Error rejecting job offer:', error);
+        console.error('Error rejecting job offer:', error); // console statement signifying error rejecting offer
         res.status(500).send(error);
     }
 });
 
 
 // Endpoint to handle user registration
+// Endpoint that handles registering users to the database.  For further details, see userController.js
 router.post('/api/register', async (req, res) => {
     try {
         const accountInfo = req.body;

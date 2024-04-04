@@ -1,3 +1,7 @@
+// <--------------- ResetPassword.js - Used in reseting password of user, in the event they forget --------------->
+// Page contains a form that allows the user to input their new password and confirm it.
+// When the user submits the form, the data is sent to the server and the user's password is reset (if the passwords match).
+
 import React, {useState} from 'react';
 import {
     Avatar,

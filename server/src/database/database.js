@@ -1,4 +1,6 @@
-// database.js - Database queries used in the application
+// <--------------- database.js - Database queries used in the application --------------->
+// This file contains all the database queries used in the application,
+// which are used to interact with the database, by fetching, updating, or deleting data.
 
 const {Pool} = require("pg");
 

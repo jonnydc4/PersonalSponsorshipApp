@@ -29,10 +29,45 @@ const generateUniqueId = () => {
     return uuidv4()
 }
 
+const loadTestData = async () => {
+    // Edit this data as needed for pre-loaded test data.
+
+    try {
+        // Load a test influencer
+        let id = generateUniqueId()
+        let name = "John Travolta"
+        let email = "JT@gmail.com"
+        let password = "thunderbird"
+
+
+        // Check if the data has been loaded already and returns nothing if it has.
+        let testUser = await model.findUserByEmail(email)
+        if (typeof testUser != 'undefined') return
+
+        await model.createNewUser(id, email, password, "influencer")
+        await model.createNewInfluencer(id, name, email)
+
+        // Load a test company
+        id = generateUniqueId()
+        name = "Warner Brothers"
+        email = "wb@gmail.com"
+        let address = "523 Hollywood Blvd"
+
+        await model.createNewUser(id, email, password, "company")
+        await model.createNewCompany(id, name, email, address)
+
+        // Load a test job
+        await model.createNewJob(id,"Actor", "Need a Movie Star", "Los Angles, CA")
+    } catch (error) {
+        console.error('Error loading test data:', error);
+    }
+}
+
 module.exports = {
     isUserEmail,
     isNotANumber,
     encryptPassword,
     comparePassword,
-    generateUniqueId
+    generateUniqueId,
+    loadTestData
 }

@@ -1,3 +1,9 @@
+// <--------------- App.js - Contains all routes used within react enviroment --------------->
+// App.js is the main file that contains all the routes used within the react enviroment.
+// It is responsible for handling the different routes and rendering the appropriate components.
+// Important Note: Any new pages or components that are created must be added to the routes in order to be used.
+// For further details, see the routes below.
+
 import React from 'react';
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import Button from './components/Button';

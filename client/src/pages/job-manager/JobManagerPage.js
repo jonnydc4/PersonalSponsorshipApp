@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import CommonFrame from '../../components/CommonFrame'; // Adjust the import path as necessary
+
 import JobsList from './components/JobsList';
 import InfluencerSearchButton from '../../components/InfluencerSearchButton';
 import JobPostingForm from '../../components/JobPostingForm';
