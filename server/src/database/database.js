@@ -287,7 +287,6 @@ const removeNotification = async (offerId) => {
 
 
 module.exports = {
-    query,
     findUserByEmail,
     updateUserPassword,
     createNewJob,
