@@ -74,6 +74,7 @@ import {useRoutes} from "react-router-dom";
 import {Box} from "@mui/material";
 import LandingPage from "./components/landing_page/LandingPage";
 import {createTheme, ThemeProvider} from "@mui/material/styles";
+import CustomStepper from "./components/newUserProcess/CustomStepper";
 
 function App() {
     const theme = createTheme({
@@ -106,7 +107,7 @@ function App() {
     const routesArray = [
         {
             path: "*",
-            element: <LandingPage/>,
+            element: <CustomStepper/>,
         },
         {
             path: "/login",
@@ -134,7 +135,7 @@ function App() {
                         height: '100vh', // Full viewport height
                         display: 'flex', // Use flexbox
                         flexDirection: 'column', // Column direction
-                        paddingTop: "50px"
+                        paddingTop: "150px"
                     }}
                 >
                     {routesElement}
