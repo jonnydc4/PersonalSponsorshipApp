@@ -10,7 +10,6 @@ import {
     RadioGroup,
     FormControlLabel,
     Radio,
-    TextField,
     Box,
     Container, Snackbar
 } from '@mui/material';
@@ -61,7 +60,13 @@ export default function CustomStepper() {
 
 
     const handleBack = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep - 1);
+        if (activeStep === 1 && formSubmitted) {
+            setSnackbarMessage("Cannot change account type after submitting form.")
+            setSnackbarOpen(true)
+        } else {
+            setSnackbarOpen(false)
+            setActiveStep((prevActiveStep) => prevActiveStep - 1);
+        }
     };
 
     const handleReset = () => {
@@ -92,6 +97,9 @@ export default function CustomStepper() {
                         <Typography variant="h6" fontWeight="fontWeightLight" textAlign="center">Start connecting.</Typography>
                     </Box>
                 )
+            default:
+                console.error("Step does not exist.")
+                break
         }
     }
 
