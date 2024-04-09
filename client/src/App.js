@@ -120,6 +120,14 @@ function App() {
             path: "/home",
             element: <Home/>,
         },
+        {
+            path: "/profile_page",
+            element: <ProfilePage/>,
+        },
+        {
+            path: "/job-manager/components",
+            element: <JobManagerPage/>,
+        },
     ];
 
     let routesElement = useRoutes(routesArray);

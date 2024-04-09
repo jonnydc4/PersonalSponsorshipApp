@@ -8,6 +8,7 @@ import { useAuth } from '../../contexts/authContext'
 import { doSignOut } from '../../firebase/auth'
 import {Box} from "@mui/material";
 
+
 const Header = () => {
     const navigate = useNavigate()
     const { userLoggedIn } = useAuth()
