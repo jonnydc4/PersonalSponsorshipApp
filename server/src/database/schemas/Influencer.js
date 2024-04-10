@@ -1,10 +1,8 @@
-module.exports = function(mongoose) {
+const mongoose = require('mongoose');
+
     const influencerSchema = new mongoose.Schema({
-        id: mongoose.Schema.Types.ObjectId,
         name: { type: String, required: true },
         email: { type: String, unique: true, required: true }
     });
 
-
-    return mongoose.model('Influencer', influencerSchema);
-};
+module.exports = mongoose.model('Influencer', influencerSchema);

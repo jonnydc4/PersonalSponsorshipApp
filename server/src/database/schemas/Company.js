@@ -1,11 +1,11 @@
-module.exports = function(mongoose) {
+const mongoose = require('mongoose');
+
     const companySchema = new mongoose.Schema({
-        id: mongoose.Schema.Types.ObjectId,
         name: { type: String, required: true },
         email: { type: String, unique: true, required: true },
         address: String
     });
 
 
-    return mongoose.model('Company', companySchema);
-};
+    module.exports = mongoose.model('Company', companySchema);
+

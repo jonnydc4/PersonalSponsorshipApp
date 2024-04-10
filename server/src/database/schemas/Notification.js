@@ -1,4 +1,5 @@
-module.exports = function(mongoose) {
+const mongoose = require('mongoose');
+
     const notificationSchema = new mongoose.Schema({
         company: { type: mongoose.Schema.Types.ObjectId, ref: 'Company' },
         influencer: { type: mongoose.Schema.Types.ObjectId, ref: 'Influencer' },
@@ -9,5 +10,5 @@ module.exports = function(mongoose) {
     });
 
 
-    return mongoose.model('Notification', notificationSchema);
-};
+    module.exports = mongoose.model('Notification', notificationSchema);
+
