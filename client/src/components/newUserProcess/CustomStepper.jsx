@@ -54,7 +54,7 @@ export default function CustomStepper() {
             }
         }
         if (activeStep === 2) {
-            navigate("/dashboard")
+            navigate("/home")
         }
     };
 
