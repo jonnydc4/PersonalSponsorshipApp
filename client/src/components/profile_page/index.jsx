@@ -1,38 +1,107 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../contexts/authContext';
-import { Box, Button, Typography, Avatar, Grid } from '@mui/material';
 import { use } from 'bcrypt/promises';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
+import { AppBar, Toolbar, Typography, Button, Avatar, Box, Drawer, Grid } from '@mui/material';
+import Person2Icon from '@mui/icons-material/Person2';
+import SpaceDashboardIcon from '@mui/icons-material/SpaceDashboard';
+import LocalShippingIcon from '@mui/icons-material/LocalShipping';
+import MessageIcon from '@mui/icons-material/Message';
+import InventoryIcon from '@mui/icons-material/Inventory';
 
 const ProfilePage = () => {
     const { currentUser } = useAuth();
     const navigate = useNavigate();
 
     return (
-        <Box sx={{ p: 2 }}>
-            <AppBar position="fixed" color="default" sx={{ zIndex: 1201 }}>
-                <Toolbar>
-                    <Typography fontWeight="fontWeightMedium" variant="h5">
-                        Influinity
-                    </Typography>
+        <Box sx={{ display: 'flex' }}>
+        <Drawer
+            variant="permanent"
+            sx={{
+                width: 240,
+                flexShrink: 0,
+                [`& .MuiDrawer-paper`]: { width: 240, boxSizing: 'border-box' },
+            }}
+        >
+            <Box
+            // Used to add padding to the drawer and stop content from touching header.
+                component="main"
+                sx={{
+                    flexGrow: 1,
+                    p: 3,
+                    pt: 6,
+                    // Use marginTop or paddingTop to ensure content is visible below AppBar
+                    // Adjust the value according to your AppBar's height
+                    mt: 8, 
+                }}
+            >
+                <Button
+                    startIcon={<SpaceDashboardIcon />}
+                    onClick={() => navigate('/home')}
+                    sx={{
+                        pl: 3,
+                        pb: 2,
+                        display: 'flex',
+                        flexDirection: 'row', // Explicitly set the flex direction
+                        justifyContent: 'flex-start',
+                        alignItems: 'center',
+                        textAlign: 'left',
+                        width: '100%' // Ensure the button takes the full width for alignment
+                    }}
+                >
+                    Dashboard
+                </Button>
 
-                    <Box sx={{ flexGrow: 1 }} />
-                    <Button onClick={() => navigate('/home')} sx={{ pl: 1 }}>
-                        Home
-                    </Button>
-                    <Button sx={{ pl: 1 }} component={RouterLink} to="/job-manager/components">
-                        Job Listings
-                    </Button>
-                    <Button sx={{ pl: 1 }} component={RouterLink} to="/messages"> {/* Corrected typo in "Messages" */}
-                        Messages
-                    </Button>
-                    <Button color="primary" onClick={() => navigate('/profile_page')}>
-                        <Avatar sx={{ width: 24, height: 24 }} src={currentUser.photoURL} />
-                    </Button>
-                </Toolbar>
-            </AppBar>
+                <Button startIcon={<LocalShippingIcon />} component={RouterLink} to="/job-manager/components" sx={{
+                    pl: 3,
+                    pb: 2,
+                    display: 'flex',
+                    flexDirection: 'row', // Explicitly set the flex direction
+                    justifyContent: 'flex-start',
+                    alignItems: 'center',
+                    textAlign: 'left',
+                    width: '100%' // Ensure the button takes the full width for alignment
+                }}>
+                    Post Job
+                </Button>
+                <Button startIcon={<InventoryIcon/>} component={RouterLink} to="/job-manager/components" sx={{
+                    pl: 3,
+                    pb: 2,
+                    display: 'flex',
+                    flexDirection: 'row', // Explicitly set the flex direction
+                    justifyContent: 'flex-start',
+                    alignItems: 'center',
+                    textAlign: 'left',
+                    width: '100%' // Ensure the button takes the full width for alignment
+                }}>
+                    Job Listings
+                </Button>
+                <Button startIcon={<MessageIcon />} component={RouterLink} to="/messages" sx={{
+                    pl: 3,
+                    pb: 2,
+                    display: 'flex',
+                    flexDirection: 'row', // Explicitly set the flex direction
+                    justifyContent: 'flex-start',
+                    alignItems: 'center',
+                    textAlign: 'left',
+                    width: '100%' // Ensure the button takes the full width for alignment
+                }} >
+                    Messages
+                </Button>
+                <Button startIcon={<Person2Icon />} color="primary" onClick={() => navigate('/profile_page')} sx={{
+                    pl: 3,
+                    pb: 2,
+                    display: 'flex',
+                    flexDirection: 'row', // Explicitly set the flex direction
+                    justifyContent: 'flex-start',
+                    alignItems: 'center',
+                    textAlign: 'left',
+                    width: '100%' // Ensure the button takes the full width for alignment
+                }}>
+                    Profile
+                </Button>
+            </Box>
+        </Drawer>
             <Typography variant="h4" gutterBottom>
                 User Profile
             </Typography>
