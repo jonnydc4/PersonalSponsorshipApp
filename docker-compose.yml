@@ -12,7 +12,7 @@ services:
       - ./server/src:/usr/src/app/src/
       - ./server/build:/usr/src/app/build/
     depends_on:
-      - postgres
+      - mongodb
 
   mongodb:
       image: mongo:latest

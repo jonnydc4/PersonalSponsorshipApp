@@ -55,7 +55,7 @@ const createNewJob = async (company_id, title, description, location) => {
         return savedJob;
     } catch (error) {
         console.error('Error:', error);
-        throw error; // rethrow the error for further handling
+        throw error; // rethrow the error for further handling.
     }
 };
 
