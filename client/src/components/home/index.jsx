@@ -76,6 +76,18 @@ const Home = () => {
                     }}>
                         Job Listings
                     </Button>
+                    <Button startIcon={<InventoryIcon/>} component={RouterLink} to="/jobofferspage" sx={{
+                        pl: 3,
+                        pb: 2,
+                        display: 'flex',
+                        flexDirection: 'row', // Explicitly set the flex direction
+                        justifyContent: 'flex-start',
+                        alignItems: 'center',
+                        textAlign: 'left',
+                        width: '100%' // Ensure the button takes the full width for alignment
+                    }}>
+                        Job Offers
+                    </Button>
                     <Button startIcon={<MessageIcon />} component={RouterLink} to="/messages" sx={{
                         pl: 3,
                         pb: 2,
