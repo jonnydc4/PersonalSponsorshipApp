@@ -1,15 +1,38 @@
 import React, { useState } from 'react';
+import { useAuth } from '../../contexts/authContext';
 import { Box, Button, Typography, Avatar, Grid } from '@mui/material';
 import { use } from 'bcrypt/promises';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
 
 const ProfilePage = () => {
-    // State to manage the visibility of the profile details
-    const [showProfile, setShowProfile] = useState(false);
+    const { currentUser } = useAuth();
     const navigate = useNavigate();
 
     return (
         <Box sx={{ p: 2 }}>
+            <AppBar position="fixed" color="default" sx={{ zIndex: 1201 }}>
+                <Toolbar>
+                    <Typography fontWeight="fontWeightMedium" variant="h5">
+                        Influinity
+                    </Typography>
+
+                    <Box sx={{ flexGrow: 1 }} />
+                    <Button onClick={() => navigate('/home')} sx={{ pl: 1 }}>
+                        Home
+                    </Button>
+                    <Button sx={{ pl: 1 }} component={RouterLink} to="/job-manager/components">
+                        Job Listings
+                    </Button>
+                    <Button sx={{ pl: 1 }} component={RouterLink} to="/messages"> {/* Corrected typo in "Messages" */}
+                        Messages
+                    </Button>
+                    <Button color="primary" onClick={() => navigate('/profile_page')}>
+                        <Avatar sx={{ width: 24, height: 24 }} src={currentUser.photoURL} />
+                    </Button>
+                </Toolbar>
+            </AppBar>
             <Typography variant="h4" gutterBottom>
                 User Profile
             </Typography>
