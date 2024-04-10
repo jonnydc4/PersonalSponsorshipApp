@@ -8,11 +8,12 @@ import { useAuth } from '../../contexts/authContext'
 import { doSignOut } from '../../firebase/auth'
 import {Box} from "@mui/material";
 
+
 const Header = () => {
     const navigate = useNavigate()
     const { userLoggedIn } = useAuth()
     return (
-        <AppBar position="fixed" color="default" sx={{ zIndex: 1201 }}>
+        <AppBar position="fixed" color="default" sx={{ zIndex: 1201, pl: 3 }}>
             <Toolbar>
                 <Typography fontWeight="fontWeightMedium" variant="h5">
                     Influinity
