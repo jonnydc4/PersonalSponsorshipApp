@@ -40,6 +40,7 @@ const Home = () => {
                         onClick={() => navigate('/home')}
                         sx={{
                             pl: 3,
+                            pb: 2,
                             display: 'flex',
                             flexDirection: 'row', // Explicitly set the flex direction
                             justifyContent: 'flex-start',
@@ -53,6 +54,7 @@ const Home = () => {
 
                     <Button startIcon={<LocalShippingIcon />} component={RouterLink} to="/job-manager/components" sx={{
                         pl: 3,
+                        pb: 2,
                         display: 'flex',
                         flexDirection: 'row', // Explicitly set the flex direction
                         justifyContent: 'flex-start',
@@ -64,6 +66,7 @@ const Home = () => {
                     </Button>
                     <Button startIcon={<InventoryIcon/>} component={RouterLink} to="/job-manager/components" sx={{
                         pl: 3,
+                        pb: 2,
                         display: 'flex',
                         flexDirection: 'row', // Explicitly set the flex direction
                         justifyContent: 'flex-start',
@@ -75,6 +78,7 @@ const Home = () => {
                     </Button>
                     <Button startIcon={<MessageIcon />} component={RouterLink} to="/messages" sx={{
                         pl: 3,
+                        pb: 2,
                         display: 'flex',
                         flexDirection: 'row', // Explicitly set the flex direction
                         justifyContent: 'flex-start',
@@ -86,6 +90,7 @@ const Home = () => {
                     </Button>
                     <Button startIcon={<Person2Icon />} color="primary" onClick={() => navigate('/profile_page')} sx={{
                         pl: 3,
+                        pb: 2,
                         display: 'flex',
                         flexDirection: 'row', // Explicitly set the flex direction
                         justifyContent: 'flex-start',
