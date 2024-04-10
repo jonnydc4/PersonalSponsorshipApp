@@ -76,6 +76,7 @@ import {Box} from "@mui/material";
 import LandingPage from "./components/landing_page/LandingPage";
 import {createTheme, ThemeProvider} from "@mui/material/styles";
 import JobManagerPage from "./pages/job-manager/JobManagerPage";
+import JobOffersPage from "./components/JobOffersPage";
 
 function App() {
     const theme = createTheme({
@@ -129,6 +130,10 @@ function App() {
         {
             path: "/job-manager/components",
             element: <JobManagerPage/>,
+        },
+        {
+            path: "/jobofferspage",
+            element: <JobOffersPage/>
         }
     ];
 
