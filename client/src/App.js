@@ -149,7 +149,7 @@ function App() {
                         height: '100vh', // Full viewport height
                         display: 'flex', // Use flexbox
                         flexDirection: 'column', // Column direction
-                        paddingTop: "50px"
+                        paddingTop: "150px"
                     }}
                 >
                     {routesElement}

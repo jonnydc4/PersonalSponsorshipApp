@@ -9,9 +9,7 @@ import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 
 const Register = () => {
-
     const navigate = useNavigate()
-
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
@@ -22,15 +20,31 @@ const Register = () => {
 
     const onSubmit = async (e) => {
         e.preventDefault()
-        if(!isRegistering) {
+        // Check for password length
+        if (password.length < 6) {
+            setErrorMessage("Password must be at least 6 characters long.")
+            return; // Stop the form submission if the password is too short
+        }
+        if (confirmPassword.length < 6) {
+            setErrorMessage("Password must be at least 6 characters long.")
+            return; // Stop the form submission if the password is too short
+        }
+        if (confirmPassword !== password) {
+            setErrorMessage("Passwords must match.")
+            return; // Stop the form submission if the password is too short
+        }
+        if (!isRegistering) {
             setIsRegistering(true)
-            await doCreateUserWithEmailAndPassword(email, password).then(() => {
-                navigate('/login')
-            }).catch((err) => {
-                console.log(err.error)
-                console.log('Account creation failed')
-                setIsRegistering(false)
-            })
+            await doCreateUserWithEmailAndPassword(email, password)
+                .then(() => {
+                    navigate('/login')
+                })
+                .catch((err) => {
+                    console.log(err.error)
+                    console.log('Account creation failed')
+                    setIsRegistering(false)
+                    setErrorMessage(err.error) // Update to use the actual error message from your auth system
+                })
         }
     }
 
@@ -82,6 +96,8 @@ const Register = () => {
                             required
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
+                            error={password.length > 0 && password.length < 6}
+                            helperText={password.length > 0 && password.length < 6 ? "Password must be at least 6 characters long." : ""}
                             fullWidth
                         />
                         <TextField
@@ -92,6 +108,8 @@ const Register = () => {
                             required
                             value={confirmPassword}
                             onChange={(e) => setConfirmPassword(e.target.value)}
+                            error={confirmPassword.length > 0 && confirmPassword.length < 6}
+                            helperText={confirmPassword.length > 0 && confirmPassword.length < 6 ? "Password must be at least 6 characters long." : ""}
                             fullWidth
                         />
                         {errorMessage && (
@@ -111,7 +129,12 @@ const Register = () => {
                         </Button>
                         <Typography variant="body2" textAlign="center" mt={2}>
                             Already have an account?{' '}
-                            <Link href="/login" underline="hover">
+                            <Link
+                                onClick={() => {
+                                    navigate("/login")
+                                }}
+                                underline="hover"
+                            >
                                 Continue
                             </Link>
                         </Typography>
