@@ -115,8 +115,8 @@ const getCompanyById = async (companyId) => {
         console.log('Retrieved Company:', company);
         return company;
     } catch (error) {
-        console.error('Error:', error);
-        throw error; // rethrow the error for further handling
+        // console.error('Error from database.js:', error);
+        return null
     }
 };
 
@@ -160,8 +160,8 @@ const getInfluencerById = async (influencerId) => {
         console.log('Fetched Influencer:', influencer);
         return influencer;
     } catch (error) {
-        console.error('Error:', error);
-        throw error; // rethrow the error for further handling
+        // console.error('Error from database.js:', error);
+        return null
     }
 };
 
@@ -301,6 +301,8 @@ module.exports = {
     removeNotification,
     createNewUser,
     createNewInfluencer,
-    createNewCompany
+    createNewCompany,
+    getInfluencerById,
+    getCompanyById
 };
 

@@ -9,6 +9,7 @@ const companyController = require('../controllers/companyController')
 const influencerController = require('../controllers/influencerController')
 const notificationController = require('../controllers/notificationController')
 const {locals} = require("express/lib/application");
+const {getInfluencerById, getCompanyById} = require("../database/database");
 
 const router = express.Router()
 
@@ -94,10 +95,10 @@ router.get("/api/jobs/:companyId", async (req, res) => {
 
 //Test that the company id is working JONAH
 router.post("/api/sendOffer", async (req, res) => {
-    const { influencer_id, job_id, message, company_id } = req.body;
+    const {influencer_id, job_id, message, company_id} = req.body;
     try {
         await notificationController.createNotification(company_id, influencer_id, job_id, message)
-        res.json({ status: 'success', message: 'Offer sent successfully' });
+        res.json({status: 'success', message: 'Offer sent successfully'});
     } catch (error) {
         console.error('Error sending offer:', error);
         res.status(500).send(error);
@@ -108,7 +109,7 @@ router.post("/api/sendOffer", async (req, res) => {
 // Endpoint that fetches all jobs offers currently sent to a certain influencer (providing influencerID matches actual influencer in database).
 // For further details, see notificationController.js
 router.get("/api/jobOffers/:influencerId", async (req, res) => {
-    const { influencerId } = req.params;
+    const {influencerId} = req.params;
     try {
         const jobOffers = await notificationController.getJobOffersForInfluencer(influencerId);
         res.status(200).json(jobOffers);
@@ -122,24 +123,24 @@ router.get("/api/jobOffers/:influencerId", async (req, res) => {
 // Endpoint that updates database when influencer has accepted a job offer from a company.
 // For further details, see jobController.js
 router.post("/api/acceptJob", async (req, res) => {
-    const { influencerId, jobId } = req.body;
+    const {influencerId, jobId} = req.body;
     try {
         await jobController.acceptJob(influencerId, jobId);
-        res.status(200).json({ message: 'Job accepted successfully' });
+        res.status(200).json({message: 'Job accepted successfully'});
     } catch (error) {
         console.error('Error accepting job:', error);
         res.status(500).send(error);
     }
 });
 
- //Influencer RejectJobOffer API
- // Endpoint that updates database when influencer has rejected a job offer from a company.
- // For further details, see notificationController.js
+//Influencer RejectJobOffer API
+// Endpoint that updates database when influencer has rejected a job offer from a company.
+// For further details, see notificationController.js
 router.post("/api/rejectJobOffer", async (req, res) => {
-    const { offerId } = req.body; // offerId is the ID of the job offer (notification)
+    const {offerId} = req.body; // offerId is the ID of the job offer (notification)
     try {
         await notificationController.rejectJobOffer(offerId);
-        res.status(200).json({ message: 'Job offer rejected successfully' });
+        res.status(200).json({message: 'Job offer rejected successfully'});
     } catch (error) {
         console.error('Error rejecting job offer:', error); // console statement signifying error rejecting offer
         res.status(500).send(error);
@@ -153,11 +154,31 @@ router.post('/api/register', async (req, res) => {
     try {
         const accountInfo = req.body;
         const user = await userController.performRegister(accountInfo);
-        res.status(201).send({message: "User created successfully", id: user.id, accountType: user.account_type });
+        res.status(201).send({message: "User created successfully", id: user.id, accountType: user.account_type});
     } catch (error) {
         console.log(error);
-        const { errorMessage, statusCode } = userController.handleAccountSignupError(error);
+        const {errorMessage, statusCode} = userController.handleAccountSignupError(error);
         return res.status(statusCode).json(errorMessage);
+    }
+});
+
+router.get('/api/getInfluencerByID', async (req, res) => {
+    const userID = req.query.id; // id is the ID of the user
+    try {
+        const influencer = await getInfluencerById(userID)
+        const company = await getCompanyById(userID)
+        if (influencer !== null) {
+            console.log(influencer)
+            res.send({userType: "influencer", userData: influencer})
+        } else if (company !== null) {
+            console.log(company)
+            res.send({userType: "company", userData: company})
+        } else {
+            console.log("User doesn't exist")
+            res.send({userType: null, userData: null})
+        }
+    } catch (error) {
+        res.status(500).send(error);
     }
 });
 
