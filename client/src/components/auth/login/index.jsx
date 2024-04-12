@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import {doSignInWithEmailAndPassword, doSignInWithGoogle} from '../../../firebase/auth'
 import {useAuth} from '../../../contexts/authContext'
-import {Box, Typography, TextField, Button, Link} from '@mui/material';
+import {Box, Typography, TextField, Button, Link, Stack} from '@mui/material';
 import ForgotPassword from "../forgot_password/index";
 import {useNavigate} from "react-router-dom";
 
@@ -44,37 +44,31 @@ const Login = () => {
     return (
         <>
             {userLoggedIn ? (
-                <Box
+                <Stack
+                    spacing={2}
                     sx={{
-                        width: '100%',
-                        height: '100vh',
-                        display: 'flex',
                         justifyContent: 'center',
                         alignItems: 'center',
                     }}
                 >
-                    <Box>
                         <Typography
                             variant="h3"
                             fontWeight="fontWeightBold"
                         >
                             You are already logged in.
                         </Typography>
-                    </Box>
-                    <Box>
                         <Typography variant="h6" fontWeight="fontWeightLight">
-                            Go to your
+                            Navigate to the home screen. ->
                             <Link
-                                onChange={() => {
+                                onClick={() => {
                                     navigate("/home")
                                 }}
                                 underline="hover"
                             >
-                                Profile
+                                home
                             </Link>
                         </Typography>
-                    </Box>
-                </Box>
+                </Stack>
             ) : (
                 <div>
                     <Box

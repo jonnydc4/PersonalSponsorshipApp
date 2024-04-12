@@ -63,6 +63,7 @@
 //
 // export default App;
 
+
 import Login from "./components/auth/login";
 import Register from "./components/auth/register";
 
@@ -77,9 +78,6 @@ import LandingPage from "./components/landing_page/LandingPage";
 import {createTheme, ThemeProvider} from "@mui/material/styles";
 import JobManagerPage from "./pages/job-manager/JobManagerPage";
 import JobOffersPage from "./components/JobOffersPage";
-
-
-
 
 function App() {
     const theme = createTheme({

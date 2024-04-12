@@ -20,7 +20,7 @@ const Home = () => {
     useEffect(() => {
         const handleRender = async () => {
             try {
-                const response = await fetch(`api/getInfluencerByID?id=${encodeURIComponent(currentUser.uid)}`)
+                const response = await fetch(`api/getUserTypeByID?id=${encodeURIComponent(currentUser.uid)}`)
                 const data = await response.json()
                 setUserType(data.userType)
                 setUserData(data.userData)
@@ -45,7 +45,7 @@ const Home = () => {
                     <Box sx={{
                         boxShadow: 'xl',
                     }}>
-                        <CustomStepper/>
+                        <CustomStepper setUserType={setUserType}/>
                     </Box>
                 </Box>
             </>

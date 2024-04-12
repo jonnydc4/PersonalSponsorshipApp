@@ -18,7 +18,7 @@ import CompanyForm from "./CompanyForm";
 
 const steps = ['Select Account Type', 'Fill Out Information', 'Start Connecting'];
 
-export default function CustomStepper() {
+export default function CustomStepper({setUserType}) {
     const [activeStep, setActiveStep] = useState(0);
     const [accountType, setAccountType] = useState('');
     const [formSubmitted, setFormSubmitted] = useState(false)
@@ -54,7 +54,7 @@ export default function CustomStepper() {
             }
         }
         if (activeStep === 2) {
-            navigate("/home")
+            setUserType(accountType.toLowerCase())
         }
     };
 

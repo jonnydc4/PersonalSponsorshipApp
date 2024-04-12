@@ -162,7 +162,7 @@ router.post('/api/register', async (req, res) => {
     }
 });
 
-router.get('/api/getInfluencerByID', async (req, res) => {
+router.get('/api/getUserTypeByID', async (req, res) => {
     const userID = req.query.id; // id is the ID of the user
     try {
         const influencer = await getInfluencerById(userID)

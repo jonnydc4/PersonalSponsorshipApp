@@ -7,6 +7,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
+import {Stack} from "@mui/material";
 
 const Register = () => {
     const navigate = useNavigate()
@@ -50,97 +51,125 @@ const Register = () => {
 
     return (
         <>
-            <Box
-                sx={{
-                    width: '100vw',
-                    height: '100vh',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                }}
-            >
-                <Box
+            {userLoggedIn ? (
+                <Stack
+                    spacing={2}
                     sx={{
-                        width: 384, // equivalent to w-96
-                        p: 4,
-                        boxShadow: 'xl',
-                        border: 1,
-                        borderRadius: 2,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: 2,
+                        justifyContent: 'center',
+                        alignItems: 'center',
                     }}
                 >
-                    <Typography variant="h5" textAlign="center" fontWeight="bold" mb={6}>
-                        Create a New Account
-                    </Typography>
-                    <Box
-                        component="form"
-                        onSubmit={onSubmit}
-                        sx={{ '& .MuiTextField-root': { mt: 2 }, display: 'flex', flexDirection: 'column', gap: 4 }}
+                    <Typography
+                        variant="h3"
+                        fontWeight="fontWeightBold"
                     >
-                        <TextField
-                            label="Email"
-                            type="email"
-                            autoComplete="email"
-                            required
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            fullWidth
-                        />
-                        <TextField
-                            disabled={isRegistering}
-                            label="Password"
-                            type="password"
-                            autoComplete="new-password"
-                            required
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            error={password.length > 0 && password.length < 6}
-                            helperText={password.length > 0 && password.length < 6 ? "Password must be at least 6 characters long." : ""}
-                            fullWidth
-                        />
-                        <TextField
-                            disabled={isRegistering}
-                            label="Confirm Password"
-                            type="password"
-                            autoComplete="off"
-                            required
-                            value={confirmPassword}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
-                            error={confirmPassword.length > 0 && confirmPassword.length < 6}
-                            helperText={confirmPassword.length > 0 && confirmPassword.length < 6 ? "Password must be at least 6 characters long." : ""}
-                            fullWidth
-                        />
-                        {errorMessage && (
-                            <Typography color="error" fontWeight="bold">
-                                {errorMessage}
-                            </Typography>
-                        )}
-                        <Button
-                            type="submit"
-                            disabled={isRegistering}
-                            variant="contained"
-                            color="primary"
-                            fullWidth
-                            sx={{ mt: 2 }}
+                        You are already logged in.
+                    </Typography>
+                    <Typography variant="h6" fontWeight="fontWeightLight">
+                        Navigate to the home screen. ->
+                        <Link
+                            onClick={() => {
+                                navigate("/home")
+                            }}
+                            underline="hover"
                         >
-                            {isRegistering ? 'Signing Up...' : 'Sign Up'}
-                        </Button>
-                        <Typography variant="body2" textAlign="center" mt={2}>
-                            Already have an account?{' '}
-                            <Link
-                                onClick={() => {
-                                    navigate("/login")
-                                }}
-                                underline="hover"
-                            >
-                                Continue
-                            </Link>
+                            home
+                        </Link>
+                    </Typography>
+                </Stack>
+            ) : (
+                <Box
+                    sx={{
+                        width: '100vw',
+                        height: '100vh',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                    }}
+                >
+                    <Box
+                        sx={{
+                            width: 384, // equivalent to w-96
+                            p: 4,
+                            boxShadow: 'xl',
+                            border: 1,
+                            borderRadius: 2,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: 2,
+                        }}
+                    >
+                        <Typography variant="h5" textAlign="center" fontWeight="bold" mb={6}>
+                            Create a New Account
                         </Typography>
+                        <Box
+                            component="form"
+                            onSubmit={onSubmit}
+                            sx={{ '& .MuiTextField-root': { mt: 2 }, display: 'flex', flexDirection: 'column', gap: 4 }}
+                        >
+                            <TextField
+                                label="Email"
+                                type="email"
+                                autoComplete="email"
+                                required
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                fullWidth
+                            />
+                            <TextField
+                                disabled={isRegistering}
+                                label="Password"
+                                type="password"
+                                autoComplete="new-password"
+                                required
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                error={password.length > 0 && password.length < 6}
+                                helperText={password.length > 0 && password.length < 6 ? "Password must be at least 6 characters long." : ""}
+                                fullWidth
+                            />
+                            <TextField
+                                disabled={isRegistering}
+                                label="Confirm Password"
+                                type="password"
+                                autoComplete="off"
+                                required
+                                value={confirmPassword}
+                                onChange={(e) => setConfirmPassword(e.target.value)}
+                                error={confirmPassword.length > 0 && confirmPassword.length < 6}
+                                helperText={confirmPassword.length > 0 && confirmPassword.length < 6 ? "Password must be at least 6 characters long." : ""}
+                                fullWidth
+                            />
+                            {errorMessage && (
+                                <Typography color="error" fontWeight="bold">
+                                    {errorMessage}
+                                </Typography>
+                            )}
+                            <Button
+                                type="submit"
+                                disabled={isRegistering}
+                                variant="contained"
+                                color="primary"
+                                fullWidth
+                                sx={{ mt: 2 }}
+                            >
+                                {isRegistering ? 'Signing Up...' : 'Sign Up'}
+                            </Button>
+                            <Typography variant="body2" textAlign="center" mt={2}>
+                                Already have an account?{' '}
+                                <Link
+                                    onClick={() => {
+                                        navigate("/login")
+                                    }}
+                                    underline="hover"
+                                >
+                                    Continue
+                                </Link>
+                            </Typography>
+                        </Box>
                     </Box>
                 </Box>
-            </Box>
+            )}
         </>
     )
 }
