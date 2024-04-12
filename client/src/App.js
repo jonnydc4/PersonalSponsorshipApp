@@ -80,6 +80,7 @@ import JobOffersPage from "./components/JobOffersPage";
 
 
 
+
 function App() {
     const theme = createTheme({
         palette: {
@@ -158,6 +159,7 @@ function App() {
                 </Box>
             </AuthProvider>
         </ThemeProvider>
+
     );
 }
 
