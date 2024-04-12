@@ -1,8 +1,12 @@
 .idea
 
-# Server files to ignore
+# node files to ignore
 node_modules
-package-lock.json
+
+# Server files to ignore
+server/node_modules
+server/package-lock.json
+server/build
 
 # Client files to ignore
 
@@ -28,3 +32,4 @@ client/.env.production.local
 client/npm-debug.log*
 client/yarn-debug.log*
 client/yarn-error.log*
+Dockerfile.zip

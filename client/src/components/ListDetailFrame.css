@@ -1,0 +1,23 @@
+
+.list-detail-container {
+    display: flex;
+    flex-grow: 1;
+  }
+  
+ .list-detail-container .list {
+    width: 25%;
+    height: 100%;
+    min-width: 300px;
+    background-color: #f3f3f3; /* Light grey background */
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Shadow for some depth */
+    overflow-y: auto; /* Enables vertical scroll if content is too long */
+    border-right: 1px solid #ddd;
+  }
+  
+  .list-detail-container .detail {
+    flex-grow: 1; /* Takes up the remaining width */
+    background-color: #fff; /* White background */
+    overflow-y: auto; /* Enables vertical scroll if content is too long */
+    height: 100%;
+  }
+  

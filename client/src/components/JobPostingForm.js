@@ -10,14 +10,16 @@ const JobPostingForm = () => {
     const [description, setDescription] = useState('');
     const [location, setLocation] = useState('');
 
+    const userId = localStorage.getItem('userId')
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         // Will write this later where we send data to the server
         try {
             // Prepare data to be sent
-            const formData = { title, description, location };
+            const formData = { title, description, location, companyId: userId };
             // Send a POST request with the form data
-            const response = await fetch('/postJob', {
+            const response = await fetch('/api/postJob', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -32,8 +34,8 @@ const JobPostingForm = () => {
                 setDescription('');
                 setLocation('');
 
+                navigate('/');
                 navigate(-1);
-
             } else {
                 console.error('Error posting the job:', response.statusText);
             }
@@ -47,20 +49,20 @@ const JobPostingForm = () => {
             <div>
                 <label htmlFor="title">Job Title:</label>
                 <input type="text" id="title" name="title" value={title}
-                onChange={e => setTitle(e.target.value)}
-                required />
+                       onChange={e => setTitle(e.target.value)}
+                       required />
             </div>
             <div>
                 <label htmlFor="description">Job Description:</label>
                 <textarea id="description" name="description" value={description}
-                onChange={e => setDescription(e.target.value)}
-                required></textarea>
+                          onChange={e => setDescription(e.target.value)}
+                          required></textarea>
             </div>
             <div>
                 <label htmlFor="location">Location:</label>
                 <input type="text" id="location" name="location" value={location}
-                onChange={e => setLocation(e.target.value)}
-                required />
+                       onChange={e => setLocation(e.target.value)}
+                       required />
             </div>
             <button type="submit">Post Job</button>
         </form>

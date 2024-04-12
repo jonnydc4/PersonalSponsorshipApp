@@ -1,0 +1,63 @@
+/* CommonFrame.css */
+
+/* General Styles */
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.navigation-pane a {
+    margin-right: 20px;
+    text-decoration: none;
+    color: blue; /* or any color you prefer */
+}
+
+.navigation-pane a:hover {
+    text-decoration: underline;
+    background-color: aqua;
+}
+
+.content-area {
+    display: flex;
+    flex: 1;
+}
+
+.selectable-list {
+    flex: 1;
+    border-right: 1px solid black;
+    overflow-y: auto;
+    max-height: 85vh;
+}
+
+.selectable-item {
+    cursor: pointer;
+    padding: 5px;
+    transition: background-color 0.3s;
+}
+
+.selectable-item:hover {
+    background-color: #f0f0f0;
+}
+
+.main-area {
+    flex: 2;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.payload-area {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid black;
+    margin-bottom: 10px;
+    max-height: 50vh;
+}
+
+.additional-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}

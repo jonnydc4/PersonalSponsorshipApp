@@ -1,0 +1,8 @@
+.job-list-item {
+    color: black;
+}
+
+.job-list-item.selected {
+    background-color: pink;
+    font-weight: bold;
+}

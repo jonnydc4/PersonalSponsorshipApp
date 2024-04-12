@@ -1,0 +1,135 @@
+{
+  "swagger": "2.0",
+  "x-stoplight": {
+    "id": "zbfmw7gzyrx9t"
+  },
+  "info": {
+    "title": "Personal Sponsorship App",
+    "version": "1.0"
+  },
+  "host": "localhost:3000",
+  "schemes": [
+    "http"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "paths": {
+    "/postJob": {
+      "get": {
+        "summary": "Add job",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "string"
+            },
+            "examples": [
+              "Data added successfully"
+            ]
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "string"
+            },
+            "examples": [
+              "Error posting job"
+            ]
+          }
+        },
+        "operationId": "post-postJob",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "x-stoplight": {
+                    "id": "p1g3xs9jpcabp"
+                  }
+                },
+                "description": {
+                  "type": "string",
+                  "x-stoplight": {
+                    "id": "vzbhtt7smohu8"
+                  }
+                },
+                "location": {
+                  "type": "string",
+                  "x-stoplight": {
+                    "id": "rmm4mh2zf3ric"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "post": {
+        "summary": "Create a job",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "string"
+            },
+            "examples": [
+              "Data added successfully"
+            ]
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "string"
+            },
+            "examples": [
+              "Error posting job"
+            ]
+          }
+        },
+        "operationId": "post-postJob",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "x-stoplight": {
+                    "id": "p1g3xs9jpcabp"
+                  }
+                },
+                "description": {
+                  "type": "string",
+                  "x-stoplight": {
+                    "id": "vzbhtt7smohu8"
+                  }
+                },
+                "location": {
+                  "type": "string",
+                  "x-stoplight": {
+                    "id": "rmm4mh2zf3ric"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "definitions": {},
+  "securityDefinitions": {},
+  "basePath": "/api"
+}

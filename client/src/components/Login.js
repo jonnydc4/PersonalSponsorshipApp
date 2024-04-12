@@ -1,3 +1,4 @@
+
 // client/src/components/Login.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -5,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 const Login = () => {
     // State to hold the email input value and error message
     const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('')
     const [error, setError] = useState('');
 
     const navigate = useNavigate();
