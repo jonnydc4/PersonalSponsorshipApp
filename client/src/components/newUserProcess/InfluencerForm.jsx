@@ -1,17 +1,37 @@
 import {Box, Button, TextField, Typography} from "@mui/material";
 import React, {useState} from "react";
+import {useAuth} from '../../contexts/authContext';
 
 const InfluencerForm = ({formSubmittedSuccessfully, setFormSubmittedSuccessfully}) => {
 
+    const {currentUser} = useAuth();
+    const userId = currentUser.uid
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [userName, setUserName] = useState("");
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         // Do a request to the database to create new influencer.
+        try {
+            const response = await fetch('api/createNewInfluencer', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                // Send the email as JSON in the request body
+                body: JSON.stringify({ userId, firstName, lastName, userName }),
+            });
 
-        setFormSubmittedSuccessfully(true)
+            // Parse the JSON response from the server
+            const data = await response.json();
+            console.log(data.message)
+            if (data.message === "New influencer added") {
+                setFormSubmittedSuccessfully(true)
+            }
+        } catch (error) {
+            console.error('There was a problem with the fetch operation:', error)
+        }
     };
 
     return (

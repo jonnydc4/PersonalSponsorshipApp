@@ -126,7 +126,7 @@ export default function CustomStepper() {
                 if (accountType === "Influencer") {
                     return (<InfluencerForm formSubmittedSuccessfully={formSubmitted} setFormSubmittedSuccessfully={setFormSubmitted}/>);
                 } else {
-                    return (<CompanyForm/>);
+                    return (<CompanyForm formSubmittedSuccessfully={formSubmitted} setFormSubmittedSuccessfully={setFormSubmitted}/> );
                 }
             case 2:
                 return (

@@ -9,7 +9,7 @@ const companyController = require('../controllers/companyController')
 const influencerController = require('../controllers/influencerController')
 const notificationController = require('../controllers/notificationController')
 const {locals} = require("express/lib/application");
-const {getInfluencerById, getCompanyById} = require("../database/database");
+const {getInfluencerById, getCompanyById, createNewInfluencer, createNewCompany} = require("../database/database");
 
 const router = express.Router()
 
@@ -168,15 +168,33 @@ router.get('/api/getInfluencerByID', async (req, res) => {
         const influencer = await getInfluencerById(userID)
         const company = await getCompanyById(userID)
         if (influencer !== null) {
-            console.log(influencer)
             res.send({userType: "influencer", userData: influencer})
         } else if (company !== null) {
-            console.log(company)
             res.send({userType: "company", userData: company})
         } else {
             console.log("User doesn't exist")
             res.send({userType: null, userData: null})
         }
+    } catch (error) {
+        res.status(500).send(error);
+    }
+});
+
+router.post('/api/createNewInfluencer', async (req, res) => {
+    try {
+        const data = req.body;
+        await createNewInfluencer(data.userId, data.firstName, data.lastName, data.userName)
+        res.status(201).send({message: "New influencer added"});
+    } catch (error) {
+        res.status(500).send(error);
+    }
+});
+
+router.post('/api/createNewCompany', async (req, res) => {
+    try {
+        const data = req.body;
+        await createNewCompany(data.userId, data.companyName, data.address)
+        res.status(201).send({message: "New company added"});
     } catch (error) {
         res.status(500).send(error);
     }
