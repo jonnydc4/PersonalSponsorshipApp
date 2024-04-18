@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-import NavBarMUI from './NavBarMUI'; // Adjust the path as necessary
-import { Grid, Paper, List, ListItem, ListItemText, Typography, Link as MuiLink } from '@mui/material';
+import { Grid, Paper, List, ListItem, ListItemText, Typography } from '@mui/material';
 import { Link } from 'react-router-dom'; // Import the Link component at the top of your file
-
 
 const CommonFrame = ({ items, children, onSelectItem, searchBar }) => {
     const [selectedItem, setSelectedItem] = useState(null);
@@ -14,11 +12,6 @@ const CommonFrame = ({ items, children, onSelectItem, searchBar }) => {
 
     return (
         <Grid container spacing={2}>
-            {/* Integrate NavBarMUI */}
-            <Grid item xs={12}>
-                <NavBarMUI />
-            </Grid>
-
             {/* Sidebar for Selectable List */}
             <Grid item xs={12} md={4}>
                 <Paper elevation={1} sx={{ maxHeight: 'calc(100vh - 64px)', overflow: 'auto' }}>
