@@ -23,12 +23,12 @@ const Home = () => {
         const handleRender = async () => {
             try {
                 localStorage.setItem("userId", currentUser.uid)
-                const response = await fetch(`api/getUserTypeByID?id=${encodeURIComponent(currentUser.uid)}`);
-                const data = await response.json();
-                setUserType(data.userType);
-                setUserData(data.userData);
+                const response = await fetch(`api/getUserTypeByID?id=${encodeURIComponent(currentUser.uid)}`)
+                const data = await response.json()
+                setUserType(data.userType)
+                setUserData(data.userData)
             } catch (error) {
-                console.error('There was a problem with the fetch operation:', error);
+                console.error('There was a problem with the fetch operation:', error)
             }
         };
         handleRender();
