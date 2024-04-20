@@ -1,23 +1,34 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../../contexts/authContext';
-import { Toolbar, Typography, Box, Drawer, Tabs, Tab } from '@mui/material';
+import { Toolbar, Typography, Box, Drawer, Tabs, Tab, Badge, Skeleton } from '@mui/material';
 import Person2Icon from '@mui/icons-material/Person2';
 import SpaceDashboardIcon from '@mui/icons-material/SpaceDashboard';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import MessageIcon from '@mui/icons-material/Message';
 import InventoryIcon from '@mui/icons-material/Inventory';
+import WavingHandIcon from '@mui/icons-material/WavingHand';
 import CustomStepper from "../newUserProcess/CustomStepper";
 import DashboardPage from "../JobOffersPage.js";
 import PostJobPage from "../JobPostingForm.js";
 import JobOffersPage from "../JobOffersPage.js";
 import MessagesPage from "../JobOffersPage.js";
-import ProfilePage from  "../profile_page/index";
+import ProfilePage from "../profile_page/index";
+import TaskList from './TaskList';
 
 const Home = () => {
     const { currentUser } = useAuth();
     const [userType, setUserType] = useState('');
     const [userData, setUserData] = useState({});
     const [selectedTab, setSelectedTab] = useState(0);
+
+    // Used in populating datafields on Dashboard
+    const [data, setData] = useState({
+        field1: '',
+        field2: '',
+        field3: '',
+        field4: '',
+    });
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const handleRender = async () => {
@@ -38,11 +49,46 @@ const Home = () => {
         setSelectedTab(newValue);
     };
 
+    // Fetch data for boxes
+    useEffect(() => {
+        const fetchData = async () => {
+            setLoading(true);
+            try {
+                // ADD API ENDPOINT LATER
+                const response = await fetch('api/your-data-endpoint');
+                const fetchedData = await response.json();
+                setData({
+                    field1: fetchedData.field1,
+                    field2: fetchedData.field2,
+                    field3: fetchedData.field3,
+                    field4: fetchedData.field4,
+                });
+                setLoading(false);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                setLoading(false);
+            }
+        };
+
+        fetchData();
+    }, []); // Dependency array is empty to run only once on component mount
+
+
     const renderTabContent = () => {
         switch (selectedTab) {
             case 0:
                 return <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
-                    Welcome, {currentUser.displayName || currentUser.email}
+                    Welcome, {currentUser.displayName || currentUser.email} <Badge color="primary">
+                        <WavingHandIcon color="action" fontSize="large" />
+                    </Badge>
+                    {/* Boxes used to show users */}
+                    <Box sx={{ display: 'flex', gap: 2, marginLeft: 2 }}>
+                        <Box sx={{ width: 310, height: 130, display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: loading ? '#e0e0e0' : '#cfe8fc' }}>{loading ? 'Loading...' : data.field1}</Box>
+                        <Box sx={{ width: 310, height: 130, display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: loading ? '#e0e0e0' : '#cfe8fc' }}>{loading ? 'Loading...' : data.field2}</Box>
+                        <Box sx={{ width: 310, height: 130, display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: loading ? '#e0e0e0' : '#cfe8fc' }}>{loading ? 'Loading...' : data.field1}</Box>
+                        <Box sx={{ width: 310, height: 130, display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: loading ? '#e0e0e0' : '#cfe8fc' }}>{loading ? 'Loading...' : data.field2}</Box>
+                    </Box>
+                    <TaskList />
                 </Typography>
             case 1:
                 return <PostJobPage />;
@@ -97,7 +143,7 @@ const Home = () => {
                 </Drawer>
                 <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
                     <Toolbar />
-                    
+
                     {renderTabContent()}
                 </Box>
             </Box>
