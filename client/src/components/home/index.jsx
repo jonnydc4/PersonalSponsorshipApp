@@ -17,6 +17,7 @@ import TaskList from './TaskList';
 import BrandDealTableInfluencer from './BrandDealTableInfluencer.jsx';
 import BrandDealTableCompany from './BrandDealTableCompany.jsx';
 import InfluencerTrends from './InfluencerTrends.jsx';
+import InfluencerChart from './InfluencerChart.jsx';
 
 const Home = () => {
     const { currentUser } = useAuth();
@@ -104,6 +105,7 @@ const Home = () => {
                         </Box>
                     </Box> */}
                     <InfluencerTrends   />
+                    {/* <InfluencerChart /> */}
                     <BrandDealTableInfluencer />
                     <BrandDealTableCompany />
                     {/* Call TaskList to allow user creation of task */}

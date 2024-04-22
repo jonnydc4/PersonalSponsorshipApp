@@ -2,6 +2,10 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import EmojiPeopleIcon from '@mui/icons-material/EmojiPeople';
+import ImportExportIcon from '@mui/icons-material/ImportExport';
+
+// The following code servers as the InfluencerTrends component for the Home page. 
+// This will display the influencer trends data boxes (4 boxes on top) with hardcoded data... for now. 
 
 // Example hardcoded data with more concise formatting
 const data = {
@@ -32,13 +36,13 @@ function DataBox({ title, content, loading }) {
   return (
     <Box sx={{ width: 310, height: 130, display: 'flex', flexDirection: 'column', alignItems: 'left', justifyContent: 'center', backgroundColor: loading ? '#D4D4D4' : '#F6F6F6', padding: 2, borderRadius: '16px'}}>
       <Typography variant="subtitle1" component="div" sx={{ fontWeight: 'bold', marginBottom: 1 }}>
-        {title}
+        {title === "Audience Growth" ? <EmojiPeopleIcon /> : ''} {title === 'Engagement Rates' ? <ImportExportIcon /> : ''} {title}
       </Typography>
       <Typography variant="body2" component="div" sx={{fontWeight: 'bolder', fontSize: '25px'}}>
         {loading ? 'Loading...' : content}
       </Typography>
       <Typography variant="subtitle2" component="div" sx={{fontWeight: 'light', fontSize: '10px'}}>
-        
+        {title === "Audience Growth" ? <ImportExportIcon /> : '12%'} {'last month'}
       </Typography>
     </Box>
   );
