@@ -14,6 +14,8 @@ import JobOffersPage from "../JobOffersPage.js";
 import MessagesPage from "../JobOffersPage.js";
 import ProfilePage from "../profile_page/index";
 import TaskList from './TaskList';
+import BasicTable from './BrandDealTable.jsx';
+import BrandDealTable from './BrandDealTable.jsx';
 
 const Home = () => {
     const { currentUser } = useAuth();
@@ -88,6 +90,7 @@ const Home = () => {
                         <Box sx={{ width: 310, height: 130, display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: loading ? '#e0e0e0' : '#cfe8fc' }}>{loading ? 'Loading...' : data.field1}</Box>
                         <Box sx={{ width: 310, height: 130, display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: loading ? '#e0e0e0' : '#cfe8fc' }}>{loading ? 'Loading...' : data.field2}</Box>
                     </Box>
+                    <BrandDealTable />
                     {/* Call TaskList to allow user creation of task */}
                     <TaskList />
                 </Typography>
