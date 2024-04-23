@@ -9,7 +9,7 @@ const companyController = require('../controllers/companyController')
 const influencerController = require('../controllers/influencerController')
 const notificationController = require('../controllers/notificationController')
 const {locals} = require("express/lib/application");
-const {getInfluencerById, getCompanyById, createNewInfluencer, createNewCompany} = require("../database/database");
+const {getInfluencerById, getCompanyById, createNewInfluencer, createNewCompany, createNewMessagesRoom, getAllMessagesRoomsForUser} = require("../database/database");
 
 const router = express.Router()
 
@@ -194,6 +194,26 @@ router.post('/api/createNewCompany', async (req, res) => {
     try {
         const data = req.body;
         await createNewCompany(data.userId, data.companyName, data.address)
+        res.status(201).send({message: "New company added"});
+    } catch (error) {
+        res.status(500).send(error);
+    }
+});
+
+router.post('/api/createNewChatRoom', async (req, res) => {
+    try {
+        const data = req.body;
+        await createNewMessagesRoom(data.userId, data.companyId)
+        res.status(201).send({message: "New company added"});
+    } catch (error) {
+        res.status(500).send(error);
+    }
+});
+
+router.post('/api/getChatRoomsForUser', async (req, res) => {
+    try {
+        const data = req.body;
+        await getAllMessagesRoomsForUser(data.userId)
         res.status(201).send({message: "New company added"});
     } catch (error) {
         res.status(500).send(error);

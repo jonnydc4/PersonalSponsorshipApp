@@ -337,7 +337,6 @@ const createNewMessage = async (messageRoomId, senderId, message) => {
     }
 }
 
-
 module.exports = {
     findUserByEmail,
     updateUserPassword,
@@ -360,4 +359,3 @@ module.exports = {
     createNewMessage,
     getAllMessagesRoomsForUser
 };
-
