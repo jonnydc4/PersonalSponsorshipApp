@@ -18,10 +18,6 @@ const {
     createNewCompany,
     getInfluencerById,
     getCompanyById,
-    getInfluencerById,
-    getCompanyById,
-    createNewInfluencer,
-    createNewCompany,
     createNewMessagesRoom,
     getAllMessagesRoomsForUser
 } = require("../database/database");
