@@ -17,7 +17,13 @@ const {
     createNewInfluencer,
     createNewCompany,
     getInfluencerById,
-    getCompanyById
+    getCompanyById,
+    getInfluencerById,
+    getCompanyById,
+    createNewInfluencer,
+    createNewCompany,
+    createNewMessagesRoom,
+    getAllMessagesRoomsForUser
 } = require("../database/database");
 
 const router = express.Router()
@@ -73,6 +79,15 @@ router.get("/api/allJobs", async (req, res) => {
         res.status(200).send(jobs)
     } catch (error) {
         console.error('Error fetching jobs:', error);
+    }
+});
+
+router.post('/api/createNewChatRoom', async (req, res) => {
+    try {
+        const data = req.body;
+        await createNewMessagesRoom(data.userId, data.companyId)
+        res.status(201).send({message: "New company added"});
+    } catch (error) {
         res.status(500).send(error);
     }
 });
@@ -171,6 +186,15 @@ router.post("/api/rejectJobOffer", async (req, res) => {
         res.status(200).json({message: 'Job offer rejected successfully'});
     } catch (error) {
         console.error('Error rejecting job offer:', error); // console statement signifying error rejecting offer
+    }
+});
+
+router.post('/api/getChatRoomsForUser', async (req, res) => {
+    try {
+        const data = req.body;
+        await getAllMessagesRoomsForUser(data.userId)
+        res.status(201).send({message: "New company added"});
+    } catch (error) {
         res.status(500).send(error);
     }
 });

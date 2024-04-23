@@ -1,8 +1,9 @@
 const database = require('../database/mongo-db.js');
+const messageSchema = require("./schemas/Message");
 
 /* ------------------------User Table Queries------------------------ */
 const findUserByEmail = async (email) => {
-    return await database.findOne(database.models.User, { email }); // Using the model name as a string
+    return await database.findOne(database.models.User, {email}); // Using the model name as a string
 };
 
 const updateUserPassword = async (email, newPassword) => {
@@ -10,9 +11,9 @@ const updateUserPassword = async (email, newPassword) => {
         // Find the user by email and update the password
         const updatedUser = await database.findOneAndUpdate(
             database.models.User, // Model
-            { email: email }, // Query to find the user
-            { $set: { password: newPassword } }, // Update operation
-            { new: true } // Options (return the updated document)
+            {email: email}, // Query to find the user
+            {$set: {password: newPassword}}, // Update operation
+            {new: true} // Options (return the updated document)
         );
         console.log('Updated User:', updatedUser);
     } catch (error) {
@@ -74,7 +75,7 @@ const getJobTable = async () => {
 const getJobsByCompanyId = async (companyId) => {
     try {
         // Retrieve all job documents from the database where company_id matches
-        const jobs = await database.find(database.models.Job, { company_id: companyId });
+        const jobs = await database.find(database.models.Job, {company_id: companyId});
         console.log('Retrieved Jobs for Company ID:', companyId, jobs);
         return jobs;
     } catch (error) {
@@ -242,7 +243,7 @@ const getJobOffersForInfluencer = async (influencerId) => {
         // Perform a query to fetch job offers for the influencer
         const jobOffers = await database.find(
             database.models.Notification,
-            { influencer_id: influencerId }
+            {influencer_id: influencerId}
         );
 
         // Optionally, perform additional queries to fetch related job and company details
@@ -251,8 +252,8 @@ const getJobOffersForInfluencer = async (influencerId) => {
         // For each notification, fetch the job and company details
         const detailedJobOffers = await Promise.all(
             jobOffers.map(async (offer) => {
-                const job = await database.findOne(database.models.Job, { _id: offer.job_id });
-                const company = await database.findOne(database.models.Company, { _id: job.company_id });
+                const job = await database.findOne(database.models.Job, {_id: offer.job_id});
+                const company = await database.findOne(database.models.Company, {_id: job.company_id});
 
                 return {
                     ...offer,
@@ -275,7 +276,7 @@ const getJobOffersForInfluencer = async (influencerId) => {
 const removeNotification = async (offerId) => {
     try {
         // Use the deleteOne method to remove the notification
-        await database.deleteOne(database.models.Notification, { _id: offerId });
+        await database.deleteOne(database.models.Notification, {_id: offerId});
 
         // You can return a response or handle the result as needed
         console.log(`Notification with ID ${offerId} has been successfully removed.`);
@@ -285,6 +286,56 @@ const removeNotification = async (offerId) => {
     }
 };
 
+
+/* ------------------------Message and Message Room Queries------------------------ */
+const getAllMessagesRoomsForUser = async (userId) => {
+    try {
+
+        const chatRooms = await database.find(database.models.MessageRoom, {
+                $or: [
+                    {company: userId},
+                    {influencer: userId}
+                ]
+            }
+        )
+
+        return chatRooms
+    } catch (error) {
+
+    }
+}
+
+const createNewMessagesRoom = async (influencerId, companyId) => {
+    try {
+        const newMessageRoom = new database.models.MessageRoom({
+            company: companyId,
+            influencer: influencerId,
+            messages: []
+        });
+
+        database.save(newMessageRoom);
+
+    } catch (error) {
+        console.error('Error creating new message room:', error);
+        throw error; // rethrow the error for further handling
+    }
+}
+
+const createNewMessage = async (messageRoomId, senderId, message) => {
+    try {
+        const newMessage = new database.models.Message({
+            content: message,
+            sender: senderId
+        });
+
+        const messageRoom = await database.findOne(database.models.MessageRoom, {_id: messageRoomId});
+        messageRoom.messages.push(newMessage);
+
+    } catch (error) {
+        console.error(error);
+        throw error; // rethrow the error for further handling
+    }
+}
 
 module.exports = {
     findUserByEmail,
@@ -303,6 +354,8 @@ module.exports = {
     createNewInfluencer,
     createNewCompany,
     getInfluencerById,
-    getCompanyById
+    getCompanyById,
+    createNewMessagesRoom,
+    createNewMessage,
+    getAllMessagesRoomsForUser
 };
-

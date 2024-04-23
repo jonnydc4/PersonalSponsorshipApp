@@ -7,5 +7,6 @@ module.exports = {
     Job: require('./Job'),
     JobMap: require('./JobMap'),
     Notification: require('./Notification'),
+    MessageRoom: require('./MessageRoom'),
 
 };
