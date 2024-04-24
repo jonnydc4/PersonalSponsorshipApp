@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -7,58 +7,55 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
-import Link from '@mui/material/Link';
 
-function createData(campaignName, totalApplicants, topApplicants, status, action) {
-  return { campaignName, totalApplicants, topApplicants, status, action };
+function createData(jobTitle, jobDescription, location, status, currentlyApplied) {
+  // This function is used to create a row object for the table
+  return { jobTitle, jobDescription, location, status, currentlyApplied };
 }
 
-const rows = [
-  createData('Summer Essentials', 34, 'Alex, Jordan, Casey', 'Reviewing', 'View Applicants'),
-  createData('Tech Gadgets Review', 45, 'Sam, Pat, Terry', 'In Discussion', 'View Applicants'),
-  createData('Fitness Gear Launch', 29, 'Jamie, Morgan, Lee', 'Active', 'View Applicants'),
-  createData('Cooking with Spices', 12, 'Chris, Alexi, Kim', 'Completed', 'View Applicants'),
-  createData('Outdoor Adventure', 22, 'Sky, Robin, Max', 'Pending', 'View Applicants'),
-];
-
-
-
-// const fetchJobOffers = async () => {
-//   const companyId = localStorage.getItem('companyId');
-  
-//   try {
-//     const response = await fetch(`/api/jobs/${companyId}`);
-//     const data = await response.json();
-//     getFIXME(data);
-//     const mappedData = data.map(offer => ({
-//       ...offer,
-//       name: offer.title
-//     }));
-//     getFIXME(mappedData);
-//     return mappedData
-//   }
-//   catch (error) {
-//     console.error('Error fetching job offers:', error);{}
-//   }
-// }
-
-
+const fetchData = async () => {
+  // This is used to fetch all the jobs for a company, and display them on the dashboard 
+  const companyId = localStorage.getItem('companyId'); 
+  console.log(companyId);
+  try {
+    const response = await fetch(`/api/jobs/${companyId}`);
+    const data = await response.json();
+    // Map the response data to match the format expected by the table
+    return data.map(job => createData(
+      job.title, // Assuming the job object has a title field
+      job.description, // Assuming the job object has a description field
+      job.location, // Assuming the job object has a location field
+      job.status, // Status of the job
+      job.currentlyApplied, // Number of current applicants
+      'View Applicants' // Assuming all actions are the same
+    ));
+  } catch (error) {
+    console.error('Error fetching job offers:', error);
+    return []; // Return an empty array on error
+  }
+};
 
 export default function BrandDealTableCompany() {
+  const [rows, setRows] = useState([]);
+
+  useEffect(() => {
+    fetchData().then(setRows); // Fetch data on component mount and set it to rows
+  }, []); // Empty dependency array to run only once on mount
+
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="company campaign table">
         <TableHead>
           <TableRow>
-            <TableCell>Campaign Name</TableCell>
-            <TableCell>Total Applicants</TableCell>
-            <TableCell>Top Applicants</TableCell>
+            <TableCell>Job Title</TableCell>
+            <TableCell>Job Description</TableCell>
+            <TableCell>Location</TableCell>
             <TableCell>Status</TableCell>
-            <TableCell>Action</TableCell>
+            <TableCell>Total Applicants </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
+          {rows.length > 0 ? rows.map((row) => (
             <TableRow key={row.campaignName}>
               <TableCell component="th" scope="row">
                 {row.campaignName}
@@ -72,7 +69,11 @@ export default function BrandDealTableCompany() {
                 </Button>
               </TableCell>
             </TableRow>
-          ))}
+          )) : (
+            <TableRow>
+              <TableCell colSpan={5} align="center">No data available</TableCell>
+            </TableRow>
+          )}
         </TableBody>
       </Table>
     </TableContainer>

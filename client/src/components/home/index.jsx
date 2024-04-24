@@ -50,39 +50,39 @@ const Home = () => {
         handleRender();
     }, [currentUser]);
 
-    useEffect(() => {
-        // This is used to fetch all the jobs for a company, and display them on the dashboard 
-        // (within the BrandDealTableCompany component).
-        const fetchData = async () => {
-            setLoading(true);
-            try {
-                localStorage.setItem('userId', currentUser.uid);
-                // console.log(currentUser.uid);
-                if (!currentUser.uid) {
-                    throw new Error("Company ID is not available in local storage.");
-                }
-                const response = await fetch(`/api/jobs/${currentUser.uid}`);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                const fetchedData = await response.json();
-                console.log(fetchedData);
-                setData({
-                    field1: fetchedData.field1,
-                    field2: fetchedData.field2,
-                    field3: fetchedData.field3,
-                    field4: fetchedData.field4,
-                });
-            } catch (error) {
-                console.error('Error fetching data:', error);
-                // Optionally update state to show an error message in the UI
-            } finally {
-                setLoading(false);
-            }
-        };
+    // useEffect(() => {
+    //     // This is used to fetch all the jobs for a company, and display them on the dashboard 
+    //     // (within the BrandDealTableCompany component).
+    //     const fetchData = async () => {
+    //         setLoading(true);
+    //         try {
+    //             localStorage.setItem('userId', currentUser.uid);
+    //             // console.log(currentUser.uid);
+    //             if (!currentUser.uid) {
+    //                 throw new Error("Company ID is not available in local storage.");
+    //             }
+    //             const response = await fetch(`/api/jobs/${currentUser.uid}`);
+    //             if (!response.ok) {
+    //                 throw new Error(`HTTP error! status: ${response.status}`);
+    //             }
+    //             const fetchedData = await response.json();
+    //             console.log(fetchedData);
+    //             setData({
+    //                 field1: fetchedData.field1,
+    //                 field2: fetchedData.field2,
+    //                 field3: fetchedData.field3,
+    //                 field4: fetchedData.field4,
+    //             });
+    //         } catch (error) {
+    //             console.error('Error fetching data:', error);
+    //             // Optionally update state to show an error message in the UI
+    //         } finally {
+    //             setLoading(false);
+    //         }
+    //     };
     
-        fetchData();
-    }, []); // Include an empty dependency array if this should only run once on component mount
+    //     fetchData();
+    // }, []); // Include an empty dependency array if this should only run once on component mount
     
 
     const handleTabChange = (event, newValue) => {
