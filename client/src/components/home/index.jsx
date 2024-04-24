@@ -13,27 +13,17 @@ import PostJobPage from "../JobPostingForm.js";
 import JobOffersPage from "../JobOffersPage.js";
 import MessagesPage from "../JobOffersPage.js";
 import ProfilePage from "../profile_page/index";
-import TaskList from './TaskList';
 import BrandDealTableInfluencer from './BrandDealTableInfluencer.jsx';
 import BrandDealTableCompany from './BrandDealTableCompany.jsx';
 import InfluencerTrends from './InfluencerTrends.jsx';
 import ComapnyTrends from './CompanyTrends.jsx';
-import InfluencerChart from './InfluencerChart.jsx';
+
 
 const Home = () => {
     const { currentUser } = useAuth();
     const [userType, setUserType] = useState('');
     const [userData, setUserData] = useState({});
     const [selectedTab, setSelectedTab] = useState(0);
-
-    // Used in populating datafields on Dashboard
-    const [data, setData] = useState({
-        field1: '',
-        field2: '',
-        field3: '',
-        field4: '',
-    });
-    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const handleRender = async () => {
@@ -50,9 +40,6 @@ const Home = () => {
         handleRender();
     }, [currentUser]);
 
-
-
-
     const handleTabChange = (event, newValue) => {
         setSelectedTab(newValue);
     };
@@ -64,6 +51,7 @@ const Home = () => {
                     Welcome, {currentUser.displayName || currentUser.email} <Badge color="primary">
                         <WavingHandIcon color="action" fontSize="large" />
                     </Badge>
+                    {/* Depending on usertype, certain screens will be hidden and shown to user */}
                     {userType === 'influencer' && (
                         <>
                             <InfluencerTrends />
@@ -93,6 +81,7 @@ const Home = () => {
     };
 
     return (
+        // If the user type is null, show the stepper to setup the account (new account setup)
         userType === null ? (
             <Box sx={{
                 alignItems: 'center',
