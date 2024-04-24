@@ -21,6 +21,29 @@ const rows = [
   createData('Outdoor Adventure', 22, 'Sky, Robin, Max', 'Pending', 'View Applicants'),
 ];
 
+
+
+const fetchJobOffers = async () => {
+  const companyId = localStorage.getItem('companyId');
+  
+  try {
+    const response = await fetch(`/api/jobs/${companyId}`);
+    const data = await response.json();
+    getFIXME(data);
+    const mappedData = data.map(offer => ({
+      ...offer,
+      name: offer.title
+    }));
+    getFIXME(mappedData);
+    return mappedData
+  }
+  catch (error) {
+    console.error('Error fetching job offers:', error);{}
+  }
+}
+
+
+
 export default function BrandDealTableCompany() {
   return (
     <TableContainer component={Paper}>

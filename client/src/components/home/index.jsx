@@ -20,7 +20,7 @@ import InfluencerTrends from './InfluencerTrends.jsx';
 import InfluencerChart from './InfluencerChart.jsx';
 
 const Home = () => {
-    const { currentUser } = useAuth();
+    const {currentUser} = useAuth();
     const [userType, setUserType] = useState('');
     const [userData, setUserData] = useState({});
     const [selectedTab, setSelectedTab] = useState(0);
@@ -53,30 +53,31 @@ const Home = () => {
         setSelectedTab(newValue);
     };
 
-    // Fetch data for boxes
-    useEffect(() => {
-        const fetchData = async () => {
-            setLoading(true);
-            try {
-                // // ADD API ENDPOINT LATER
-                // const response = await fetch('api/your-data-endpoint');
-                // const fetchedData = await response.json();
-                // setData({
-                //     field1: fetchedData.field1,
-                //     field2: fetchedData.field2,
-                //     field3: fetchedData.field3,
-                //     field4: fetchedData.field4,
-                // });
+    // // Fetch data for boxes
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         setLoading(true);
+    //         try {
+    //             // // ADD API ENDPOINT LATER
+    //             // const response = await fetch('api/your-data-endpoint');
+    //             // const fetchedData = await response.json();
+    //             // setData({
+    //             //     field1: fetchedData.field1,
+    //             //     field2: fetchedData.field2,
+    //             //     field3: fetchedData.field3,
+    //             //     field4: fetchedData.field4,
+    //             // });
               
-                setLoading(false);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-                setLoading(false);
-            }
-        };
+    //             setLoading(false);
+    //         } catch (error) {
+    //             console.error('Error fetching data:', error);
+    //             setLoading(false);
+    //         }
+    //     };
 
-        fetchData();
-    }, []); // Dependency array is empty to run only once on component mount
+    //     fetchData();
+    // }, []); // Dependency array is empty to run only once on component mount
+
 
 
     const renderTabContent = () => {
@@ -86,24 +87,7 @@ const Home = () => {
                     Welcome, {currentUser.displayName || currentUser.email} <Badge color="primary">
                         <WavingHandIcon color="action" fontSize="large" />
                     </Badge>
-                    {/* Boxes used to show users */}
-                    {/* <Box sx={{ display: 'flex', gap: 2, marginLeft: 2 }}>
-                        <Box sx={{ width: 310, height: 130, display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: loading ? '#e0e0e0' : '#cfe8fc' }}>
-                            {loading ? 'Loading...' : data.marketTrends}
-                        </Box>
-                        <Box sx={{ width: 310, height: 130, display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: loading ? '#e0e0e0' : '#cfe8fc' }}>
-                            {loading ? 'Loading...' : data.engagementRates}
-                        </Box>
-                        <Box sx={{ width: 310, height: 130, display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: loading ? '#e0e0e0' : '#cfe8fc' }}>
-                            {loading ? 'Loading...' : data.audienceGrowth}
-                        </Box>
-                        <Box sx={{ width: 310, height: 130, display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: loading ? '#e0e0e0' : '#cfe8fc' }}>
-                            {loading ? 'Loading...' : data.topPerformingPost}
-                        </Box>
-                        <Box sx={{ width: 310, height: 130, display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: loading ? '#e0e0e0' : '#cfe8fc' }}>
-                            {loading ? 'Loading...' : data.campaignOpportunities}
-                        </Box>
-                    </Box> */}
+
                     <InfluencerTrends   />
                     <ComapnyTrends />
                     {/* <InfluencerChart /> */}
