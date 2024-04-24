@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import CommonFrame from '../../components/CommonFrame'; // Adjust the import path as necessary
-
-import JobsList from './components/JobsList';
+import CommonFrame from '../../components/CommonFrame';
 import InfluencerSearchButton from '../../components/InfluencerSearchButton';
 import JobPostingForm from '../../components/JobPostingForm';
+import InfluencerSearch from '../../InfluencerSearch'; // Import the actual component
 import { Typography } from '@mui/material';
 
 const JobManagerPage = () => {
@@ -11,6 +10,7 @@ const JobManagerPage = () => {
   const [selectedJob, setSelectedJob] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showInfluencerSearch, setShowInfluencerSearch] = useState(false);
 
   useEffect(() => {
     const fetchJobs = async () => {
@@ -19,12 +19,9 @@ const JobManagerPage = () => {
       setError(null);
       try {
         const response = await fetch(`/api/jobs/${userId}`);
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
+        if (!response.ok) throw new Error('Network response was not ok');
         const data = await response.json();
-        const jobsWithNames = data.map(job => ({ ...job, name: job.title })); // Modify this line as needed
-        setJobs(jobsWithNames);
+        setJobs(data.map(job => ({ ...job, name: job.title })));
       } catch (e) {
         console.error("Fetching jobs failed: ", e);
         setError(e.message);
@@ -37,35 +34,32 @@ const JobManagerPage = () => {
 
   const handleJobClick = (job) => {
     setSelectedJob(job);
+    setShowInfluencerSearch(false); // Explicitly reset the influencer search view
+  };
+
+  const handleInfluencerSearch = () => {
+    setShowInfluencerSearch(true); // Show the influencer search component
   };
 
   const addJobToList = (newJob) => {
     setJobs(prevJobs => [...prevJobs, { ...newJob, name: newJob.title }]);
   };
 
-  const items = jobs.map(job => ({
-    ...job,
-    onClick: () => handleJobClick(job),
-  }));
-
   return (
-      <CommonFrame
-          items={items}
-          onSelectItem={setSelectedJob}
-      >
+      <CommonFrame items={jobs} onSelectItem={handleJobClick}>
         {isLoading ? (
             <Typography>Loading...</Typography>
-        ) : (
+        ) : error ? (
+            <Typography color="error">{error}</Typography>
+        ) : showInfluencerSearch ? (
+            <InfluencerSearch jobId={selectedJob?.id} />
+        ) : selectedJob ? (
             <>
-              {selectedJob === null ? (
-                  <JobPostingForm onJobPost={addJobToList} />
-              ) : (
-                  <>
-                    <Typography variant="h6">Edit Job: {selectedJob.title}</Typography>
-                    <InfluencerSearchButton jobId={selectedJob.id} />
-                  </>
-              )}
+              <Typography variant="h6">Edit Job: {selectedJob.title}</Typography>
+              <InfluencerSearchButton jobId={selectedJob.id} onSearchClick={handleInfluencerSearch} />
             </>
+        ) : (
+            <JobPostingForm onJobPost={addJobToList} />
         )}
       </CommonFrame>
   );

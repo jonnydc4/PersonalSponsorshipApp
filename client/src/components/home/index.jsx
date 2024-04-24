@@ -8,7 +8,7 @@ import MessageIcon from '@mui/icons-material/Message';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import CustomStepper from "../newUserProcess/CustomStepper";
 import DashboardPage from "../JobOffersPage.js";
-import PostJobPage from "../JobPostingForm.js";
+import PostJobPage from "../../pages/job-manager/JobManagerPage";
 import JobOffersPage from "../JobOffersPage.js";
 import MessagesPage from "../JobOffersPage.js";
 import ProfilePage from  "../profile_page/index";

@@ -17,20 +17,27 @@ const JobOffersPage = () => {
 
     // Mock function to fetch job offers (replace with actual API call)
     useEffect(() => {
+       // console.log("Fetching job offers");
+        //console.log("current users id: ", userId);
         fetchJobOffers();
     }, []);
 
     const fetchJobOffers = async () => {
         try {
             const response = await fetch(`/api/jobOffers/${userId}`);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
             const data = await response.json();
-            setJobOffers(data);
+            console.log("Data fetched:", data);  // This will log the fetched data
+
             const mappedData = data.map(offer => ({
                 ...offer,
-                name: offer.title // Assuming 'title' is the property you want to display
+                name: offer.title  // Adjust based on actual data structure if needed
             }));
+
+            console.log("Mapped data:", mappedData);  // This will log the processed data
             setJobOffers(mappedData);
-            return mappedData;
         } catch (error) {
             console.error('Error fetching job offers:', error);
         }
