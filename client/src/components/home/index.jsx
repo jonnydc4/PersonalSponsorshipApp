@@ -105,6 +105,7 @@ const Home = () => {
                         </Box>
                     </Box> */}
                     <InfluencerTrends   />
+                    <ComapnyTrends />
                     {/* <InfluencerChart /> */}
                     <BrandDealTableInfluencer />
                     <BrandDealTableCompany />
