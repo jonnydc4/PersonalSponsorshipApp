@@ -17,6 +17,7 @@ import TaskList from './TaskList';
 import BrandDealTableInfluencer from './BrandDealTableInfluencer.jsx';
 import BrandDealTableCompany from './BrandDealTableCompany.jsx';
 import InfluencerTrends from './InfluencerTrends.jsx';
+import ComapnyTrends from './CompanyTrends.jsx';
 import InfluencerChart from './InfluencerChart.jsx';
 
 const Home = () => {
@@ -49,36 +50,44 @@ const Home = () => {
         handleRender();
     }, [currentUser]);
 
+    useEffect(() => {
+        // This is used to fetch all the jobs for a company, and display them on the dashboard 
+        // (within the BrandDealTableCompany component).
+        const fetchData = async () => {
+            setLoading(true);
+            try {
+                localStorage.setItem('userId', currentUser.uid);
+                // console.log(currentUser.uid);
+                if (!currentUser.uid) {
+                    throw new Error("Company ID is not available in local storage.");
+                }
+                const response = await fetch(`/api/jobs/${currentUser.uid}`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const fetchedData = await response.json();
+                console.log(fetchedData);
+                setData({
+                    field1: fetchedData.field1,
+                    field2: fetchedData.field2,
+                    field3: fetchedData.field3,
+                    field4: fetchedData.field4,
+                });
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                // Optionally update state to show an error message in the UI
+            } finally {
+                setLoading(false);
+            }
+        };
+    
+        fetchData();
+    }, []); // Include an empty dependency array if this should only run once on component mount
+    
+
     const handleTabChange = (event, newValue) => {
         setSelectedTab(newValue);
     };
-
-    // // Fetch data for boxes
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         setLoading(true);
-    //         try {
-    //             // // ADD API ENDPOINT LATER
-    //             // const response = await fetch('api/your-data-endpoint');
-    //             // const fetchedData = await response.json();
-    //             // setData({
-    //             //     field1: fetchedData.field1,
-    //             //     field2: fetchedData.field2,
-    //             //     field3: fetchedData.field3,
-    //             //     field4: fetchedData.field4,
-    //             // });
-              
-    //             setLoading(false);
-    //         } catch (error) {
-    //             console.error('Error fetching data:', error);
-    //             setLoading(false);
-    //         }
-    //     };
-
-    //     fetchData();
-    // }, []); // Dependency array is empty to run only once on component mount
-
-
 
     const renderTabContent = () => {
         switch (selectedTab) {

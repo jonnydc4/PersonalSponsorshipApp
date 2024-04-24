@@ -108,14 +108,14 @@ function App() {
     });
 
     const routesArray = [
-        // {
-        //     path: "*",
-        //     element: <LandingPage/>,
-        // },
         {
             path: "*",
-            element: <Home/>,
+            element: <LandingPage/>,
         },
+        // {
+        //     path: "*",
+        //     element: <Home/>,
+        // },
         {
             path: "/login",
             element: <Login/>,
@@ -124,10 +124,10 @@ function App() {
             path: "/register",
             element: <Register/>,
         },
-        // {
-        //     path: "/home",
-        //     element: <Home/>,
-        // },
+        {
+            path: "/home",
+            element: <Home/>,
+        },
         {
             path: "/profile_page",
             element: <ProfilePage/>,

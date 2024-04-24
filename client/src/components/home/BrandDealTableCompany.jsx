@@ -23,24 +23,24 @@ const rows = [
 
 
 
-const fetchJobOffers = async () => {
-  const companyId = localStorage.getItem('companyId');
+// const fetchJobOffers = async () => {
+//   const companyId = localStorage.getItem('companyId');
   
-  try {
-    const response = await fetch(`/api/jobs/${companyId}`);
-    const data = await response.json();
-    getFIXME(data);
-    const mappedData = data.map(offer => ({
-      ...offer,
-      name: offer.title
-    }));
-    getFIXME(mappedData);
-    return mappedData
-  }
-  catch (error) {
-    console.error('Error fetching job offers:', error);{}
-  }
-}
+//   try {
+//     const response = await fetch(`/api/jobs/${companyId}`);
+//     const data = await response.json();
+//     getFIXME(data);
+//     const mappedData = data.map(offer => ({
+//       ...offer,
+//       name: offer.title
+//     }));
+//     getFIXME(mappedData);
+//     return mappedData
+//   }
+//   catch (error) {
+//     console.error('Error fetching job offers:', error);{}
+//   }
+// }
 
 
 
