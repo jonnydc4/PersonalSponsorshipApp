@@ -43,7 +43,7 @@ export default function BrandDealTableCompany() {
   }, []); // Empty dependency array to run only once on mount
 
   return (
-    <TableContainer component={Paper}>
+    <TableContainer component={Paper} sx={{marginLeft: 2, borderRadius: '16px'}}>
       <Table sx={{ minWidth: 650 }} aria-label="company campaign table">
         <TableHead>
           <TableRow>
