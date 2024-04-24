@@ -15,7 +15,7 @@ function createData(jobTitle, jobDescription, location, status, currentlyApplied
 
 const fetchData = async () => {
   // This is used to fetch all the jobs for a company, and display them on the dashboard 
-  const companyId = localStorage.getItem('companyId'); 
+  const companyId = localStorage.getItem('companyId');
   console.log(companyId);
   try {
     const response = await fetch(`/api/jobs/${companyId}`);
@@ -43,7 +43,7 @@ export default function BrandDealTableCompany() {
   }, []); // Empty dependency array to run only once on mount
 
   return (
-    <TableContainer component={Paper} sx={{marginLeft: 2, borderRadius: '16px'}}>
+    <TableContainer component={Paper} sx={{ marginLeft: 2, borderRadius: '16px' }}>
       <Table sx={{ minWidth: 650 }} aria-label="company campaign table">
         <TableHead>
           <TableRow>
@@ -71,7 +71,12 @@ export default function BrandDealTableCompany() {
             </TableRow>
           )) : (
             <TableRow>
-              <TableCell colSpan={5} align="center">No data available</TableCell>
+              <TableCell colSpan={5} align="center">
+                No data available
+                <Button variant="contained" color="primary" onClick={() => alert('Open Job Offer Page?')} sx={{ mt: 2 }}>
+                  Let's change that
+                </Button>
+              </TableCell>
             </TableRow>
           )}
         </TableBody>
