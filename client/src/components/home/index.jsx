@@ -17,7 +17,7 @@ import BrandDealTableInfluencer from './BrandDealTableInfluencer.jsx';
 import BrandDealTableCompany from './BrandDealTableCompany.jsx';
 import InfluencerTrends from './InfluencerTrends.jsx';
 import ComapnyTrends from './CompanyTrends.jsx';
-
+import BarChartInfluencer from './BarChartInfluencer.jsx';
 
 const Home = () => {
     const { currentUser } = useAuth();
@@ -47,7 +47,7 @@ const Home = () => {
     const renderTabContent = () => {
         switch (selectedTab) {
             case 0:
-                return <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
+                return <Typography variant="h4" sx={{ fontWeight: 'bold', paddingBottom: '16px' }}>
                     Welcome, {currentUser.displayName || currentUser.email} <Badge color="primary">
                         <WavingHandIcon color="action" fontSize="large" />
                     </Badge>
@@ -56,6 +56,7 @@ const Home = () => {
                         <>
                             <InfluencerTrends />
                             <BrandDealTableInfluencer />
+                            {/* <BarChartInfluencer /> */}
                         </>
                     )}
                     {userType === 'company' && (
@@ -120,7 +121,7 @@ const Home = () => {
                     </Box>
                 </Drawer>
                 <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-                    <Toolbar />
+                    {/* <Toolbar /> */} {/* This is used to add padding to the top - commented out as it gives too much white space*/}
 
                     {renderTabContent()}
                 </Box>

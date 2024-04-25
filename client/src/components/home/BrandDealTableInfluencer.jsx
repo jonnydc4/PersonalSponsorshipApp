@@ -8,9 +8,9 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 
-function createData(jobTitle, companyName, inquiryDate, status, action) {
+function createData(jobTitle, companyName, inquiryDate, status) {
   // This function is used to create a row object for the table
-  return { jobTitle, companyName, inquiryDate, status, action };
+  return { jobTitle, companyName, inquiryDate, status};
 }
 
 const fetchData = async () => {
@@ -26,7 +26,6 @@ const fetchData = async () => {
       job.companyName,
       job.inquiryDate,
       job.status,
-      job.action,
       'View Applicants'
     ));
   } catch (error) {
@@ -43,15 +42,14 @@ export default function BrandDealTableInfluencer() {
   }, []); // Empty dependency array to run only once on mount
 
   return (
-    <TableContainer component={Paper} sx={{ marginLeft: 2, borderRadius: '16px' }}>
-      <Table sx={{ minWidth: 650 }} aria-label="influencer campaign table">
+    <TableContainer component={Paper} sx={{ marginLeft: 2, borderRadius: '16px', minWidth: 650, maxWidth: 1464 }}>
+      <Table sx={{ minWidth: 650, maxWidth: 1464 }} aria-label="influencer campaign table">
         <TableHead>
           <TableRow>
             <TableCell>Job Title</TableCell>
             <TableCell>Company</TableCell>
             <TableCell>Inquiry Date</TableCell>
             <TableCell>Status</TableCell>
-            <TableCell>Action </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>

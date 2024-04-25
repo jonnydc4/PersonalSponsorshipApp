@@ -8,9 +8,9 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 
-function createData(jobTitle, jobDescription, location, status, currentlyApplied) {
+function createData(jobTitle, jobDescription, location, currentlyApplied) {
   // This function is used to create a row object for the table
-  return { jobTitle, jobDescription, location, status, currentlyApplied };
+  return { jobTitle, jobDescription, location, currentlyApplied };
 }
 
 const fetchData = async () => {
@@ -25,7 +25,6 @@ const fetchData = async () => {
       job.title, // Assuming the job object has a title field
       job.description, // Assuming the job object has a description field
       job.location, // Assuming the job object has a location field
-      job.status, // Status of the job
       job.currentlyApplied, // Number of current applicants
       'View Applicants' // Assuming all actions are the same
     ));
@@ -43,14 +42,13 @@ export default function BrandDealTableCompany() {
   }, []); // Empty dependency array to run only once on mount
 
   return (
-    <TableContainer component={Paper} sx={{ marginLeft: 2, borderRadius: '16px' }}>
-      <Table sx={{ minWidth: 650 }} aria-label="company campaign table">
+    <TableContainer component={Paper} sx={{ marginLeft: 2, borderRadius: '16px', minWidth: 650, maxWidth: 1464 }}>
+      <Table sx={{ minWidth: 650, maxWidth: 1464 }} aria-label="company campaign table">
         <TableHead>
           <TableRow>
             <TableCell>Job Title</TableCell>
             <TableCell>Job Description</TableCell>
             <TableCell>Location</TableCell>
-            <TableCell>Status</TableCell>
             <TableCell>Total Applicants </TableCell>
           </TableRow>
         </TableHead>
