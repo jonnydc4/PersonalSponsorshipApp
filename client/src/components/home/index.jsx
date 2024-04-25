@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../../contexts/authContext';
-import { Toolbar, Typography, Box, Drawer, Tabs, Tab } from '@mui/material';
+import { Toolbar, Typography, Box, Drawer, Tabs, Tab, Badge, Skeleton } from '@mui/material';
 import Person2Icon from '@mui/icons-material/Person2';
 import SpaceDashboardIcon from '@mui/icons-material/SpaceDashboard';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
@@ -13,6 +13,12 @@ import JobOffersPage from "../JobOffersPage.js";
 import MessagesPage from "../JobOffersPage.js";
 import ProfilePage from  "../profile_page/index";
 import Messenger from "../messenger/messenger";
+// import BrandDealTableInfluencer from './BrandDealTableInfluencer.jsx';
+// import BrandDealTableCompany from './BrandDealTableCompany.jsx';
+// import InfluencerTrends from './InfluencerTrends.jsx';
+// import CompanyTrends from './CompanyTrends.jsx'; 
+// import WelcomeBoard from './WelcomeBoard.jsx';
+
 
 const Home = () => {
     const { currentUser } = useAuth();
