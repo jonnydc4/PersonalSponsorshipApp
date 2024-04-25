@@ -33,6 +33,7 @@ const Home = () => {
         const handleRender = async () => {
             try {
                 localStorage.setItem("userId", currentUser.uid)
+                // console.log("Current User ID", currentUser.uid)
                 const response = await fetch(`api/getUserTypeByID?id=${encodeURIComponent(currentUser.uid)}`)
                 const data = await response.json()
                 setUserType(data.userType)
@@ -58,14 +59,14 @@ const Home = () => {
                     {userType === 'influencer' && (
                         <>
                             <InfluencerTrends />
-                            <BrandDealTableInfluencer />
+                            <BrandDealTableInfluencer id={currentUser.uId} />
                             {/* <BarChartInfluencer /> */}
                         </>
                     )}
                     {userType === 'company' && (
                         <>
                             <CompanyTrends />
-                            <BrandDealTableCompany />
+                            <BrandDealTableCompany id={currentUser.uId}/>
                         </>
                     )}
 
