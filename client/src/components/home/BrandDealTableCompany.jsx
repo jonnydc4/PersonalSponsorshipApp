@@ -72,9 +72,8 @@ export default function BrandDealTableCompany() {
           )) : (
             <TableRow>
               <TableCell colSpan={5} align="center">
-                No data available
                 <Button variant="contained" color="primary" onClick={() => alert('Open Job Offer Page?')} sx={{ mt: 2 }}>
-                  Let's change that
+                  Post A New Job
                 </Button>
               </TableCell>
             </TableRow>

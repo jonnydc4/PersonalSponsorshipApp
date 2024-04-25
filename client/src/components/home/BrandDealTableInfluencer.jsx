@@ -15,19 +15,19 @@ function createData(jobTitle, companyName, inquiryDate, status, action) {
 
 const fetchData = async () => {
   // This is used to fetch all the jobs for a user, and display them on the dashboard 
-  const userId = localStorage.getItem('userId'); 
+  const userId = localStorage.getItem('userId');
   console.log(userId);
   try {
     const response = await fetch(`/api/jobs/${userId}`);
     const data = await response.json();
     // Map the response data to match the format expected by the table
     return data.map(job => createData(
-      job.title, 
-      job.companyName, 
-      job.inquiryDate, 
-      job.status, 
-      job.action, 
-      'View Applicants' 
+      job.title,
+      job.companyName,
+      job.inquiryDate,
+      job.status,
+      job.action,
+      'View Applicants'
     ));
   } catch (error) {
     console.error('Error fetching job offers:', error);
@@ -43,8 +43,8 @@ export default function BrandDealTableInfluencer() {
   }, []); // Empty dependency array to run only once on mount
 
   return (
-    <TableContainer component={Paper} sx={{marginLeft: 2, borderRadius: '16px'}}>
-      <Table sx={{ minWidth: 650}} aria-label="influencer campaign table">
+    <TableContainer component={Paper} sx={{ marginLeft: 2, borderRadius: '16px' }}>
+      <Table sx={{ minWidth: 650 }} aria-label="influencer campaign table">
         <TableHead>
           <TableRow>
             <TableCell>Job Title</TableCell>
@@ -71,7 +71,11 @@ export default function BrandDealTableInfluencer() {
             </TableRow>
           )) : (
             <TableRow>
-              <TableCell colSpan={5} align="center">No data available</TableCell>
+              <TableCell colSpan={5} align="center">
+                <Button variant="contained" color="primary" onClick={() => alert('Open Job Offer Page?')} sx={{ mt: 2 }}>
+                  Post A New Job
+                </Button>
+              </TableCell>
             </TableRow>
           )}
         </TableBody>
