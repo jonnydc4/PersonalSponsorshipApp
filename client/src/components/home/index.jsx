@@ -18,6 +18,7 @@ import BrandDealTableCompany from './BrandDealTableCompany.jsx';
 import InfluencerTrends from './InfluencerTrends.jsx';
 import ComapnyTrends from './CompanyTrends.jsx';
 import BarChartInfluencer from './BarChartInfluencer.jsx';
+import WelcomeBoard from './WelcomeBoard.jsx';
 
 const Home = () => {
     const { currentUser } = useAuth();
@@ -47,10 +48,8 @@ const Home = () => {
     const renderTabContent = () => {
         switch (selectedTab) {
             case 0:
-                return <Typography variant="h4" sx={{ fontWeight: 'bold', paddingBottom: '16px' }}>
-                    Welcome, {currentUser.displayName || currentUser.email} <Badge color="primary">
-                        <WavingHandIcon color="action" fontSize="large" />
-                    </Badge>
+                return <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
+                    <WelcomeBoard userName={currentUser.displayName || currentUser.email} />
                     {/* Depending on usertype, certain screens will be hidden and shown to user */}
                     {userType === 'influencer' && (
                         <>
