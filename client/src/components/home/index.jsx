@@ -15,8 +15,16 @@ import BrandDealTableInfluencer from './BrandDealTableInfluencer.jsx';
 import BrandDealTableCompany from './BrandDealTableCompany.jsx';
 import InfluencerTrends from './InfluencerTrends.jsx';
 import CompanyTrends from './CompanyTrends.jsx'; // Corrected typo here
-// import Messenger from "../messenger/messenger";
 import WelcomeBoard from './WelcomeBoard.jsx';
+import ProfilePage from  "../profile_page/index";
+import Messenger from "../messenger/messenger";
+import BrandDealTableInfluencer from './BrandDealTableInfluencer.jsx';
+import BrandDealTableCompany from './BrandDealTableCompany.jsx';
+import InfluencerTrends from './InfluencerTrends.jsx';
+import CompanyTrends from './CompanyTrends.jsx'; 
+import WelcomeBoard from './WelcomeBoard.jsx';
+
+
 
 const Home = () => {
     const { currentUser } = useAuth();
@@ -32,6 +40,7 @@ const Home = () => {
                 const data = await response.json()
                 setUserType(data.userType)
                 setUserData(data.userData)
+                localStorage.setItem("userType",  data.userType)
             } catch (error) {
                 console.error('There was a problem with the fetch operation:', error)
             }
@@ -70,7 +79,7 @@ const Home = () => {
             case 2:
                 return <JobOffersPage />;
             case 3:
-                return <MessagesPage />;
+                return <Messenger />;
             case 4:
                 return <ProfilePage />;
             default:
