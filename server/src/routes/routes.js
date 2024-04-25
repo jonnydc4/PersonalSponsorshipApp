@@ -182,9 +182,7 @@ router.post("/api/rejectJobOffer", async (req, res) => {
 router.get('/api/getChatRoomsForUser', async (req, res) => {
     try {
         const {userId} = req.query;
-        console.log(userId)
         const chatRooms = await getAllMessagesRoomsForUser(userId)
-        console.log(chatRooms)
         res.status(201).send(chatRooms);
     } catch (error) {
         res.status(500).send(error);
@@ -194,16 +192,18 @@ router.get('/api/getChatRoomsForUser', async (req, res) => {
 router.post('/api/createNewChatRoom', async (req, res) => {
     try {
         const data = req.body;
-        console.log(data)
         let user2Id = null
-        if (data.userType === 'company') {
-            user2Id = await getInfluencerIdByUsername(data.userToMessage)
+        if (data.currentUserType === 'company') {
+            user2Id = await getInfluencerIdByUsername(data.invitedUser)
+        } else if (data.currentUserType === "influencer") {
+            user2Id = await getCompanyIdByName(data.invitedUser)
         } else {
-            user2Id = await getCompanyIdByName(data.userToMessage)
+            throw Error("User type is invalid.")
         }
-        console.log(user2Id)
-        if (user2Id === undefined) {throw Error}
-        await createNewMessagesRoom(data.userId, user2Id)
+        if (user2Id === undefined) {throw Error} // Invited user was not found in any database.
+
+        await createNewMessagesRoom(data.currentUserId, data.currentUserName, user2Id, data.invitedUser)
+        // console.log("Createnewchat worked kinda")
         res.status(201).send({message: "New chatroom created"});
     } catch (error) {
         res.status(500).send(error);

@@ -124,14 +124,27 @@ const getCompanyById = async (companyId) => {
 
 const getCompanyIdByName = async (name) => {
     try {
-        // Retrieve all job documents from the database where company_id matches
-        const company = await database.findOne(database.models.company, {name: name});
+        // Attempt to retrieve the company by exact name
+        let company = await database.findOne(database.models.Company, {name: name});
+
+        // If no company is found, perform a fuzzy search
+        if (!company) {
+            const regex = new RegExp(name, 'i'); // 'i' for case-insensitive matching
+            company = await database.findOne(database.models.Company, {name: {$regex: regex}});
+
+            // If still no company is found, you might want to handle it (e.g., return null or throw an error)
+            if (!company) {
+                console.error('No company found for:', name);
+                return null; // or throw new Error('No company found');
+            }
+        }
+
         return company.id;
     } catch (error) {
         console.error('Error:', error);
-        throw error; // rethrow the error for further handling
+        throw error; // Rethrow the error for further handling
     }
-}
+};
 
 const createNewCompany = async (id, companyName, address) => {
     try {
@@ -179,7 +192,6 @@ const getInfluencerIdByUsername = async (username) => {
     try {
         // Retrieve all job documents from the database where company_id matches
         const influencer = await database.findOne(database.models.Influencer, {userName: username});
-        console.log(influencer)
         return influencer.id;
     } catch (error) {
         console.error('Error:', error);
@@ -339,31 +351,37 @@ const removeNotification = async (offerId) => {
 const getAllMessagesRoomsForUser = async (userId) => {
     try {
 
+        console.log("userId in getAllMessages", userId)
+
         const chatRooms = await database.find(database.models.MessageRoom, {
                 $or: [
-                    {user1: userId},
-                    {user2: userId}
+                    {user1Id: userId},
+                    {user2Id: userId}
                 ]
             }
         )
 
         return chatRooms
     } catch (error) {
-
+        console.error(error)
     }
 }
 
-const createNewMessagesRoom = async (user1Id, user2Id, user2Name) => {
+const createNewMessagesRoom = async (user1Id, user1Name, user2Id, user2Name) => {
     try {
         const newMessageRoom = new database.models.MessageRoom({
-            user1ID: user1Id,
-            user2ID: user2Id,
+            user1Id: user1Id,
+            user1Name: user1Name,
+
+            user2Id: user2Id,
             user2Name: user2Name,
+
             messages: []
         });
 
-        database.save(newMessageRoom);
-
+        console.log("database.js line 352", newMessageRoom)
+        const savedChatRoom = await database.save(newMessageRoom);
+        return savedChatRoom
     } catch (error) {
         console.error('Error creating new message room:', error);
         throw error; // rethrow the error for further handling

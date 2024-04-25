@@ -12,6 +12,7 @@ function NewChatRoomDialog({open, setOpen, currentUserId}) {
     // State to store the username input
     const [username, setUsername] = useState('');
     const userType = localStorage.getItem('userType')
+    const usernameSelf = localStorage.getItem('userName')
 
     // Function to handle dialog opening
     const handleClickOpen = () => {
@@ -29,16 +30,21 @@ function NewChatRoomDialog({open, setOpen, currentUserId}) {
         // Close the dialog
         handleClose();
 
+
         // Here you would typically make an API call to create the chatroom
         try {
+            console.log("NewChatRoomDialog.js",{ currentUserId: currentUserId, currentUserType: userType, invitedUser: username, currentUserName: usernameSelf })
+
             const response = await fetch('/api/createNewChatRoom', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 // Send the email as JSON in the request body
-                body: JSON.stringify({ userId: currentUserId, userType: userType, userToMessage: username }),
+                body: JSON.stringify({ currentUserId: currentUserId, currentUserType: userType, invitedUser: username, currentUserName: usernameSelf }),
             })
+
+            console.log(response)
 
 
             // Reset username field
