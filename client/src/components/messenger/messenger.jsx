@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
+import { useAuth } from '../../contexts/authContext';
 import {
     Box,
     Drawer,
@@ -13,6 +14,7 @@ import {
     Paper
 } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
+import NewChatRoomDialog from "./newChatRoomDialog";
 
 const contacts = [
     { id: 1, name: 'Alice' },
@@ -27,9 +29,36 @@ const initialMessages = {
 };
 
 function Messenger() {
+    const { currentUser } = useAuth();
+    const userId = currentUser.uid
+
     const [selectedContact, setSelectedContact] = useState(1);
     const [messages, setMessages] = useState(initialMessages);
     const [newMessage, setNewMessage] = useState('');
+    const [dialogOpen, setDialogOpen] = useState(false)
+    const [chatRooms, setChatRooms] = useState([]);
+
+
+    useEffect(() => {
+        const fetchChatRooms = async () => {
+            try {
+                const response = await fetch(`/api/getChatRoomsForUser?userId=${userId}`);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                setChatRooms(data);
+            } catch (error) {
+                console.error('Failed to fetch chat rooms:', error);
+            }
+        };
+
+        fetchChatRooms();
+        console.log("Chatrooms", chatRooms)
+    }, []);
+
+
+
 
     const handleContactClick = (id) => {
         setSelectedContact(id);
@@ -51,14 +80,23 @@ function Messenger() {
     };
 
     return (
-        <Box sx={{ display: 'flex', height: '100vh' }}>
-            {/*Side bar with contacts*/}
+        <Box sx={{ display: 'flex'}}>
+            {/* Side bar with contacts */}
             <Drawer
                 variant="permanent"
-                sx={{ width: 240, flexShrink: 0, [`& .MuiDrawer-paper`]: { width: 240, boxSizing: 'border-box' } }}
+                sx={{
+                    width: 240,
+                    flexShrink: 0,
+                    marginLeft: '240px', // Set marginLeft equal to the width of the drawer
+                    [`& .MuiDrawer-paper`]: {
+                        width: 240,
+                        boxSizing: 'border-box',
+                        marginLeft: '240px' // Same adjustment for the inner paper
+                    }
+                }}
             >
-                <Toolbar/>
-                {/*List of Conversations/Contacts*/}
+                <Toolbar />
+                {/* List of Conversations/Contacts */}
                 <Box sx={{ overflow: 'auto' }}>
                     <List>
                         {contacts.map((contact) => (
@@ -66,11 +104,14 @@ function Messenger() {
                                 <ListItemText primary={contact.name} />
                             </ListItem>
                         ))}
+                        <ListItem>
+                            <NewChatRoomDialog open={dialogOpen} setOpen={setDialogOpen} currentUserId={userId}/>
+                        </ListItem>
                     </List>
                 </Box>
             </Drawer>
 
-            {/*Messages Header*/}
+            {/* Messages Header */}
             <Box sx={{ flexGrow: 1, p: 3 }}>
                 <AppBar position="static">
                     <Toolbar>
@@ -103,7 +144,7 @@ function Messenger() {
                     </List>
                 </Paper>
 
-                {/*Message Input*/}
+                {/* Message Input */}
                 <Box sx={{ display: 'flex', alignItems: 'center', marginTop: '10px' }}>
                     <InputBase
                         sx={{ ml: 1, flex: 1 }}
