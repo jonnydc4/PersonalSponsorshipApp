@@ -17,9 +17,9 @@ import BrandDealTableInfluencer from './BrandDealTableInfluencer.jsx';
 import BrandDealTableCompany from './BrandDealTableCompany.jsx';
 import InfluencerTrends from './InfluencerTrends.jsx';
 import ComapnyTrends from './CompanyTrends.jsx';
-import BarChartInfluencer from './BarChartInfluencer.jsx';
-import WelcomeBoard from './WelcomeBoard.jsx';
 
+import WelcomeBoard from './WelcomeBoard.jsx';
+import Messenger from "../messenger/messenger"
 const Home = () => {
     const { currentUser } = useAuth();
     const [userType, setUserType] = useState('');
