@@ -6,9 +6,7 @@ import SpaceDashboardIcon from '@mui/icons-material/SpaceDashboard';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import MessageIcon from '@mui/icons-material/Message';
 import InventoryIcon from '@mui/icons-material/Inventory';
-import WavingHandIcon from '@mui/icons-material/WavingHand';
 import CustomStepper from "../newUserProcess/CustomStepper";
-import DashboardPage from "../JobOffersPage.js";
 import PostJobPage from "../JobPostingForm.js";
 import JobOffersPage from "../JobOffersPage.js";
 import MessagesPage from "../JobOffersPage.js";
@@ -16,10 +14,10 @@ import ProfilePage from "../profile_page/index";
 import BrandDealTableInfluencer from './BrandDealTableInfluencer.jsx';
 import BrandDealTableCompany from './BrandDealTableCompany.jsx';
 import InfluencerTrends from './InfluencerTrends.jsx';
-import ComapnyTrends from './CompanyTrends.jsx';
-
+import CompanyTrends from './CompanyTrends.jsx'; // Corrected typo here
+import Messenger from "../messenger/messenger";
 import WelcomeBoard from './WelcomeBoard.jsx';
-import Messenger from "../messenger/messenger"
+
 const Home = () => {
     const { currentUser } = useAuth();
     const [userType, setUserType] = useState('');
@@ -60,7 +58,7 @@ const Home = () => {
                     )}
                     {userType === 'company' && (
                         <>
-                            <ComapnyTrends />
+                            <CompanyTrends />
                             <BrandDealTableCompany />
                         </>
                     )}
