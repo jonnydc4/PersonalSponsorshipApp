@@ -25,23 +25,22 @@ const JobOffersPage = () => {
     const fetchJobOffers = async () => {
         try {
             const response = await fetch(`/api/jobOffers/${userId}`);
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+            if (response.ok) {
+                const data = await response.json();
+                const mappedData = data.map(offer => ({
+                    ...offer,
+                    name: offer.title || 'No title', // Provide a fallback in case title is undefined
+                }));
+
+                setJobOffers(mappedData);
+            } else {
+                throw new Error('Failed to fetch job offers');
             }
-            const data = await response.json();
-            console.log("Data fetched:", data);  // This will log the fetched data
-
-            const mappedData = data.map(offer => ({
-                ...offer,
-                name: offer.title  // Adjust based on actual data structure if needed
-            }));
-
-            console.log("Mapped data:", mappedData);  // This will log the processed data
-            setJobOffers(mappedData);
         } catch (error) {
             console.error('Error fetching job offers:', error);
         }
     };
+
 
     const handleJobSelection = (jobObject) => {
        // console.log("Selected Job ID: ", jobId);

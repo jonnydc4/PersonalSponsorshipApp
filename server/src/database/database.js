@@ -240,38 +240,17 @@ const createNewNotification = async (company_id, influencer_id, job_id, message)
 
 const getJobOffersForInfluencer = async (influencerId) => {
     try {
-        const notifications = await database.models.Notification.find({ influencer: influencerId });
+        // Fetch notifications directly related to the influencer
+        const jobOffers = await database.find(database.models.Notification, { influencer: influencerId });
+        console.log("Job offers fetched: ", jobOffers);
 
-        if (!notifications || notifications.length === 0) {
+        // Check if there are any job offers
+        if (!jobOffers || jobOffers.length === 0) {
             console.log(`No job offers found for influencer ID: ${influencerId}`);
             return [];
         }
 
-        // Manually fetch each job using the job IDs from the notifications
-        const jobOffers = await Promise.all(notifications.map(async (notification) => {
-            if (!notification.job) {
-                return { ...notification.toObject(), jobTitle: "Unknown Job", jobDescription: "No description available", companyName: "No company available" };
-            }
-
-            const job = await database.models.Job.findById(notification.job);
-            if (!job) {
-                return { ...notification.toObject(), jobTitle: "Unknown Job", jobDescription: "No description available", companyName: "No company available" };
-            }
-
-            const company = await database.models.Company.findById(job.company);
-            if (!company) {
-                return { ...notification.toObject(), jobTitle: job.title, jobDescription: job.description, companyName: "Unknown Company" };
-            }
-
-            return {
-                ...notification.toObject(),
-                jobTitle: job.title,
-                jobDescription: job.description,
-                companyName: company.name
-            };
-        }));
-
-        console.log("Job offers fetched and enriched: ", jobOffers);
+        // Return the fetched job offers directly
         return jobOffers;
     } catch (error) {
         console.error('Error fetching job offers for influencer:', error);
