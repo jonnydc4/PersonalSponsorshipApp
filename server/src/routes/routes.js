@@ -128,7 +128,7 @@ router.get("/api/jobs/:companyId", async (req, res) => {
 router.post("/api/sendOffer", async (req, res) => {
     const {influencer_id, job_id, message, company_id} = req.body;
     try {
-
+        console.log('JOB ID BITCH: ', job_id)
         await createNewNotification(company_id, influencer_id, job_id, message)
         res.json({status: 'success', message: 'Offer sent successfully'});
     } catch (error) {

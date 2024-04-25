@@ -243,15 +243,45 @@ const getJobOffersForInfluencer = async (influencerId) => {
         // Fetch notifications directly related to the influencer
         const jobOffers = await database.find(database.models.Notification, { influencer: influencerId });
         console.log("Job offers fetched: ", jobOffers);
-
+        
         // Check if there are any job offers
         if (!jobOffers || jobOffers.length === 0) {
             console.log(`No job offers found for influencer ID: ${influencerId}`);
             return [];
         }
 
+        const fullJobOffer = await Promise.all (
+            jobOffers.map(async(jobOffer) => {
+                if (!jobOffer.job) {
+                    console.log(`The notification joboffer with ID ${jobOffer._id} has no job linked`);
+                    return { ...jobOffer.toObject(), jobTitle: "Unknown job title", jobDescription: "Unkown", companyName: "no company"};
+                }
+
+                //Fetch job details using the jobID
+               // const job = await database.find(database.models.Job, {id: jobOffer.job});
+                const job = await database.models.Job.findById(jobOffer.job).exec();
+                if (!job) {
+                    console.log(`Job not found for ID ${jobOffer.job}`)
+                    return { ...jobOffer.toObject(), jobTitle: "Unknown job title", jobDescription: "Unkown", companyName: "no company"};
+                }
+                
+                
+                return {
+                    ...jobOffer.toObject(),
+                    jobTitle: job.title,
+                    jobDescription: job.description,
+                    companyName: job.company,
+                    location: job.location,
+
+                }
+                
+                
+            })
+        );
+
         // Return the fetched job offers directly
-        return jobOffers;
+        console.log("The full job offer is: ", fullJobOffer);
+        return fullJobOffer;
     } catch (error) {
         console.error('Error fetching job offers for influencer:', error);
         throw error;

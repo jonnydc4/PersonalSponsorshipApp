@@ -7,6 +7,7 @@ const InfluencerSearch = ({ jobId }) => {
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedInfluencerId, setSelectedInfluencerId] = useState(null);
     const [offerMessage, setOfferMessage] = useState('');
+    const userId = localStorage.getItem('userId')
 
     useEffect(() => {
         const fetchInfluencers = async () => {
@@ -49,6 +50,7 @@ const InfluencerSearch = ({ jobId }) => {
                     influencer_id: selectedInfluencerId,
                     job_id: jobId,
                     message: offerMessage,
+                    company_id: userId,
                 }),
             });
 

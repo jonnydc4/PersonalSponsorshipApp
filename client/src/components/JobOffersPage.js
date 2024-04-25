@@ -13,7 +13,7 @@ const JobOffersPage = () => {
     const [jobAccepted, setJobAccepted] = useState(false);
 
     const userId = localStorage.getItem('userId')
-    console.log(userId)
+    //console.log(userId)
 
     // Mock function to fetch job offers (replace with actual API call)
     useEffect(() => {
@@ -29,7 +29,7 @@ const JobOffersPage = () => {
                 const data = await response.json();
                 const mappedData = data.map(offer => ({
                     ...offer,
-                    name: offer.title || 'No title', // Provide a fallback in case title is undefined
+                    name: offer.Jobtitle || 'No title', // Provide a fallback in case title is undefined
                 }));
 
                 setJobOffers(mappedData);
@@ -47,7 +47,7 @@ const JobOffersPage = () => {
        // const selected = jobOffers.find(job => job.id === parseInt(jobId, 10));
        // console.log("Found Job: ", selected);
         setSelectedJob(jobObject);
-        const isAccepted = localStorage.getItem(`jobAccepted_${jobObject.job_id}`) === 'true';
+        const isAccepted = localStorage.getItem(`jobAccepted_${jobObject._id}`) === 'true';
         setJobAccepted(isAccepted);
        // markNotificationAsRead(jobId);
     };
@@ -70,12 +70,12 @@ const JobOffersPage = () => {
             const response = await fetch('/api/acceptJob', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ influencerId: userId, jobId: selectedJob.job_id })
+                body: JSON.stringify({ influencerId: userId, jobId: selectedJob._id })
             });
             const data = await response.json();
             if (data.message === 'Job accepted successfully') {
                 alert(`Accepted job: ${selectedJob.title}`);
-                localStorage.setItem(`jobAccepted_${selectedJob.job_id}`, 'true');
+                localStorage.setItem(`jobAccepted_${selectedJob._id}`, 'true');
                 setJobAccepted(true);
             } else {
                 alert('Failed to accept job.');
@@ -95,7 +95,7 @@ const JobOffersPage = () => {
             const response = await fetch('/api/rejectJobOffer', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ offerId: selectedJob.id }) // Assuming job.id is the offer ID
+                body: JSON.stringify({ offerId: selectedJob._id }) // Assuming job.id is the offer ID
             });
             const data = await response.json();
             if (data.message === 'Job offer rejected successfully') {
@@ -103,7 +103,7 @@ const JobOffersPage = () => {
                 const updatedJobOffers = await fetchJobOffers();
 
                 // Check if the selected job still exists in the updated list
-                if (!updatedJobOffers.some(job => job.id === selectedJob.id)) {
+                if (!updatedJobOffers.some(job => job.id === selectedJob._id)) {
                     setSelectedJob(null);
                 }
             } else {

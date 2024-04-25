@@ -21,7 +21,8 @@ const JobManagerPage = () => {
         const response = await fetch(`/api/jobs/${userId}`);
         if (!response.ok) throw new Error('Network response was not ok');
         const data = await response.json();
-        setJobs(data.map(job => ({ ...job, name: job.title })));
+        console.log('Fetched Jobs:', data); // Add this log to inspect the structure
+        setJobs(data.map(job => ({ ...job, name: job.title }))); // Check if you need to use job._id here
       } catch (e) {
         console.error("Fetching jobs failed: ", e);
         setError(e.message);
@@ -32,10 +33,14 @@ const JobManagerPage = () => {
     fetchJobs();
   }, []);
 
+
   const handleJobClick = (job) => {
+   // console.log('Selected job with ID:', job._id); // Make sure job._id is not undefined
+   // console.log('Selected entire job: ', job);
     setSelectedJob(job);
-    setShowInfluencerSearch(false); // Explicitly reset the influencer search view
+    setShowInfluencerSearch(false);
   };
+
 
   const handleInfluencerSearch = () => {
     setShowInfluencerSearch(true); // Show the influencer search component
@@ -45,6 +50,8 @@ const JobManagerPage = () => {
     setJobs(prevJobs => [...prevJobs, { ...newJob, name: newJob.title }]);
   };
 
+
+
   return (
       <CommonFrame items={jobs} onSelectItem={handleJobClick}>
         {isLoading ? (
@@ -52,11 +59,11 @@ const JobManagerPage = () => {
         ) : error ? (
             <Typography color="error">{error}</Typography>
         ) : showInfluencerSearch ? (
-            <InfluencerSearch jobId={selectedJob?.id} />
+            <InfluencerSearch jobId={selectedJob?._id} />
         ) : selectedJob ? (
             <>
               <Typography variant="h6">Edit Job: {selectedJob.title}</Typography>
-              <InfluencerSearchButton jobId={selectedJob.id} onSearchClick={handleInfluencerSearch} />
+              <InfluencerSearchButton jobId={selectedJob._id} onSearchClick={handleInfluencerSearch} />
             </>
         ) : (
             <JobPostingForm onJobPost={addJobToList} />
