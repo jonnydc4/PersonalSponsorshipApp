@@ -7,17 +7,23 @@ import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import MessageIcon from '@mui/icons-material/Message';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import CustomStepper from "../newUserProcess/CustomStepper";
-import DashboardPage from "../JobOffersPage.js";
 import PostJobPage from "../JobPostingForm.js";
 import JobOffersPage from "../JobOffersPage.js";
 import MessagesPage from "../JobOffersPage.js";
+import ProfilePage from "../profile_page/index";
+import BrandDealTableInfluencer from './BrandDealTableInfluencer.jsx';
+import BrandDealTableCompany from './BrandDealTableCompany.jsx';
+import InfluencerTrends from './InfluencerTrends.jsx';
+import CompanyTrends from './CompanyTrends.jsx'; // Corrected typo here
+import WelcomeBoard from './WelcomeBoard.jsx';
 import ProfilePage from  "../profile_page/index";
 import Messenger from "../messenger/messenger";
-// import BrandDealTableInfluencer from './BrandDealTableInfluencer.jsx';
-// import BrandDealTableCompany from './BrandDealTableCompany.jsx';
-// import InfluencerTrends from './InfluencerTrends.jsx';
-// import CompanyTrends from './CompanyTrends.jsx'; 
-// import WelcomeBoard from './WelcomeBoard.jsx';
+import BrandDealTableInfluencer from './BrandDealTableInfluencer.jsx';
+import BrandDealTableCompany from './BrandDealTableCompany.jsx';
+import InfluencerTrends from './InfluencerTrends.jsx';
+import CompanyTrends from './CompanyTrends.jsx'; 
+import WelcomeBoard from './WelcomeBoard.jsx';
+
 
 
 const Home = () => {
@@ -50,8 +56,24 @@ const Home = () => {
         switch (selectedTab) {
             case 0:
                 return <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
-                    Welcome, {currentUser.displayName || currentUser.email}
-                </Typography>
+                    <WelcomeBoard userName={currentUser.displayName || currentUser.email} />
+                    {/* Depending on usertype, certain screens will be hidden and shown to user */}
+                    {userType === 'influencer' && (
+                        <>
+                            <InfluencerTrends />
+                            <BrandDealTableInfluencer />
+                            {/* <BarChartInfluencer /> */}
+                        </>
+                    )}
+                    {userType === 'company' && (
+                        <>
+                            <CompanyTrends />
+                            <BrandDealTableCompany />
+                        </>
+                    )}
+
+
+                </Typography>;
             case 1:
                 return <PostJobPage />;
             case 2:
@@ -66,6 +88,7 @@ const Home = () => {
     };
 
     return (
+        // If the user type is null, show the stepper to setup the account (new account setup)
         userType === null ? (
             <Box sx={{
                 alignItems: 'center',
@@ -104,8 +127,8 @@ const Home = () => {
                     </Box>
                 </Drawer>
                 <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-                    <Toolbar />
-                    
+                    {/* <Toolbar /> */} {/* This is used to add padding to the top - commented out as it gives too much white space*/}
+
                     {renderTabContent()}
                 </Box>
             </Box>

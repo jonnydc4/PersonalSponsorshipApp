@@ -114,6 +114,10 @@ function App() {
             path: "*",
             element: <LandingPage/>,
         },
+        // {
+        //     path: "*",
+        //     element: <Home/>,
+        // },
         {
             path: "/login",
             element: <Login/>,
