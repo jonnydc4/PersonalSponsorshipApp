@@ -16,13 +16,11 @@ function createData(_id, title, description, location) {
 const fetchData = async () => {
   // This is used to fetch all the jobs for a company, and display them on the dashboard 
   const companyId = localStorage.getItem('companyId');
-  console.log('Company ID', companyId);
 
   try {
     const response = await fetch(`/api/jobs/${companyId}`);
     const data = await response.json();
-    console.log('Fetched Jobs', data);
-  
+
     // Map the response data to match the format expected by the table
     return data.map(job => createData(
       job._id,

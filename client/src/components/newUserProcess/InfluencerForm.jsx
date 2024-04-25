@@ -25,7 +25,6 @@ const InfluencerForm = ({formSubmittedSuccessfully, setFormSubmittedSuccessfully
 
             // Parse the JSON response from the server
             const data = await response.json();
-            console.log(data.message)
             if (data.message === "New influencer added") {
                 setFormSubmittedSuccessfully(true)
             }

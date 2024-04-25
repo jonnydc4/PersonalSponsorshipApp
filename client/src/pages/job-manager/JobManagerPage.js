@@ -21,7 +21,7 @@ const JobManagerPage = () => {
         const response = await fetch(`/api/jobs/${userId}`);
         if (!response.ok) throw new Error('Network response was not ok');
         const data = await response.json();
-        console.log('Fetched Jobs:', data); // Add this log to inspect the structure
+        // console.log('Fetched Jobs:', data); // Add this log to inspect the structure
         setJobs(data.map(job => ({ ...job, name: job.title }))); // Check if you need to use job._id here
       } catch (e) {
         console.error("Fetching jobs failed: ", e);

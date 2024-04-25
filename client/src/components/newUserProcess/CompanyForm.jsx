@@ -24,7 +24,6 @@ const CompanyForm = ({formSubmittedSuccessfully, setFormSubmittedSuccessfully}) 
         try {
             // Parse the JSON response from the server
             const data = await response.json();
-            console.log(data.message)
             if (data.message === "New company added") {
                 setFormSubmittedSuccessfully(true)
             }
