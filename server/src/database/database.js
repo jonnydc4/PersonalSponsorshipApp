@@ -113,13 +113,23 @@ const getCompanyById = async (companyId) => {
     try {
         // Find a specific company by its ID
         const company = await database.findOne(database.models.Company, {id: companyId});
-        console.log('Retrieved Company:', company);
         return company;
     } catch (error) {
         // console.error('Error from database.js:', error);
         return null
     }
 };
+
+const getCompanyIdByName = async (name) => {
+    try {
+        // Retrieve all job documents from the database where company_id matches
+        const company = await database.findOne(database.models.company, {name: name});
+        return company.id;
+    } catch (error) {
+        console.error('Error:', error);
+        throw error; // rethrow the error for further handling
+    }
+}
 
 const createNewCompany = async (id, companyName, address) => {
     try {
@@ -145,7 +155,6 @@ const getInfluencerTable = async () => {
     try {
         // Fetch all documents from the 'Influencer' collection
         const influencers = await database.find(database.models.Influencer);
-        console.log('Fetched Influencers:', influencers);
         return influencers;
     } catch (error) {
         console.error('Error:', error);
@@ -157,13 +166,24 @@ const getInfluencerById = async (influencerId) => {
     try {
         // Find the influencer document by its ID in the 'Influencer' collection
         const influencer = await database.findOne(database.models.Influencer, {id: influencerId});
-        console.log('Fetched Influencer:', influencer);
         return influencer;
     } catch (error) {
         // console.error('Error from database.js:', error);
         return null
     }
 };
+
+const getInfluencerIdByUsername = async (username) => {
+    try {
+        // Retrieve all job documents from the database where company_id matches
+        const influencer = await database.findOne(database.models.Influencer, {userName: username});
+        console.log(influencer)
+        return influencer.id;
+    } catch (error) {
+        console.error('Error:', error);
+        throw error; // rethrow the error for further handling
+    }
+}
 
 const createNewInfluencer = async (id, firstName, lastName, userName) => {
     try {
@@ -293,8 +313,8 @@ const getAllMessagesRoomsForUser = async (userId) => {
 
         const chatRooms = await database.find(database.models.MessageRoom, {
                 $or: [
-                    {company: userId},
-                    {influencer: userId}
+                    {user1: userId},
+                    {user2: userId}
                 ]
             }
         )
@@ -305,11 +325,12 @@ const getAllMessagesRoomsForUser = async (userId) => {
     }
 }
 
-const createNewMessagesRoom = async (influencerId, companyId) => {
+const createNewMessagesRoom = async (user1Id, user2Id, user2Name) => {
     try {
         const newMessageRoom = new database.models.MessageRoom({
-            company: companyId,
-            influencer: influencerId,
+            user1ID: user1Id,
+            user2ID: user2Id,
+            user2Name: user2Name,
             messages: []
         });
 
@@ -357,5 +378,7 @@ module.exports = {
     getCompanyById,
     createNewMessagesRoom,
     createNewMessage,
-    getAllMessagesRoomsForUser
+    getAllMessagesRoomsForUser,
+    getInfluencerIdByUsername,
+    getCompanyIdByName
 };

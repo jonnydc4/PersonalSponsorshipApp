@@ -12,6 +12,7 @@ import PostJobPage from "../JobPostingForm.js";
 import JobOffersPage from "../JobOffersPage.js";
 import MessagesPage from "../JobOffersPage.js";
 import ProfilePage from  "../profile_page/index";
+import Messenger from "../messenger/messenger";
 
 const Home = () => {
     const { currentUser } = useAuth();
@@ -27,6 +28,7 @@ const Home = () => {
                 const data = await response.json()
                 setUserType(data.userType)
                 setUserData(data.userData)
+                localStorage.setItem("userType",  data.userType)
             } catch (error) {
                 console.error('There was a problem with the fetch operation:', error)
             }
@@ -49,7 +51,7 @@ const Home = () => {
             case 2:
                 return <JobOffersPage />;
             case 3:
-                return <MessagesPage />;
+                return <Messenger />;
             case 4:
                 return <ProfilePage />;
             default:

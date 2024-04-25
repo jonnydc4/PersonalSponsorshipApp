@@ -3,11 +3,11 @@ const messageSchema = require('./Message');
 
 
 const messageRoomSchema = new mongoose.Schema({
-    company: {
+    user1: {
         type: String,
         required: true
     },
-    influencer: {
+    user2: {
         type: String,
         required: true
     },
