@@ -8,25 +8,27 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 
-function createData(jobTitle, jobDescription, location, currentlyApplied) {
+function createData(_id, title, description, location) {
   // This function is used to create a row object for the table
-  return { jobTitle, jobDescription, location, currentlyApplied };
+  return { _id, title, description, location };
 }
 
 const fetchData = async () => {
   // This is used to fetch all the jobs for a company, and display them on the dashboard 
   const companyId = localStorage.getItem('companyId');
-  console.log(companyId);
+  console.log('Company ID', companyId);
+
   try {
     const response = await fetch(`/api/jobs/${companyId}`);
     const data = await response.json();
+    console.log('Fetched Jobs', data);
+  
     // Map the response data to match the format expected by the table
     return data.map(job => createData(
-      job.title, // Assuming the job object has a title field
-      job.description, // Assuming the job object has a description field
-      job.location, // Assuming the job object has a location field
-      job.currentlyApplied, // Number of current applicants
-      'View Applicants' // Assuming all actions are the same
+      job._id,
+      job.title,
+      job.description,
+      job.location
     ));
   } catch (error) {
     console.error('Error fetching job offers:', error);
@@ -49,30 +51,30 @@ export default function BrandDealTableCompany() {
             <TableCell>Job Title</TableCell>
             <TableCell>Job Description</TableCell>
             <TableCell>Location</TableCell>
-            <TableCell>Total Applicants </TableCell>
+            <TableCell>Action </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {rows.length > 0 ? rows.map((row) => (
-            <TableRow key={row.campaignName}>
+            <TableRow key={row._id}>
               <TableCell component="th" scope="row">
-                {row.campaignName}
+                {row.title}
               </TableCell>
-              <TableCell>{row.totalApplicants}</TableCell>
-              <TableCell>{row.topApplicants}</TableCell>
-              <TableCell>{row.status}</TableCell>
+              <TableCell>{row.description}</TableCell>
+              <TableCell>{row.location}</TableCell>
+              {/* <TableCell>{row.status}</TableCell> */}
               <TableCell>
                 <Button variant="contained" color="primary" onClick={() => alert('Open applicant view')}>
-                  {row.action}
+                  Send Offer
                 </Button>
               </TableCell>
             </TableRow>
           )) : (
             <TableRow>
               <TableCell colSpan={5} align="center">
-                <Button variant="contained" color="primary" onClick={() => alert('Open Job Offer Page?')} sx={{ mt: 2 }}>
+                {/* <Button variant="contained" color="primary" onClick={() => alert('Open Job Offer Page?')} sx={{ mt: 2 }}>
                   Post A New Job
-                </Button>
+                </Button> */}
               </TableCell>
             </TableRow>
           )}

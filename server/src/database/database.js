@@ -75,7 +75,9 @@ const getJobTable = async () => {
 const getJobsByCompanyId = async (companyId) => {
     try {
         // Retrieve all job documents from the database where company_id matches
-        const jobs = await database.find(database.models.Job, {company_id: companyId});
+
+        const jobs = await database.find(database.models.Job, { company: companyId });
+
         console.log('Retrieved Jobs for Company ID:', companyId, jobs);
         return jobs;
     } catch (error) {
@@ -221,12 +223,13 @@ const getNotificationTable = async () => {
 
 const addJobToInfluencer = async (influencerId, jobId) => {
     try {
+        const newMap = database.models.JobMap({
+            influencer: influencerId,
+            job: jobId
+        })
+
         // Update the influencer document to include the new job ID in their job list
-        await database.update(
-            database.models.Influencer,
-            {_id: influencerId},
-            {$addToSet: {jobs: jobId}}
-        );
+        await newMap.save();
         console.log(`Job ${jobId} added to influencer ${influencerId}`);
     } catch (error) {
         console.error('Error:', error);
@@ -236,61 +239,85 @@ const addJobToInfluencer = async (influencerId, jobId) => {
 
 const createNewNotification = async (company_id, influencer_id, job_id, message) => {
     try {
+        // Assuming 'Notification' is correctly imported at the top of your file
+        const Notification = database.models.Notification;
+
         // Create a new notification document
-        const notification = new database.models.Notification({
-            company_id,
-            influencer_id,
-            job_id,
-            message,
-            is_read: false,
-            notification_time: new Date() // Current time
+        const notification = new Notification({
+            company: company_id,
+            influencer: influencer_id,
+            job: job_id,
+            message: message,
+            isRead: false, // Ensure property names match your schema definitions
+            notificationTime: new Date() // Current time
         });
 
-        // Insert the notification into the database
-        await database.save(
-            database.models.Notification,
-            notification
-        );
-        console.log(`Notification created for influencer ${influencer_id}`);
+        // Save the notification using Mongoose's `.save()` method
+        const savedNotification = await notification.save();
+        console.log(`Notification created for influencer ${influencer_id}`, savedNotification);
+        return savedNotification;
     } catch (error) {
-        console.error('Error:', error);
+        console.error('Error creating notification:', error);
         throw error; // rethrow the error for further handling
     }
 };
 
 const getJobOffersForInfluencer = async (influencerId) => {
     try {
-        // Perform a query to fetch job offers for the influencer
-        const jobOffers = await database.find(
-            database.models.Notification,
-            {influencer_id: influencerId}
-        );
 
-        // Optionally, perform additional queries to fetch related job and company details
-        // This is necessary if the necessary job and company data is not embedded in the notifications
+        // Fetch notifications directly related to the influencer
+        const jobOffers = await database.find(database.models.Notification, { influencer: influencerId });
+        console.log("Job offers fetched: ", jobOffers);
+        
+        // Check if there are any job offers
+        if (!jobOffers || jobOffers.length === 0) {
+            console.log(`No job offers found for influencer ID: ${influencerId}`);
+            return [];
+        }
 
-        // For each notification, fetch the job and company details
-        const detailedJobOffers = await Promise.all(
-            jobOffers.map(async (offer) => {
-                const job = await database.findOne(database.models.Job, {_id: offer.job_id});
-                const company = await database.findOne(database.models.Company, {_id: job.company_id});
+        const fullJobOffer = await Promise.all (
+            jobOffers.map(async(jobOffer) => {
+                if (!jobOffer.job) {
+                    console.log(`The notification joboffer with ID ${jobOffer._id} has no job linked`);
+                    return { ...jobOffer.toObject(), jobTitle: "Unknown job title", jobDescription: "Unkown", companyName: "no company"};
+                }
 
+
+                //Fetch job details using the jobID
+               // const job = await database.find(database.models.Job, {id: jobOffer.job});
+                const job = await database.models.Job.findById(jobOffer.job).exec();
+                if (!job) {
+                    console.log(`Job not found for ID ${jobOffer.job}`)
+                    return { ...jobOffer.toObject(), jobTitle: "Unknown job title", jobDescription: "Unkown", companyName: "no company"};
+                }
+                
+                
                 return {
-                    ...offer,
-                    jobTitle: job.title,
+                    ...jobOffer.toObject(),
+                    title: job.title,
                     jobDescription: job.description,
-                    jobLocation: job.location,
-                    companyName: company.name
-                };
+                    location: job.location,
+                    
+
+                }
+                
+                
             })
         );
 
-        return detailedJobOffers;
+        // Return the fetched job offers directly
+        console.log("The full job offer is: ", fullJobOffer);
+        return fullJobOffer;
     } catch (error) {
-        console.error('Error:', error);
-        throw error; // rethrow the error for further handling
+        console.error('Error fetching job offers for influencer:', error);
+        throw error;
     }
 };
+
+
+
+
+
 
 //delete the notification from the table
 const removeNotification = async (offerId) => {
@@ -300,6 +327,7 @@ const removeNotification = async (offerId) => {
 
         // You can return a response or handle the result as needed
         console.log(`Notification with ID ${offerId} has been successfully removed.`);
+        return {message: 'Job offer rejected successfully'};
     } catch (error) {
         console.error('Error removing notification:', error);
         throw error; // rethrow the error for further handling

@@ -7,16 +7,13 @@ import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import MessageIcon from '@mui/icons-material/Message';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import CustomStepper from "../newUserProcess/CustomStepper";
-import PostJobPage from "../JobPostingForm.js";
+
+import DashboardPage from "../JobOffersPage.js";
+import PostJobPage from "../../pages/job-manager/JobManagerPage";
+
 import JobOffersPage from "../JobOffersPage.js";
 import MessagesPage from "../JobOffersPage.js";
 import ProfilePage from "../profile_page/index";
-import BrandDealTableInfluencer from './BrandDealTableInfluencer.jsx';
-import BrandDealTableCompany from './BrandDealTableCompany.jsx';
-import InfluencerTrends from './InfluencerTrends.jsx';
-import CompanyTrends from './CompanyTrends.jsx'; // Corrected typo here
-import WelcomeBoard from './WelcomeBoard.jsx';
-import ProfilePage from  "../profile_page/index";
 import Messenger from "../messenger/messenger";
 import BrandDealTableInfluencer from './BrandDealTableInfluencer.jsx';
 import BrandDealTableCompany from './BrandDealTableCompany.jsx';
@@ -36,6 +33,7 @@ const Home = () => {
         const handleRender = async () => {
             try {
                 localStorage.setItem("userId", currentUser.uid)
+                // console.log("Current User ID", currentUser.uid)
                 const response = await fetch(`api/getUserTypeByID?id=${encodeURIComponent(currentUser.uid)}`)
                 const data = await response.json()
                 setUserType(data.userType)
@@ -61,14 +59,14 @@ const Home = () => {
                     {userType === 'influencer' && (
                         <>
                             <InfluencerTrends />
-                            <BrandDealTableInfluencer />
+                            <BrandDealTableInfluencer id={currentUser.uId} />
                             {/* <BarChartInfluencer /> */}
                         </>
                     )}
                     {userType === 'company' && (
                         <>
                             <CompanyTrends />
-                            <BrandDealTableCompany />
+                            <BrandDealTableCompany id={currentUser.uId}/>
                         </>
                     )}
 
