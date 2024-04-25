@@ -15,7 +15,7 @@ import BrandDealTableInfluencer from './BrandDealTableInfluencer.jsx';
 import BrandDealTableCompany from './BrandDealTableCompany.jsx';
 import InfluencerTrends from './InfluencerTrends.jsx';
 import CompanyTrends from './CompanyTrends.jsx'; // Corrected typo here
-import Messenger from "../messenger/messenger";
+// import Messenger from "../messenger/messenger";
 import WelcomeBoard from './WelcomeBoard.jsx';
 
 const Home = () => {
