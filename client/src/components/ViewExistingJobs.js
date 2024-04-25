@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import CommonFrame from './CommonFrame';
-import JobList from './JobList'; // Make sure this component is designed to accept a list of jobs
+import JobList from '../pages/job-manager/components/JobsList.js'; // Make sure this component is designed to accept a list of jobs
 import JobPostingForm from './JobPostingForm';
-import JobEditForm from './JobEditForm'; // or any other form you use for editing TODO
+import JobEditForm from '../pages/job-manager/components/EditJobForm.js'; // or any other form you use for editing TODO
 import { useParams } from 'react-router-dom';
 
 const JobsPage = ({ companyId }) => {
@@ -10,7 +10,7 @@ const JobsPage = ({ companyId }) => {
   const [selectedJob, setSelectedJob] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const { companyId } = useParams();
+  //const { companyId } = useParams();
 
   useEffect(() => {
     const fetchJobs = async () => {

@@ -131,6 +131,7 @@ router.get("/api/jobs/:companyId", async (req, res) => {
 router.post("/api/sendOffer", async (req, res) => {
     const {influencer_id, job_id, message, company_id} = req.body;
     try {
+        console.log('JOB ID BITCH: ', job_id)
         await createNewNotification(company_id, influencer_id, job_id, message)
         res.json({status: 'success', message: 'Offer sent successfully'});
     } catch (error) {
@@ -144,11 +145,12 @@ router.post("/api/sendOffer", async (req, res) => {
 router.get("/api/jobOffers/:influencerId", async (req, res) => {
     const {influencerId} = req.params;
     try {
+
         const jobOffers = await getJobOffersForInfluencer(influencerId);
         res.status(200).json(jobOffers);
     } catch (error) {
         console.error('Error fetching job offers:', error);
-        res.status(500).send(error);
+        res.status(500).send({ message: 'Internal Server Error', error: error.message });
     }
 });
 
