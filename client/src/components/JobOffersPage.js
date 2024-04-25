@@ -29,15 +29,17 @@ const JobOffersPage = () => {
                 const data = await response.json();
                 const mappedData = data.map(offer => ({
                     ...offer,
-                    name: offer.Jobtitle || 'No title', // Provide a fallback in case title is undefined
+                    name: offer.title || 'No title', // Provide a fallback in case title is undefined
                 }));
 
                 setJobOffers(mappedData);
+                return mappedData;
             } else {
                 throw new Error('Failed to fetch job offers');
             }
         } catch (error) {
             console.error('Error fetching job offers:', error);
+            return [];
         }
     };
 
@@ -95,15 +97,16 @@ const JobOffersPage = () => {
             const response = await fetch('/api/rejectJobOffer', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ offerId: selectedJob._id }) // Assuming job.id is the offer ID
+                body: JSON.stringify({ offerId: selectedJob._id })
             });
             const data = await response.json();
+           // console.log(data);
             if (data.message === 'Job offer rejected successfully') {
                 alert(`Rejected job: ${selectedJob.title}`);
                 const updatedJobOffers = await fetchJobOffers();
 
                 // Check if the selected job still exists in the updated list
-                if (!updatedJobOffers.some(job => job.id === selectedJob._id)) {
+                if (!updatedJobOffers.some(job => job._id === selectedJob._id)) {
                     setSelectedJob(null);
                 }
             } else {

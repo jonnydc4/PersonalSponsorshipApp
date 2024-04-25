@@ -200,12 +200,13 @@ const getNotificationTable = async () => {
 
 const addJobToInfluencer = async (influencerId, jobId) => {
     try {
+        const newMap = database.models.JobMap({
+            influencer: influencerId,
+            job: jobId
+        })
+
         // Update the influencer document to include the new job ID in their job list
-        await database.update(
-            database.models.Influencer,
-            {_id: influencerId},
-            {$addToSet: {jobs: jobId}}
-        );
+        await newMap.save();
         console.log(`Job ${jobId} added to influencer ${influencerId}`);
     } catch (error) {
         console.error('Error:', error);
@@ -268,10 +269,10 @@ const getJobOffersForInfluencer = async (influencerId) => {
                 
                 return {
                     ...jobOffer.toObject(),
-                    jobTitle: job.title,
+                    title: job.title,
                     jobDescription: job.description,
-                    companyName: job.company,
                     location: job.location,
+                    
 
                 }
                 
@@ -301,6 +302,7 @@ const removeNotification = async (offerId) => {
 
         // You can return a response or handle the result as needed
         console.log(`Notification with ID ${offerId} has been successfully removed.`);
+        return {message: 'Job offer rejected successfully'};
     } catch (error) {
         console.error('Error removing notification:', error);
         throw error; // rethrow the error for further handling
