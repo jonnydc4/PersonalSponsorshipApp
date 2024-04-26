@@ -214,7 +214,6 @@ router.post('/api/createNewChatRoom', async (req, res) => {
 router.post('/api/createNewMessage', async (req, res) => {
     try {
         const data = req.body;
-        console.log("Create new message data:", data)
         await createNewMessage(data.chatRoomId, data.senderId, data.message)
         res.status(201).send({message: "Message Sent"});
     } catch (error) {

@@ -8,7 +8,6 @@ import TextField from '@mui/material/TextField';
 
 function NewChatRoomDialog({open, setOpen, currentUserId, renderTrigger, setRenderTrigger}) {
     // State to handle the open/close of the dialog
-    // const [open, setOpen] = useState(false);
     // State to store the username input
     const [username, setUsername] = useState('');
     const userType = localStorage.getItem('userType')

@@ -6,22 +6,13 @@ import {
     List,
     ListItem,
     ListItemText,
-    InputBase,
-    IconButton,
     AppBar,
     Toolbar,
     Typography,
     Paper
 } from '@mui/material';
-import SendIcon from '@mui/icons-material/Send';
 import NewChatRoomDialog from "./newChatRoomDialog";
 import MessageInput from "./messageInput";
-
-const initialMessages = {
-    1: [{type: 'sent', text: 'Hi Alice! How are you?'}, {type: 'received', text: 'I\'m good. How are you?'}],
-    2: [{type: 'sent', text: 'Hey Bob, wanna catch up tomorrow?'}],
-    3: [{type: 'sent', text: 'Charlie, did you get the notes?'}]
-};
 
 function Messenger() {
     const {currentUser} = useAuth();
@@ -34,21 +25,6 @@ function Messenger() {
     const [contacts, setContacts] = useState([]);
     const [renderTrigger, setRenderTrigger] = useState(false)
 
-
-    // const messageFunction = (messageObject) => {
-    //     for (let message in messageObject) {
-    //         // console.log("message func", message)
-    //         // if (userId === message.sender) {
-    //         //     message['type'] = 'sent'
-    //         // } else {
-    //         //     message['type'] = 'received'
-    //         // }
-    //     }
-    //     setMessages(messageObject)
-    //     // console.log("message func", messageObject)
-    // }
-
-
     // On first render or for when the userId changes
     useEffect(() => {
         const fetchChatRooms = async () => {
@@ -60,7 +36,7 @@ function Messenger() {
                     throw new Error('Network response was not ok');
                 }
                 const data = await response.json();
-                console.log("messenger.jsx data:", data);
+                // console.log("messenger.jsx data:", data);
                 setChatRooms(data);  // Set state here
                 return data;
             } catch (error) {
@@ -92,15 +68,14 @@ function Messenger() {
         }
 
         let contactList = generateContacts(chatRooms)
-        console.log("Contact List:", contactList)
+        // console.log("Contact List:", contactList)
         setContacts(contactList)
-        // setSelectedContacts(0)
     }, [chatRooms]); // This useEffect will run after chatRooms is updated
 
     useEffect(() => {
         if (selectedContact !== null) {
-            console.log("Selected Contact Updated:", selectedContact)
-            console.log("Chat Room for selected contact", chatRooms[selectedContact])
+            // console.log("Selected Contact Updated:", selectedContact)
+            // console.log("Chat Room for selected contact", chatRooms[selectedContact])
 
             let messageList = chatRooms[selectedContact].messages
             setMessages(messageList)
