@@ -75,7 +75,6 @@ function Messenger() {
     useEffect(() => {
         console.log("chatRooms updated:", chatRooms);
         const generateContacts = (chatRoomData) => {
-            // let messages = {}
             let contacts = []
             let index = 0
 
@@ -89,7 +88,6 @@ function Messenger() {
                     index += 1
                 }
             });
-
             return contacts
         }
 
@@ -105,11 +103,9 @@ function Messenger() {
             console.log("Chat Room for selected contact", chatRooms[selectedContact])
 
             let messageList = chatRooms[selectedContact].messages
-            if (messageList.length > 0) {
-                setMessages(messageList)
-            }
+            setMessages(messageList)
         }
-    }, [selectedContact]); // This useEffect will run after selectedContact is updated
+    }, [selectedContact, chatRooms]); // This useEffect will run after selectedContact is updated
 
 
     const handleContactClick = (id) => {
@@ -164,16 +160,16 @@ function Messenger() {
                             <ListItem key={message.senderId} alignItems="flex-start" sx={{
                                 display: 'flex',
                                 flexDirection: 'column',
-                                alignItems: message.senderId === userId ? 'flex-end' : 'flex-start'
+                                alignItems: message.senderId !== userId ? 'flex-end' : 'flex-start'
                             }}>
                                 <Box
                                     sx={{
                                         maxWidth: '70%',
-                                        backgroundColor: message.senderId === userId ? '#2196f3' : '#ffffff',
+                                        backgroundColor: message.senderId === userId ? '#8e44ad' : '#ffffff',
                                         color: message.senderId === userId ? '#ffffff' : '#000000',
                                         borderRadius: '10px',
                                         padding: '10px',
-                                        textAlign: message.senderId === userId ? 'right' : 'left',
+                                        textAlign: message.senderId !== userId ? 'right' : 'left',
                                         wordBreak: 'break-word',
                                         boxShadow: 1
                                     }}

@@ -390,6 +390,7 @@ const createNewMessage = async (messageRoomId, senderId, message) => {
 
         const messageRoom = await database.findOne(database.models.MessageRoom, {_id: messageRoomId});
         messageRoom.messages.push(newMessage);
+        await messageRoom.save();
 
     } catch (error) {
         console.error(error);

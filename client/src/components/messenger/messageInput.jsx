@@ -25,14 +25,17 @@ function MessageInput({selectedContact, chatRooms, renderTrigger, setRenderTrigg
                         message: newMessage
                     }),
                 })
+                setNewMessage('')
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 } else {
                     console.log("New message sent successfully messageinput.jsx")
                     setRenderTrigger(!renderTrigger)
                 }
+
             } catch (error) {
                 console.error('Failed to send message:', error);
+                setNewMessage('')
             }
         }
     };
