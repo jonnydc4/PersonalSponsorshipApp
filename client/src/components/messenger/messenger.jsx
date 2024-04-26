@@ -15,6 +15,7 @@ import {
 } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import NewChatRoomDialog from "./newChatRoomDialog";
+import MessageInput from "./messageInput";
 
 const initialMessages = {
     1: [{type: 'sent', text: 'Hi Alice! How are you?'}, {type: 'received', text: 'I\'m good. How are you?'}],
@@ -26,51 +27,33 @@ function Messenger() {
     const {currentUser} = useAuth();
     const userId = currentUser.uid
 
-    const [selectedContact, setSelectedContact] = useState(1);
-    const [messages, setMessages] = useState({});
-    const [newMessage, setNewMessage] = useState('');
+    const [selectedContact, setSelectedContact] = useState(null);
+    const [messages, setMessages] = useState([]);
     const [dialogOpen, setDialogOpen] = useState(false)
     const [chatRooms, setChatRooms] = useState([]);
     const [contacts, setContacts] = useState([]);
+    const [renderTrigger, setRenderTrigger] = useState(false)
 
 
-    const messageFunction = (messageObject) => {
-        for (let message in messageObject) {
-            console.log(message)
-            // if (userId === message.sender) {
-            //     message['type'] = 'sent'
-            // } else {
-            //     message['type'] = 'received'
-            // }
-        }
-        setMessages(messageObject)
-        console.log(messageObject)
-    }
+    // const messageFunction = (messageObject) => {
+    //     for (let message in messageObject) {
+    //         // console.log("message func", message)
+    //         // if (userId === message.sender) {
+    //         //     message['type'] = 'sent'
+    //         // } else {
+    //         //     message['type'] = 'received'
+    //         // }
+    //     }
+    //     setMessages(messageObject)
+    //     // console.log("message func", messageObject)
+    // }
 
-    const generateContacts = (chatRoomData) => {
-        let messages = {}
-        let contacts = []
-        let index = 1
 
-        chatRoomData.forEach((chatRoom) => {
-            if (userId === chatRoom.user1Id) {
-                contacts.push({id: index, name: chatRoom.user2Name})
-                messages[index] = chatRoom.messages
-                index += 1
-            } else {
-                contacts.push({id: index, name: chatRoom.user1Name})
-                messages[index] = chatRoom.messages
-                index += 1
-            }
-        });
-
-        messageFunction(messages)
-
-        return contacts
-    }
-
+    // On first render or for when the userId changes
     useEffect(() => {
         const fetchChatRooms = async () => {
+            // This is just getting the chatRoom data from the backend
+            // We will be using this to generate the contact list and the messages we need displayed
             try {
                 const response = await fetch(`/api/getChatRoomsForUser?userId=${userId}`);
                 if (!response.ok) {
@@ -79,50 +62,58 @@ function Messenger() {
                 const data = await response.json();
                 console.log("messenger.jsx data:", data);
                 setChatRooms(data);  // Set state here
-                let contactList = generateContacts(data)
-                setContacts(contactList)
                 return data;
             } catch (error) {
                 console.error('Failed to fetch chat rooms:', error);
             }
         };
 
-        fetchChatRooms();
-    }, [userId]);  // Ensure it re-runs if userId changes
+        fetchChatRooms()
+    }, [userId, renderTrigger]);  // Ensure it re-runs if userId changes
+
+    // If chatRooms changes, rerender and make a new contact list
+    useEffect(() => {
+        console.log("chatRooms updated:", chatRooms);
+        const generateContacts = (chatRoomData) => {
+            // let messages = {}
+            let contacts = []
+            let index = 0
+
+            chatRoomData.forEach((chatRoom) => {
+                // We want the contact name to not be the current user's name but the other user who is in the chat.
+                if (userId === chatRoom.user1Id) {
+                    contacts.push({id: index, name: chatRoom.user2Name})
+                    index += 1
+                } else {
+                    contacts.push({id: index, name: chatRoom.user1Name})
+                    index += 1
+                }
+            });
+
+            return contacts
+        }
+
+        let contactList = generateContacts(chatRooms)
+        console.log("Contact List:", contactList)
+        setContacts(contactList)
+        // setSelectedContacts(0)
+    }, [chatRooms]); // This useEffect will run after chatRooms is updated
+
+    useEffect(() => {
+        if (selectedContact !== null) {
+            console.log("Selected Contact Updated:", selectedContact)
+            console.log("Chat Room for selected contact", chatRooms[selectedContact])
+
+            let messageList = chatRooms[selectedContact].messages
+            if (messageList.length > 0) {
+                setMessages(messageList)
+            }
+        }
+    }, [selectedContact]); // This useEffect will run after selectedContact is updated
 
 
     const handleContactClick = (id) => {
-        console.log("id ", id)
         setSelectedContact(id);
-    };
-
-    const handleSendMessage = () => {
-        let updatedMessages = ''
-        if (newMessage.trim() !== '') {
-            console.log(messages[selectedContact])
-            console.log(messages);
-            console.log("selected contact ", selectedContact)
-            if (messages[selectedContact]) {
-                updatedMessages = {
-                    ...messages,
-                    [selectedContact]: [...messages[selectedContact], {text: newMessage, sender: userId, type: 'sent'}]
-                };
-            } else {
-                updatedMessages = {
-                    ...messages,
-                    [selectedContact]: [{text: newMessage, sender: userId, type: 'sent'}]
-                };
-            }
-            setMessages(updatedMessages);
-            setNewMessage('');
-        }
-
-    };
-
-    const handleKeyPress = (e) => {
-        if (e.key === 'Enter') {
-            handleSendMessage();
-        }
     };
 
     return (
@@ -151,7 +142,7 @@ function Messenger() {
                             </ListItem>
                         ))}
                         <ListItem>
-                            <NewChatRoomDialog open={dialogOpen} setOpen={setDialogOpen} currentUserId={userId}/>
+                            <NewChatRoomDialog open={dialogOpen} setOpen={setDialogOpen} currentUserId={userId} renderTrigger={renderTrigger} setRenderTrigger={setRenderTrigger}/>
                         </ListItem>
                     </List>
                 </Box>
@@ -169,26 +160,26 @@ function Messenger() {
 
                 <Paper style={{height: 'calc(75% - 64px)', overflow: 'auto', marginTop: '24px'}}>
                     <List>
-                        {messages[selectedContact]?.map((message, index) => (
-                            <ListItem key={index} alignItems="flex-start" sx={{
+                        {messages.map((message) => (
+                            <ListItem key={message.senderId} alignItems="flex-start" sx={{
                                 display: 'flex',
                                 flexDirection: 'column',
-                                alignItems: message.type === 'sent' ? 'flex-end' : 'flex-start'
+                                alignItems: message.senderId === userId ? 'flex-end' : 'flex-start'
                             }}>
                                 <Box
                                     sx={{
                                         maxWidth: '70%',
-                                        backgroundColor: message.type === 'sent' ? '#2196f3' : '#ffffff',
-                                        color: message.type === 'sent' ? '#ffffff' : '#000000',
+                                        backgroundColor: message.senderId === userId ? '#2196f3' : '#ffffff',
+                                        color: message.senderId === userId ? '#ffffff' : '#000000',
                                         borderRadius: '10px',
                                         padding: '10px',
-                                        textAlign: message.type === 'sent' ? 'right' : 'left',
+                                        textAlign: message.senderId === userId ? 'right' : 'left',
                                         wordBreak: 'break-word',
                                         boxShadow: 1
                                     }}
                                 >
                                     <ListItemText primary={message.text}
-                                                  primaryTypographyProps={{style: {color: message.type === 'sent' ? 'white' : 'black'}}}/>
+                                                  primaryTypographyProps={{style: {color: message.senderId === userId ? 'white' : 'black'}}}/>
                                 </Box>
                             </ListItem>
                         ))}
@@ -196,19 +187,7 @@ function Messenger() {
                 </Paper>
 
                 {/* Message Input */}
-                <Box sx={{display: 'flex', alignItems: 'center', marginTop: '10px'}}>
-                    <InputBase
-                        sx={{ml: 1, flex: 1}}
-                        placeholder="Type a message"
-                        inputProps={{'aria-label': 'type a message'}}
-                        value={newMessage}
-                        onChange={(e) => setNewMessage(e.target.value)}
-                        onKeyPress={handleKeyPress}
-                    />
-                    <IconButton sx={{p: '10px'}} aria-label="send" onClick={handleSendMessage}>
-                        <SendIcon/>
-                    </IconButton>
-                </Box>
+                <MessageInput selectedContact={selectedContact} chatRooms={chatRooms} renderTrigger={renderTrigger} setRenderTrigger={setRenderTrigger}/>
             </Box>
         </Box>
     );

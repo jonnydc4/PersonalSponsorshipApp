@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import { useNavigate } from 'react-router-dom';
 import {
     Stepper,
     Step,
@@ -24,7 +23,6 @@ export default function CustomStepper({setUserType}) {
     const [formSubmitted, setFormSubmitted] = useState(false)
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
-    const navigate = useNavigate();
 
     const handleCloseSnackbar = (event, reason) => {
         if (reason === 'clickaway') {

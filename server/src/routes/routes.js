@@ -21,7 +21,8 @@ const {
     createNewMessagesRoom,
     getAllMessagesRoomsForUser,
     getInfluencerIdByUsername,
-    getCompanyIdByName
+    getCompanyIdByName,
+    createNewMessage
 } = require("../database/database");
 
 const router = express.Router()
@@ -205,6 +206,17 @@ router.post('/api/createNewChatRoom', async (req, res) => {
         await createNewMessagesRoom(data.currentUserId, data.currentUserName, user2Id, data.invitedUser)
         // console.log("Createnewchat worked kinda")
         res.status(201).send({message: "New chatroom created"});
+    } catch (error) {
+        res.status(500).send(error);
+    }
+});
+
+router.post('/api/createNewMessage', async (req, res) => {
+    try {
+        const data = req.body;
+        console.log("Create new message data:", data)
+        await createNewMessage(data.chatRoomId, data.senderId, data.message)
+        res.status(201).send({message: "Message Sent"});
     } catch (error) {
         res.status(500).send(error);
     }

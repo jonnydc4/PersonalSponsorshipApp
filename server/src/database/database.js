@@ -64,7 +64,6 @@ const getJobTable = async () => {
     try {
         // Retrieve all job documents from the database
         const jobs = await database.find(database.models.Job, {});
-        console.log('Retrieved Jobs:', jobs);
         return jobs;
     } catch (error) {
         console.error('Error:', error);
@@ -78,7 +77,6 @@ const getJobsByCompanyId = async (companyId) => {
 
         const jobs = await database.find(database.models.Job, { company: companyId });
 
-        console.log('Retrieved Jobs for Company ID:', companyId, jobs);
         return jobs;
     } catch (error) {
         console.error('Error:', error);
@@ -91,7 +89,6 @@ const getJobMapTable = async () => {
     try {
         // Retrieve all documents from the JobMap collection in the database
         const jobMaps = await database.find(database.models.JobMap);
-        console.log('Retrieved Job Map:', jobMaps);
         return jobMaps;
     } catch (error) {
         console.error('Error:', error);
@@ -104,7 +101,6 @@ const getCompanyTable = async () => {
     try {
         // Retrieve all documents from the Company collection in the database
         const companies = await database.find(database.models.Company);
-        console.log('Retrieved Companies:', companies);
         return companies;
     } catch (error) {
         console.error('Error:', error);
@@ -351,8 +347,6 @@ const removeNotification = async (offerId) => {
 const getAllMessagesRoomsForUser = async (userId) => {
     try {
 
-        console.log("userId in getAllMessages", userId)
-
         const chatRooms = await database.find(database.models.MessageRoom, {
                 $or: [
                     {user1Id: userId},
@@ -379,7 +373,6 @@ const createNewMessagesRoom = async (user1Id, user1Name, user2Id, user2Name) => 
             messages: []
         });
 
-        console.log("database.js line 352", newMessageRoom)
         const savedChatRoom = await database.save(newMessageRoom);
         return savedChatRoom
     } catch (error) {
@@ -391,7 +384,7 @@ const createNewMessagesRoom = async (user1Id, user1Name, user2Id, user2Name) => 
 const createNewMessage = async (messageRoomId, senderId, message) => {
     try {
         const newMessage = new database.models.Message({
-            content: message,
+            text: message,
             sender: senderId
         });
 

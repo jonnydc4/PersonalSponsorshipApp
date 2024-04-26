@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Grid, Paper, List, ListItem, ListItemText, Typography } from '@mui/material';
-import { Link } from 'react-router-dom'; // Import the Link component at the top of your file
 
 const CommonFrame = ({ items, children, onSelectItem, searchBar }) => {
     const [selectedItem, setSelectedItem] = useState(null);

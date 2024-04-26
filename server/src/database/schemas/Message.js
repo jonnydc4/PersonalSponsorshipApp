@@ -5,4 +5,6 @@ const messageSchema = new mongoose.Schema({
     sender: { type: String, required: true } // Identifier for sender type ex. user id
 });
 
-module.exports = messageSchema;
+const Message = mongoose.model('Message', messageSchema);
+
+module.exports = { Message, messageSchema };

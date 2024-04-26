@@ -6,7 +6,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
 
-function NewChatRoomDialog({open, setOpen, currentUserId}) {
+function NewChatRoomDialog({open, setOpen, currentUserId, renderTrigger, setRenderTrigger}) {
     // State to handle the open/close of the dialog
     // const [open, setOpen] = useState(false);
     // State to store the username input
@@ -26,27 +26,21 @@ function NewChatRoomDialog({open, setOpen, currentUserId}) {
 
     // Function to handle creating a new chatroom (you can add API call here)
     const handleCreateChatroom = async () => {
-        // console.log('Creating chatroom with:', username);
         // Close the dialog
         handleClose();
 
-
-        // Here you would typically make an API call to create the chatroom
         try {
-            console.log("NewChatRoomDialog.js",{ currentUserId: currentUserId, currentUserType: userType, invitedUser: username, currentUserName: usernameSelf })
-
             const response = await fetch('/api/createNewChatRoom', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                // Send the email as JSON in the request body
                 body: JSON.stringify({ currentUserId: currentUserId, currentUserType: userType, invitedUser: username, currentUserName: usernameSelf }),
             })
 
-            console.log(response)
-
-
+            if (response.ok){
+                setRenderTrigger(!renderTrigger)
+            }
             // Reset username field
             setUsername('');
         } catch (error) {

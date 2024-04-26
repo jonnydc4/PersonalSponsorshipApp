@@ -1,5 +1,6 @@
+
 const mongoose = require('mongoose');
-const messageSchema = require('./Message');
+const { messageSchema } = require('./Message');
 
 
 const messageRoomSchema = new mongoose.Schema({

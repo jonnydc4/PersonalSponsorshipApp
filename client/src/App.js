@@ -19,6 +19,13 @@ import {createTheme, ThemeProvider} from "@mui/material/styles";
 import JobManagerPage from "./pages/job-manager/JobManagerPage";
 import JobOffersPage from "./components/JobOffersPage";
 
+
+
+
+
+
+
+
 function App() {
     const theme = createTheme({
         palette: {

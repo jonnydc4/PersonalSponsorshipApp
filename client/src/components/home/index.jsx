@@ -162,19 +162,15 @@
 
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../../contexts/authContext';
-import { Toolbar, Typography, Box, Drawer, Tabs, Tab, Badge, Skeleton } from '@mui/material';
+import { Typography, Box, Drawer, Tabs, Tab } from '@mui/material';
 import Person2Icon from '@mui/icons-material/Person2';
 import SpaceDashboardIcon from '@mui/icons-material/SpaceDashboard';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import MessageIcon from '@mui/icons-material/Message';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import CustomStepper from "../newUserProcess/CustomStepper";
-
-import DashboardPage from "../JobOffersPage.js";
 import PostJobPage from "../../pages/job-manager/JobManagerPage";
-
 import JobOffersPage from "../JobOffersPage.js";
-import MessagesPage from "../JobOffersPage.js";
 import ProfilePage from "../profile_page/index";
 import Messenger from "../messenger/messenger";
 import BrandDealTableInfluencer from './BrandDealTableInfluencer.jsx';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Toolbar, Typography, Box, Drawer, Tabs, Tab, Badge, Skeleton, Avatar } from '@mui/material';
+import { Typography, Box, Badge, Avatar } from '@mui/material';
 import WavingHandIcon from '@mui/icons-material/WavingHand';
 
 function WelcomeBoard({ userName }) {
