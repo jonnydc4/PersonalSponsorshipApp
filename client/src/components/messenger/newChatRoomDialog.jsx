@@ -12,6 +12,7 @@ function NewChatRoomDialog({open, setOpen, currentUserId, renderTrigger, setRend
     const [username, setUsername] = useState('');
     const userType = localStorage.getItem('userType')
     const usernameSelf = localStorage.getItem('userName')
+    console.log("newChatRoomDialog:", usernameSelf)
 
     // Function to handle dialog opening
     const handleClickOpen = () => {

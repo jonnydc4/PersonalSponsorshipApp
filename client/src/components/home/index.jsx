@@ -36,12 +36,6 @@ const Home = () => {
                 setUserType(data.userType)
                 setUserData(data.userData)
                 localStorage.setItem("userType",  data.userType)
-                if (this.getUserType(data.userType)){
-                    localStorage.setItem("userName", data.name);
-                } else {
-                    localStorage.setItem("userName", data.userName);
-                }
-                
             } catch (error) {
                 console.error('There was a problem with the fetch operation:', error)
             }
@@ -49,9 +43,25 @@ const Home = () => {
         handleRender();
     }, [currentUser]);
 
-    const getUserType = (userType) => {
-        return userType === "company";
-    }
+    useEffect(() => {
+        const handleRender = async () => {
+            const getUserType = (userType) => {
+                return userType === "company";
+            }
+
+            try {
+                if (getUserType(userType)){
+                    localStorage.setItem("userName", userData.name);
+                } else {
+                    localStorage.setItem("userName", userData.userName);
+                }
+            } catch (error) {
+                console.error('There was a problem with the fetch operation:', error)
+            }
+        };
+        handleRender();
+    }, [userData]);
+
     const handleTabChange = (event, newValue) => {
         setSelectedTab(newValue);
     };
