@@ -27,6 +27,7 @@ const CompanyForm = ({formSubmittedSuccessfully, setFormSubmittedSuccessfully}) 
             if (data.message === "New company added") {
                 setFormSubmittedSuccessfully(true)
                 localStorage.setItem("userType",  "company")
+                localStorage.setItem("userName", companyName);
             }
         } catch (error) {
             console.error('There was a problem with the fetch operation:', error)
