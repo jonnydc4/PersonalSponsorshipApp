@@ -4,6 +4,7 @@ import { Typography, Avatar, Box, Grid } from '@mui/material';
 
 const ProfilePage = () => {
     const { currentUser } = useAuth();
+    const username = localStorage.getItem('userName')
 
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2, p: 3 }}>
@@ -11,7 +12,7 @@ const ProfilePage = () => {
                 User Profile
             </Typography>
             <Avatar sx={{ width: 56, height: 56, bgcolor: 'primary.main' }}>U</Avatar>
-            <Typography variant="h6">{currentUser.displayName || 'Username'}</Typography>
+            <Typography variant="h6">{username}</Typography>
             <Typography>Email: {currentUser.email || 'user@example.com'}</Typography>
             <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
