@@ -398,6 +398,41 @@ const createNewMessage = async (messageRoomId, senderId, message) => {
     }
 }
 
+// Function to update a company profile
+const updateCompanyProfile = async (companyId, profileData) => {
+    try {
+        // Assuming your Company model's schema has the fields: name, phoneNumber, email, about
+        const updatedCompany = await database.models.Company.findOneAndUpdate(
+            { id: companyId }, 
+            { $set: profileData },
+            { new: true, runValidators: true }
+        );
+        console.log('Updated Company:', updatedCompany);
+        return updatedCompany;
+    } catch (error) {
+        console.error('Error updating company profile:', error);
+        throw error;
+    }
+};
+
+// Function to update an influencer profile
+const updateInfluencerProfile = async (influencerId, profileData) => {
+    try {
+        const updatedInfluencer = await database.models.Influencer.findOneAndUpdate(
+            { id: influencerId },
+            { $set: profileData },
+            { new: true, runValidators: true }
+        );
+        console.log('Updated Influencer:', updatedInfluencer);
+        return updatedInfluencer;
+    } catch (error) {
+        console.error('Error updating influencer profile:', error);
+        throw error;
+    }
+};
+
+
+
 module.exports = {
     findUserByEmail,
     updateUserPassword,
@@ -420,5 +455,7 @@ module.exports = {
     createNewMessage,
     getAllMessagesRoomsForUser,
     getInfluencerIdByUsername,
-    getCompanyIdByName
+    getCompanyIdByName,
+    updateCompanyProfile,
+    updateInfluencerProfile
 };
