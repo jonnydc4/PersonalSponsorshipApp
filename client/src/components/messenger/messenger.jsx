@@ -109,16 +109,16 @@ function Messenger() {
                         {messages.map((message) => (
                             <ListItem key={message.id} alignItems="flex-start" sx={{
                                 display: 'flex',
-                                justifyContent: message.senderId == localUser ? 'flex-end' : 'flex-start',
+                                justifyContent: message.sender == localUser ? 'flex-end' : 'flex-start',
                             }}>
                                 <Box
                                     sx={{
                                         maxWidth: '70%',
-                                        backgroundColor: message.senderId == localUser ? 'white' : '#8e44ad', 
-                                        color: message.senderId == localUser ? 'black' : 'white',
+                                        backgroundColor: message.sender === localUser ? 'white' : '#8e44ad', 
+                                        color: message.sender === localUser ? 'black' : 'white',
                                         borderRadius: '10px',
                                         padding: '10px',
-                                        textAlign: message.senderId == localUser ? 'right' : 'left',
+                                        textAlign: message.sender === localUser ? 'right' : 'left',
                                         wordBreak: 'break-word',
                                         boxShadow: 1,
                                     }}
