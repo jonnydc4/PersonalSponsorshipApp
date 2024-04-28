@@ -1,4 +1,8 @@
 import React, { useState } from 'react';
+// The EditJobForm component displays beneath the job details when the "Edit" button is clicked.
+// This form allows the user to modify the title, description, and location of a job. The state of each field
+// is managed with individual useState hooks, ensuring that the form is responsive and the data is up-to-date.
+// Upon submitting the form, the updated job information is saved and can be sent back to the database for persistence.
 
 function EditJobForm({ selectedJob, onSave }) {
   // State for the job title, description, and location
@@ -21,7 +25,8 @@ function EditJobForm({ selectedJob, onSave }) {
 
   // Function to handle save button click
   const handleSave = () => {
-    // Create an updated job object
+    // Create an updated job object that is then sent to endpoint
+    // toDO create endpoint implementation 
     const updatedJob = {
       ...selectedJob,
       title: title,
