@@ -1,16 +1,21 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import CommonFrame from '../../components/CommonFrame';
 import InfluencerSearchButton from '../../components/InfluencerSearchButton';
 import JobPostingForm from '../../components/JobPostingForm';
 import InfluencerSearch from '../../InfluencerSearch'; // Import the actual component
 import { Typography, Button } from '@mui/material';
 import EditJobForm from '../job-manager/components/EditJobForm'
+
+
 const JobManagerPage = () => {
   const [jobs, setJobs] = useState([]);
   const [selectedJob, setSelectedJob] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showInfluencerSearch, setShowInfluencerSearch] = useState(false);
+  const [showEditJob, setShowEditJob] = useState(false);
 
   useEffect(() => {
     const fetchJobs = async () => {
@@ -39,11 +44,16 @@ const JobManagerPage = () => {
     // console.log('Selected entire job: ', job);
     setSelectedJob(job);
     setShowInfluencerSearch(false);
+    setShowEditJob(false);
   };
 
 
   const handleInfluencerSearch = () => {
     setShowInfluencerSearch(true); // Show the influencer search component
+  };
+
+  const handleEditJob = () => {
+    setShowEditJob(true);
   };
 
   const addJobToList = (newJob) => {
@@ -60,11 +70,12 @@ const JobManagerPage = () => {
         <Typography color="error">{error}</Typography>
       ) : showInfluencerSearch ? (
         <InfluencerSearch jobId={selectedJob?._id} />
+      ) : showEditJob && selectedJob ? (
+        <EditJobForm selectedJob={selectedJob} onSave={handleJobClick} />
       ) : selectedJob ? (
         <>
           <Typography variant="h6">
-            
-            <Button variant="contained" color="primary" onSearchClick={EditJobForm}>
+            <Button variant="contained" color="primary" onClick={handleEditJob}>
               Edit Job: {selectedJob.title}
             </Button>
           </Typography>
