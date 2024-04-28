@@ -24,7 +24,8 @@ const {
     getCompanyIdByName,
     createNewMessage,
     updateCompanyProfile,
-    updateInfluencerProfile
+    updateInfluencerProfile,
+    findExistingChatRoom
 } = require("../database/database");
 
 const router = express.Router()
@@ -205,6 +206,10 @@ router.post('/api/createNewChatRoom', async (req, res) => {
         }
         if (user2Id === undefined) {throw Error} // Invited user was not found in any database.
 
+        const existingRoom = await findExistingChatRoom(data.currentUserId, user2Id)
+        if (existingRoom) {
+            return res.status(200).json({message: "Existing chatroom found", chatroomId: existingRoom._id})
+        }
         await createNewMessagesRoom(data.currentUserId, data.currentUserName, user2Id, data.invitedUser)
         // console.log("Createnewchat worked kinda")
         res.status(201).send({message: "New chatroom created"});
@@ -214,15 +219,29 @@ router.post('/api/createNewChatRoom', async (req, res) => {
 });
 
 router.post('/api/createNewMessage', async (req, res) => {
+    const { chatRoomId, senderId, message } = req.body;
+
+    // Validate the incoming data
+    if (!chatRoomId || !senderId || !message) {
+        return res.status(400).json({
+            error: 'Missing required fields',
+            requiredFields: ['chatRoomId', 'senderId', 'message']
+        });
+    }
+
+    // Do the thing
     try {
-        const data = req.body;
-        await createNewMessage(data.chatRoomId, data.senderId, data.message)
-        res.status(201).send({message: "Message Sent"});
+        const result = await createNewMessage(chatRoomId, senderId, message);
+        console.log('Message created:', result);
+        res.status(201).json({ message: "Message sent successfully" });
     } catch (error) {
-        res.status(500).send(error);
+        console.error('Failed to create message:', error);
+        res.status(500).json({
+            error: 'Internal Server Error',
+            message: error.message || 'An unknown error occurred'
+        });
     }
 });
-
 router.post('/api/updateCompany', async (req, res) => {
     try {
         const { name, address, phoneNumber, email, about, username } = req.body;

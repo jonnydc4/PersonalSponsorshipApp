@@ -1,167 +1,139 @@
-import React, {useEffect, useState} from 'react';
-import {useAuth} from '../../contexts/authContext';
+import React, { useEffect, useState } from 'react';
+import { useAuth } from '../../contexts/authContext';
 import {
-    Box,
-    Drawer,
-    List,
-    ListItem,
-    ListItemText,
-    AppBar,
-    Toolbar,
-    Typography,
-    Paper
+  Box,
+  Drawer,
+  List,
+  ListItem,
+  ListItemText,
+  AppBar,
+  Toolbar,
+  Typography,
+  Paper
 } from '@mui/material';
 import NewChatRoomDialog from "./newChatRoomDialog";
 import MessageInput from "./messageInput";
 
 function Messenger() {
-    const {currentUser} = useAuth();
-    const userId = currentUser.uid
+  const { currentUser } = useAuth();
+  const userId = currentUser.uid;
+  const localUser = localStorage.getItem(userId);
 
-    const [selectedContact, setSelectedContact] = useState(null);
-    const [messages, setMessages] = useState([]);
-    const [dialogOpen, setDialogOpen] = useState(false)
-    const [chatRooms, setChatRooms] = useState([]);
-    const [contacts, setContacts] = useState([]);
-    const [renderTrigger, setRenderTrigger] = useState(false)
+  const [selectedContactId, setSelectedContactId] = useState(null);
+  const [messages, setMessages] = useState([]);
+  const [chatRooms, setChatRooms] = useState([]);
+  const [contacts, setContacts] = useState([]);
+  const [renderTrigger, setRenderTrigger] = useState(false);
 
-    // On first render or for when the userId changes
-    useEffect(() => {
-        const fetchChatRooms = async () => {
-            // This is just getting the chatRoom data from the backend
-            // We will be using this to generate the contact list and the messages we need displayed
-            try {
-                const response = await fetch(`/api/getChatRoomsForUser?userId=${userId}`);
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                const data = await response.json();
-                // console.log("messenger.jsx data:", data);
-                setChatRooms(data);  // Set state here
-                return data;
-            } catch (error) {
-                console.error('Failed to fetch chat rooms:', error);
-            }
-        };
 
-        fetchChatRooms()
-    }, [userId, renderTrigger]);  // Ensure it re-runs if userId changes
-
-    // If chatRooms changes, rerender and make a new contact list
-    useEffect(() => {
-        console.log("chatRooms updated:", chatRooms);
-        const generateContacts = (chatRoomData) => {
-            let contacts = []
-            let index = 0
-
-            chatRoomData.forEach((chatRoom) => {
-                // We want the contact name to not be the current user's name but the other user who is in the chat.
-                if (userId === chatRoom.user1Id) {
-                    contacts.push({id: index, name: chatRoom.user2Name})
-                    index += 1
-                } else {
-                    contacts.push({id: index, name: chatRoom.user1Name})
-                    index += 1
-                }
-            });
-            return contacts
+  useEffect(() => {
+    const fetchChatRooms = async () => {
+      try {
+        const response = await fetch(`/api/getChatRoomsForUser?userId=${userId}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch chat rooms');
         }
-
-        let contactList = generateContacts(chatRooms)
-        // console.log("Contact List:", contactList)
-        setContacts(contactList)
-    }, [chatRooms]); // This useEffect will run after chatRooms is updated
-
-    useEffect(() => {
-        if (selectedContact !== null) {
-            // console.log("Selected Contact Updated:", selectedContact)
-            // console.log("Chat Room for selected contact", chatRooms[selectedContact])
-
-            let messageList = chatRooms[selectedContact].messages
-            setMessages(messageList)
+        const data = await response.json();
+        setChatRooms(data);
+        console.log(localUser)
+        if (data.length > 0 && selectedContactId === null) {
+          // Set the first chat room as the selected one by default
+          setSelectedContactId(data[0]._id);
         }
-    }, [selectedContact, chatRooms]); // This useEffect will run after selectedContact is updated
-
-
-    const handleContactClick = (id) => {
-        setSelectedContact(id);
+      } catch (error) {
+        console.error('Failed to fetch chat rooms:', error);
+      }
     };
+    fetchChatRooms();
+  }, [userId, renderTrigger]);
 
-    return (
-        <Box sx={{display: 'flex'}}>
-            {/* Side bar with contacts */}
-            <Drawer
-                variant="permanent"
-                sx={{
-                    width: 240,
-                    flexShrink: 0,
-                    marginLeft: '240px', // Set marginLeft equal to the width of the drawer
-                    [`& .MuiDrawer-paper`]: {
-                        width: 240,
-                        boxSizing: 'border-box',
-                        marginLeft: '240px' // Same adjustment for the inner paper
-                    }
-                }}
-            >
-                <Toolbar/>
-                {/* List of Conversations/Contacts */}
-                <Box sx={{overflow: 'auto'}}>
-                    <List>
-                        {contacts.map((contact) => (
-                            <ListItem button key={contact.id} onClick={() => handleContactClick(contact.id)}>
-                                <ListItemText primary={contact.name}/>
-                            </ListItem>
-                        ))}
-                        <ListItem>
-                            <NewChatRoomDialog open={dialogOpen} setOpen={setDialogOpen} currentUserId={userId} renderTrigger={renderTrigger} setRenderTrigger={setRenderTrigger}/>
-                        </ListItem>
-                    </List>
-                </Box>
-            </Drawer>
+  useEffect(() => {
+    const newContacts = chatRooms.map(chatRoom => ({
+      id: chatRoom._id,
+      name: userId === chatRoom.user1Id ? chatRoom.user2Name : chatRoom.user1Name
+    }));
+    setContacts(newContacts);
+  }, [chatRooms, userId]);
 
-            {/* Messages Header */}
-            <Box sx={{flexGrow: 1, p: 3}}>
-                <AppBar position="static">
-                    <Toolbar>
-                        <Typography variant="h6" noWrap component="div">
-                            Messenger
-                        </Typography>
-                    </Toolbar>
-                </AppBar>
+  useEffect(() => {
+    const selectedChatRoom = chatRooms.find(room => room._id === selectedContactId);
+    if (selectedChatRoom) {
+      setMessages(selectedChatRoom.messages);
+    }
+  }, [selectedContactId, chatRooms]);
 
-                <Paper style={{height: 'calc(75% - 64px)', overflow: 'auto', marginTop: '24px'}}>
+  const handleContactClick = roomId => {
+    setSelectedContactId(roomId);
+  };
+
+  return (
+    <Box sx={{ display: 'flex' }}>
+      <Drawer
+        variant="permanent"
+        sx={{
+          width: 240,
+          flexShrink: 0,
+          [`& .MuiDrawer-paper`]: { width: 240, boxSizing: 'border-box' },
+        }}
+      >
+        <Toolbar />
+        <Box sx={{ overflow: 'auto' }}>
+          <List>
+            {contacts.map(contact => (
+              <ListItem key={contact.id} button onClick={() => handleContactClick(contact.id)}>
+                <ListItemText primary={contact.name} />
+              </ListItem>
+            ))}
+            <ListItem>
+              <NewChatRoomDialog
+                currentUserId={userId}
+                renderTrigger={renderTrigger}
+                setRenderTrigger={setRenderTrigger}
+              />
+            </ListItem>
+          </List>
+        </Box>
+      </Drawer>
+
+      <Box sx={{ flexGrow: 1, p: 3 }}>
+        <AppBar position="static">
+          <Toolbar>
+            <Typography variant="h6" noWrap component="div">
+              Messenger
+            </Typography>
+          </Toolbar>
+        </AppBar>
+
+        <Paper style={{ height: 'calc(75% - 64px)', overflow: 'auto', marginTop: '24px' }}>
                     <List>
                         {messages.map((message) => (
-                            <ListItem key={message.senderId} alignItems="flex-start" sx={{
+                            <ListItem key={message.id} alignItems="flex-start" sx={{
                                 display: 'flex',
-                                flexDirection: 'column',
-                                alignItems: message.senderId !== userId ? 'flex-end' : 'flex-start'
+                                justifyContent: message.senderId == localUser ? 'flex-end' : 'flex-start',
                             }}>
                                 <Box
                                     sx={{
                                         maxWidth: '70%',
-                                        backgroundColor: message.senderId === userId ? '#8e44ad' : '#ffffff',
-                                        color: message.senderId === userId ? '#ffffff' : '#000000',
+                                        backgroundColor: message.senderId == localUser ? 'white' : '#8e44ad', 
+                                        color: message.senderId == localUser ? 'black' : 'white',
                                         borderRadius: '10px',
                                         padding: '10px',
-                                        textAlign: message.senderId !== userId ? 'right' : 'left',
+                                        textAlign: message.senderId == localUser ? 'right' : 'left',
                                         wordBreak: 'break-word',
-                                        boxShadow: 1
+                                        boxShadow: 1,
                                     }}
                                 >
-                                    <ListItemText primary={message.text}
-                                                  primaryTypographyProps={{style: {color: message.senderId === userId ? 'white' : 'black'}}}/>
+                                    <ListItemText primary={message.text} />
                                 </Box>
                             </ListItem>
                         ))}
                     </List>
                 </Paper>
 
-                {/* Message Input */}
-                <MessageInput selectedContact={selectedContact} chatRooms={chatRooms} renderTrigger={renderTrigger} setRenderTrigger={setRenderTrigger}/>
-            </Box>
-        </Box>
-    );
+        {selectedContactId && <MessageInput selectedRoomId={selectedContactId} renderTrigger={renderTrigger} setRenderTrigger={setRenderTrigger} />}
+      </Box>
+    </Box>
+  );
 }
 
 export default Messenger;
