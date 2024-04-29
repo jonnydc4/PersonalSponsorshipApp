@@ -1,13 +1,22 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../../../contexts/authContext'
-import { doCreateUserWithEmailAndPassword } from '../../../firebase/auth'
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import Link from '@mui/material/Link';
-import {Stack} from "@mui/material";
+import React, {useState} from 'react'
+import {useNavigate} from 'react-router-dom'
+import {useAuth} from '../../../contexts/authContext'
+import {doCreateUserWithEmailAndPassword} from '../../../firebase/auth'
+import {
+    TextField,
+    Stack,
+    Typography,
+    Box,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogActions,
+    Button,
+    Checkbox,
+    FormControlLabel,
+    Link
+} from "@mui/material";
+import TermsAndServices from "./termsAndServices";
 
 const Register = () => {
     const navigate = useNavigate()
@@ -16,8 +25,18 @@ const Register = () => {
     const [confirmPassword, setConfirmPassword] = useState('')
     const [isRegistering, setIsRegistering] = useState(false)
     const [errorMessage, setErrorMessage] = useState('')
+    const [termsOpen, setTermsOpen] = useState(false);
 
-    const { userLoggedIn } = useAuth()
+    const {userLoggedIn} = useAuth()
+
+
+    const handleOpenTerms = () => {
+        setTermsOpen(true);
+    };
+
+    const handleCloseTerms = () => {
+        setTermsOpen(false);
+    };
 
     const onSubmit = async (e) => {
         e.preventDefault()
@@ -50,6 +69,90 @@ const Register = () => {
     }
 
     return (
+        // <>
+        //     {userLoggedIn ? (
+        //         <Stack
+        //             spacing={2}
+        //             sx={{
+        //                 justifyContent: 'center',
+        //                 alignItems: 'center',
+        //             }}
+        //         >
+        //             <Typography
+        //                 variant="h3"
+        //                 fontWeight="fontWeightBold"
+        //             >
+        //                 You are already logged in.
+        //             </Typography>
+        //             <Typography variant="h6" fontWeight="fontWeightLight">
+        //                 Navigate to the home screen. ->
+        //                 <Link onClick={() => navigate("/home")} underline="hover">
+        //                     home
+        //                 </Link>
+        //             </Typography>
+        //         </Stack>
+        //     ) : (
+        //         <Box
+        //             sx={{
+        //                 width: '100vw',
+        //                 height: '100vh',
+        //                 display: 'flex',
+        //                 alignItems: 'center',
+        //                 justifyContent: 'center',
+        //             }}
+        //         >
+        //             <Box
+        //                 sx={{
+        //                     width: 384, // equivalent to w-96
+        //                     p: 4,
+        //                     boxShadow: 'xl',
+        //                     border: 1,
+        //                     borderRadius: 2,
+        //                     display: 'flex',
+        //                     flexDirection: 'column',
+        //                     gap: 2,
+        //                 }}
+        //             >
+        //                 <Typography variant="h5" textAlign="center" fontWeight="bold" mb={6}>
+        //                     Create a New Account
+        //                 </Typography>
+        //                 <Box
+        //                     component="form"
+        //                     onSubmit={onSubmit}
+        //                     sx={{ '& .MuiTextField-root': { mt: 2 }, display: 'flex', flexDirection: 'column', gap: 4 }}
+        //                 >
+        //                     {/* Fields for email, password, etc., remain unchanged */}
+        //                     <FormControlLabel
+        //                         control={<Checkbox required />}
+        //                         label={<Link onClick={handleOpenTerms} underline="hover">I accept the Terms and Services.</Link>}
+        //                         sx={{ mt: 2 }}
+        //                     />
+        //                     {errorMessage && (
+        //                         <Typography color="error" fontWeight="bold">
+        //                             {errorMessage}
+        //                         </Typography>
+        //                     )}
+        //                     <Button
+        //                         type="submit"
+        //                         disabled={isRegistering}
+        //                         variant="contained"
+        //                         color="primary"
+        //                         fullWidth
+        //                         sx={{ mt: 2 }}
+        //                     >
+        //                         {isRegistering ? 'Signing Up...' : 'Sign Up'}
+        //                     </Button>
+        //                     <Typography variant="body2" textAlign="center" mt={2}>
+        //                         Already have an account?{' '}
+        //                         <Link onClick={() => navigate("/login")} underline="hover">
+        //                             Login
+        //                         </Link>
+        //                     </Typography>
+        //                 </Box>
+        //             </Box>
+        //         </Box>
+        //     )}
+        // </>
         <>
             {userLoggedIn ? (
                 <Stack
@@ -105,7 +208,7 @@ const Register = () => {
                         <Box
                             component="form"
                             onSubmit={onSubmit}
-                            sx={{ '& .MuiTextField-root': { mt: 2 }, display: 'flex', flexDirection: 'column', gap: 4 }}
+                            sx={{'& .MuiTextField-root': {mt: 2}, display: 'flex', flexDirection: 'column', gap: 4}}
                         >
                             <TextField
                                 label="Email"
@@ -140,6 +243,12 @@ const Register = () => {
                                 helperText={confirmPassword.length > 0 && confirmPassword.length < 6 ? "Password must be at least 6 characters long." : ""}
                                 fullWidth
                             />
+                            <FormControlLabel
+                                control={<Checkbox required/>}
+                                label={<Link onClick={handleOpenTerms} underline="hover">I accept the Terms and
+                                    Services.</Link>}
+                                sx={{mt: 2}}
+                            />
                             {errorMessage && (
                                 <Typography color="error" fontWeight="bold">
                                     {errorMessage}
@@ -151,7 +260,7 @@ const Register = () => {
                                 variant="contained"
                                 color="primary"
                                 fullWidth
-                                sx={{ mt: 2 }}
+                                sx={{mt: 2}}
                             >
                                 {isRegistering ? 'Signing Up...' : 'Sign Up'}
                             </Button>
@@ -163,14 +272,29 @@ const Register = () => {
                                     }}
                                     underline="hover"
                                 >
-                                    Continue
+                                    Login
                                 </Link>
                             </Typography>
                         </Box>
                     </Box>
+                    {/* Terms and Services Dialog */}
+                    <Dialog
+                        open={termsOpen}
+                        onClose={handleCloseTerms}
+                        aria-labelledby="terms-dialog-title"
+                    >
+                        <DialogTitle id="terms-dialog-title">Terms and Services</DialogTitle>
+                        <DialogContent>
+                            <TermsAndServices />
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={handleCloseTerms} color="primary">Close</Button>
+                        </DialogActions>
+                    </Dialog>
                 </Box>
             )}
         </>
+
     )
 }
 

@@ -1,0 +1,9 @@
+Project Name: NFLUNCR/Influinity
+
+Description: This app is designed to streamline and personalize the process of connecting influencers and companies for sponsored content. As of now, it can be hard for
+influencers to find sponsorship deals that align with their content and values, and profit from their content. We can also find similar difficulties on the side of the
+companies to find influencers that reach their target audience and have the tools and space necessary to properly showcase their product. On top of that, we live in a
+time of innovation and exploration where people are allowed to explore increasingly niche and varying hobbies and interests. Companies are also able to produce an increasing
+variety of innovative products which require the buyer to do more research before purchasing the product. Because of this, companies are incentivized to produce the best
+product and market it efficiently, and influencers are incentivized to understand their followers and research products they would genuinely need or enjoy having. A lot of time
+and money can be saved by helping streamline the process of connecting companies and influencers.

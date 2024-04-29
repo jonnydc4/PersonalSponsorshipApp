@@ -28,6 +28,7 @@ const InfluencerForm = ({formSubmittedSuccessfully, setFormSubmittedSuccessfully
             if (data.message === "New influencer added") {
                 setFormSubmittedSuccessfully(true)
                 localStorage.setItem("userType",  "influencer")
+                localStorage.setItem("userName", userName);
             }
         } catch (error) {
             console.error('There was a problem with the fetch operation:', error)
