@@ -26,8 +26,8 @@ function EditJobForm({ selectedJob, onSave, userCompanyId }) {
   // Function to handle save button click
   const handleSave = async () => {
     const jobId = selectedJob._id;
-
-    const response = await fetch(`/api/jobs/${jobId}`, {
+    
+    const response = await fetch(`/api/jobs-updates/${jobId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

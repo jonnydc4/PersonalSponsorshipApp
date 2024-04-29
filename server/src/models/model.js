@@ -50,8 +50,9 @@ const getJobById = async (jobId) => {
     return await db.getJobById(jobId);
 };
 
-const updateJob = async (jobId, updates) => {
-    return await db.updateJob(jobId, updates);
+const updateJob = async (jobId, title, description, location) => {
+    return await db.updateJob(jobId, title, description, location);
+    
 };
 
 

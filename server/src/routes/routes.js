@@ -23,7 +23,6 @@ const {
     getInfluencerIdByUsername,
     getCompanyIdByName,
     createNewMessage,
-    getJobById,
     updateJob
 } = require("../database/database");
 
@@ -98,26 +97,38 @@ router.post('/api/postJob', async (req, res) => {
 
 
 
-// // Route to update a job
-router.patch('/api/jobs/:jobId', async (req, res) => {
+// Route to update a job
+// router.put('/api/jobs-updates/:jobId', async (req, res) => {
+//     const { jobId } = req.params;
+//     const updates = req.body; // Includes any combination of title, description, and location
+//     console.log('Updates:', updates);
+
+//     try {
+//         // Directly attempt to update the job without checking if it exists
+//         const updatedJob = await Job.findByIdAndUpdate(jobId, updates, { new: true });
+//         if (!updatedJob) {
+//             console.log('No job found with ID:', jobId);
+//             return res.status(404).send({ message: 'Job not found or no updates made' });
+//         }
+//         console.log('Updated job:', updatedJob);
+//         res.status(200).json(updatedJob);
+//     } catch (error) {
+//         console.error('Error updating job:', error);
+//         res.status(500).send({ message: 'Internal Server Error', error: error.message });
+//     }
+// });
+
+router.put('/api/jobs-updates/:jobId', async (req, res) => {
     const { jobId } = req.params;
-    const updates = req.body; // This could include any combination of title, description, and location
-
+    const {title, description, location, companyId} = req.body;
+    console.log(title);
+    console.log(description);
+    console.log(location);
     try {
-        const job = await getJobById(jobId);
-        if (!job) {
-            return res.status(404).send({ message: 'Job not found' });
-        }
-
-        const updatedJob = await updateJob(jobId, updates);
-        if (!updatedJob) {
-            return res.status(500).send({ message: 'Failed to update job' });
-        }
-
-        res.status(200).json(updatedJob);
+        await updateJob(jobId, title, description, location);
+        res.status(200).send({message: 'Job updated successfully'});
     } catch (error) {
         console.error('Error updating job:', error);
-        res.status(500).send({ message: 'Internal Server Error' });
     }
 });
 

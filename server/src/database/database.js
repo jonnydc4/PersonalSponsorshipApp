@@ -89,10 +89,15 @@ const getJobsByCompanyId = async (companyId) => {
 
 
 
-const updateJob = async (jobId, updates) => {
+const updateJob = async (jobId, title, description, location) => {
     try {
+        const jobInformation = {
+            title: title,
+            description: description,
+            location: location
+        }
         // Use findByIdAndUpdate to update the job document
-        const updatedJob = await Job.findByIdAndUpdate(jobId, updates, { new: true });
+        const updatedJob = await database.findByIdAndUpdate(jobId, jobInformation, { new: true });
         return updatedJob;
     } catch (error) {
         console.error('Error updating job in DB:', error);
@@ -100,15 +105,6 @@ const updateJob = async (jobId, updates) => {
     }
 };
 
-const getJobById = async (jobId) => {
-    try {
-        const job = await Job.findById(jobId);
-        return job;
-    } catch (error) {
-        console.error('Error retrieving job by ID:', error);
-        throw error; // Rethrow or handle as needed
-    }
-};
 
 
 
@@ -462,6 +458,5 @@ module.exports = {
     getAllMessagesRoomsForUser,
     getInfluencerIdByUsername,
     getCompanyIdByName,
-    getJobById,
     updateJob
 };
