@@ -11,14 +11,14 @@ import Header from "./components/header";
 import Home from "./components/home";
 import ProfilePage from "./components/profile_page";
 
-import {AuthProvider} from "./contexts/authContext";
-import {useRoutes} from "react-router-dom";
-import {Box} from "@mui/material";
+import { AuthProvider } from "./contexts/authContext";
+import { useRoutes } from "react-router-dom";
+import { Box } from "@mui/material";
 import LandingPage from "./components/landing_page/LandingPage";
-import {createTheme, ThemeProvider} from "@mui/material/styles";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import JobManagerPage from "./pages/job-manager/JobManagerPage";
 import JobOffersPage from "./components/JobOffersPage";
-
+import JobEditForm from "./pages/job-manager/components/EditJobForm"
 
 
 
@@ -57,7 +57,7 @@ function App() {
     const routesArray = [
         {
             path: "*",
-            element: <LandingPage/>,
+            element: <LandingPage />,
         },
         // {
         //     path: "*",
@@ -65,28 +65,33 @@ function App() {
         // },
         {
             path: "/login",
-            element: <Login/>,
+            element: <Login />,
         },
         {
             path: "/register",
-            element: <Register/>,
+            element: <Register />,
         },
         {
             path: "/home",
-            element: <Home/>,
+            element: <Home />,
         },
         {
             path: "/profile_page",
-            element: <ProfilePage/>,
+            element: <ProfilePage />,
         },
         {
             path: "/job-manager/components",
-            element: <JobManagerPage/>,
+            element: <JobManagerPage />,
         },
         {
             path: "/jobofferspage",
-            element: <JobOffersPage/>
+            element: <JobOffersPage />
+        },
+        {
+            path: "/job-manager/components/EditJobForm",
+            element: <JobEditForm />
         }
+
     ];
 
     let routesElement = useRoutes(routesArray);

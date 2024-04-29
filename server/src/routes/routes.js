@@ -22,7 +22,8 @@ const {
     getAllMessagesRoomsForUser,
     getInfluencerIdByUsername,
     getCompanyIdByName,
-    createNewMessage
+    createNewMessage,
+    updateJob
 } = require("../database/database");
 
 const router = express.Router()
@@ -91,6 +92,18 @@ router.post('/api/postJob', async (req, res) => {
     } catch (error) {
         console.error('Error posting job:', error);
         res.status(500).send(error);
+    }
+});
+
+// Endpoint that updates a job in the database (providing the jobID matches an actual job in the database). 
+router.put('/api/jobs-updates/:jobId', async (req, res) => {
+    const { jobId } = req.params;
+    const {title, description, location, companyId} = req.body;
+    try {
+        await updateJob(jobId, title, description, location);
+        res.status(200).send({message: 'Job updated successfully'});
+    } catch (error) {
+        console.error('Error updating job:', error);
     }
 });
 
