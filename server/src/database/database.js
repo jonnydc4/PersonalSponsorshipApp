@@ -1,6 +1,6 @@
 const database = require('../database/mongo-db.js');
 const messageSchema = require("./schemas/Message");
-
+const Job = require("./schemas/Job");
 /* ------------------------User Table Queries------------------------ */
 const findUserByEmail = async (email) => {
     return await database.findOne(database.models.User, {email}); // Using the model name as a string
@@ -90,14 +90,11 @@ const getJobsByCompanyId = async (companyId) => {
 
 
 const updateJob = async (jobId, title, description, location) => {
+    // Used to update a job in the database with the provided job ID, title, description, and location.
     try {
-        const jobInformation = {
-            title: title,
-            description: description,
-            location: location
-        }
-        // Use findByIdAndUpdate to update the job document
-        const updatedJob = await database.findByIdAndUpdate(jobId, jobInformation, { new: true });
+        const updates = { title, description, location };
+        // Use the findByIdAndUpdate method of the Job model directly
+        const updatedJob = await Job.findByIdAndUpdate(jobId, { $set: updates }, { new: true });
         return updatedJob;
     } catch (error) {
         console.error('Error updating job in DB:', error);

@@ -26,17 +26,17 @@ function EditJobForm({ selectedJob, onSave, userCompanyId }) {
   // Function to handle save button click
   const handleSave = async () => {
     const jobId = selectedJob._id;
-    
+    // Send a PUT request to update the job, method is 'PUT' but can be 'PATCH' as well
     const response = await fetch(`/api/jobs-updates/${jobId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        companyId: userCompanyId,  // Make sure this is correctly passed into the component
-        title,                     // Use the state directly
-        description,               // Use the state directly
-        location                   // Use the state directly
+        companyId: userCompanyId,  
+        title,                     
+        description,               
+        location                   
       })
     });
 
