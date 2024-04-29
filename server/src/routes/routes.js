@@ -22,7 +22,9 @@ const {
     getAllMessagesRoomsForUser,
     getInfluencerIdByUsername,
     getCompanyIdByName,
-    createNewMessage
+    createNewMessage,
+    getJobById,
+    updateJob
 } = require("../database/database");
 
 const router = express.Router()
@@ -93,6 +95,33 @@ router.post('/api/postJob', async (req, res) => {
         res.status(500).send(error);
     }
 });
+
+
+
+// // Route to update a job
+router.patch('/api/jobs/:jobId', async (req, res) => {
+    const { jobId } = req.params;
+    const updates = req.body; // This could include any combination of title, description, and location
+
+    try {
+        const job = await getJobById(jobId);
+        if (!job) {
+            return res.status(404).send({ message: 'Job not found' });
+        }
+
+        const updatedJob = await updateJob(jobId, updates);
+        if (!updatedJob) {
+            return res.status(500).send({ message: 'Failed to update job' });
+        }
+
+        res.status(200).json(updatedJob);
+    } catch (error) {
+        console.error('Error updating job:', error);
+        res.status(500).send({ message: 'Internal Server Error' });
+    }
+});
+
+
 
 // Endpoint that fetches all companies currently created within the database.
 router.get("/api/allCompanies", async (req, res) => {

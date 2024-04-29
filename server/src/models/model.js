@@ -46,6 +46,15 @@ const getJobsByCompanyId = async (companyId) => {
     return companyJobs.rows
 }
 
+const getJobById = async (jobId) => {
+    return await db.getJobById(jobId);
+};
+
+const updateJob = async (jobId, updates) => {
+    return await db.updateJob(jobId, updates);
+};
+
+
 
 const getJobOffersForInfluencer = async (influencerId) => {
     return db.getJobOffersForInfluencer(influencerId);
@@ -99,5 +108,7 @@ module.exports = {
     removeNotification,
     createNewUser,
     createNewInfluencer,
-    createNewCompany
+    createNewCompany,
+    getJobById,
+    updateJob
 }

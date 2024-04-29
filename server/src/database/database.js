@@ -84,6 +84,34 @@ const getJobsByCompanyId = async (companyId) => {
     }
 };
 
+
+
+
+
+
+const updateJob = async (jobId, updates) => {
+    try {
+        // Use findByIdAndUpdate to update the job document
+        const updatedJob = await Job.findByIdAndUpdate(jobId, updates, { new: true });
+        return updatedJob;
+    } catch (error) {
+        console.error('Error updating job in DB:', error);
+        throw error;
+    }
+};
+
+const getJobById = async (jobId) => {
+    try {
+        const job = await Job.findById(jobId);
+        return job;
+    } catch (error) {
+        console.error('Error retrieving job by ID:', error);
+        throw error; // Rethrow or handle as needed
+    }
+};
+
+
+
 /* ------------------------Job map Table Queries------------------------ */
 const getJobMapTable = async () => {
     try {
@@ -160,6 +188,19 @@ const createNewCompany = async (id, companyName, address) => {
         throw error; // rethrow the error for further handling
     }
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* ------------------------Influencer Table Queries------------------------ */
 const getInfluencerTable = async () => {
@@ -420,5 +461,7 @@ module.exports = {
     createNewMessage,
     getAllMessagesRoomsForUser,
     getInfluencerIdByUsername,
-    getCompanyIdByName
+    getCompanyIdByName,
+    getJobById,
+    updateJob
 };

@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 // is managed with individual useState hooks, ensuring that the form is responsive and the data is up-to-date.
 // Upon submitting the form, the updated job information is saved and can be sent back to the database for persistence.
 
-function EditJobForm({ selectedJob, onSave }) {
+function EditJobForm({ selectedJob, onSave, userCompanyId }) {
   // State for the job title, description, and location
   const [title, setTitle] = useState(selectedJob.title);
   const [description, setDescription] = useState(selectedJob.description);
@@ -24,16 +24,29 @@ function EditJobForm({ selectedJob, onSave }) {
   };
 
   // Function to handle save button click
-  const handleSave = () => {
-    // Create an updated job object that is then sent to endpoint
-    // toDO create endpoint implementation 
-    const updatedJob = {
-      ...selectedJob,
-      title: title,
-      description: description,
-      location: location
-    };
-    onSave(updatedJob);
+  const handleSave = async () => {
+    const jobId = selectedJob._id;
+
+    const response = await fetch(`/api/jobs/${jobId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        companyId: userCompanyId,  // Make sure this is correctly passed into the component
+        title,                     // Use the state directly
+        description,               // Use the state directly
+        location                   // Use the state directly
+      })
+    });
+
+    const data = await response.json();
+    if (response.ok) {
+      alert('Job updated successfully');
+      onSave(); // Optionally pass data back or refresh data
+    } else {
+      alert(`Failed to update job: ${data.message}`);
+    }
   };
 
   return (
