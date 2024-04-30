@@ -8,7 +8,6 @@ const influencerSchema = new mongoose.Schema({
     phoneNumber: { type: String }, // Add phoneNumber field
     email: { 
         type: String, 
-        required: true,
         unique: true,
         lowercase: true, // Convert email to lowercase
         validate: {

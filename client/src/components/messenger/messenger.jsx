@@ -67,15 +67,21 @@ function Messenger() {
   };
 
   return (
-    <Box sx={{ display: 'flex' }}>
-      <Drawer
-        variant="permanent"
-        sx={{
-          width: 240,
-          flexShrink: 0,
-          [`& .MuiDrawer-paper`]: { width: 240, boxSizing: 'border-box' },
-        }}
-      >
+    <Box sx={{display: 'flex'}}>
+            {/* Side bar with contacts */}
+            <Drawer
+                variant="permanent"
+                sx={{
+                    width: 240,
+                    flexShrink: 0,
+                    marginLeft: '240px', // Set marginLeft equal to the width of the drawer
+                    [`& .MuiDrawer-paper`]: {
+                        width: 240,
+                        boxSizing: 'border-box',
+                        marginLeft: '240px' // Same adjustment for the inner paper
+                    }
+                }}
+            >
         <Toolbar />
         <Box sx={{ overflow: 'auto' }}>
           <List>
