@@ -395,6 +395,23 @@ const getAllMessagesRoomsForUser = async (userId) => {
     }
 }
 
+const findExistingChatRoom = async (user1Id, user2Id) => {
+    try {
+        // Check if there's an existing chatroom with these two users
+        const existingRoom = await database.models.MessageRoom.findOne({
+            $or: [
+                { user1Id: user1Id, user2Id: user2Id },
+                { user1Id: user2Id, user2Id: user1Id } // This line accounts for the order of users being reversed
+            ]
+        });
+        return existingRoom;
+    } catch (error) {
+        console.error('Error finding existing message room:', error);
+        throw error;
+    }
+};
+
+
 const createNewMessagesRoom = async (user1Id, user1Name, user2Id, user2Name) => {
     try {
         const newMessageRoom = new database.models.MessageRoom({
@@ -486,6 +503,7 @@ module.exports = {
     getInfluencerById,
     getCompanyById,
     createNewMessagesRoom,
+    findExistingChatRoom,
     createNewMessage,
     getAllMessagesRoomsForUser,
     getInfluencerIdByUsername,
