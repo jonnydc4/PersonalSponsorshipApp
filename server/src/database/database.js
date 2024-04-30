@@ -85,10 +85,6 @@ const getJobsByCompanyId = async (companyId) => {
 };
 
 
-
-
-
-
 const updateJob = async (jobId, title, description, location) => {
     // Used to update a job in the database with the provided job ID, title, description, and location.
     try {

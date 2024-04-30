@@ -6,17 +6,7 @@ const influencerSchema = new mongoose.Schema({
     lastName: { type: String, required: true },
     userName: { type: String, required: true, unique: true },
     phoneNumber: { type: String }, // Add phoneNumber field
-    email: { 
-        type: String, 
-        unique: true,
-        lowercase: true, // Convert email to lowercase
-        validate: {
-            validator: function(email) {
-                return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
-            },
-            message: 'Please fill a valid email address',
-        },
-    },
+    email: { type: String },
     about: { type: String } // Add about field to describe the influencer
 });
 
