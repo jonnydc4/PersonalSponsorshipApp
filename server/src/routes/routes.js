@@ -56,7 +56,13 @@ router.get('/api/getUserTypeByID', async (req, res) => {
 router.post('/api/createNewInfluencer', async (req, res) => {
     try {
         const data = req.body;
-        await createNewInfluencer(data.userId, data.firstName, data.lastName, data.userName)
+        await createNewInfluencer(
+            data.userId,
+            data.firstName,
+            data.lastName,
+            data.userName, 
+            data.email,
+        )
         res.status(201).send({message: "New influencer added"});
     } catch (error) {
         res.status(500).send(error);

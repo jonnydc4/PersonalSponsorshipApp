@@ -8,5 +8,5 @@ module.exports = {
     JobMap: require('./JobMap'),
     Notification: require('./Notification'),
     MessageRoom: require('./MessageRoom'),
-    Message: require('./Message').Message
+    Message: require('./Message'),
 };

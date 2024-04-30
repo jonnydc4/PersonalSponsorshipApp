@@ -55,6 +55,7 @@ const Register = () => {
         }
         if (!isRegistering) {
             setIsRegistering(true)
+            localStorage.setItem("email", email)
             await doCreateUserWithEmailAndPassword(email, password)
                 .then(() => {
                     navigate('/login')

@@ -14,13 +14,14 @@ const InfluencerForm = ({formSubmittedSuccessfully, setFormSubmittedSuccessfully
 
         // Do a request to the database to create new influencer.
         try {
+            const email = localStorage.getItem("email");
             const response = await fetch('api/createNewInfluencer', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 // Send the email as JSON in the request body
-                body: JSON.stringify({ userId, firstName, lastName, userName }),
+                body: JSON.stringify({ userId, firstName, lastName, userName, email }),
             });
 
             // Parse the JSON response from the server
@@ -29,6 +30,7 @@ const InfluencerForm = ({formSubmittedSuccessfully, setFormSubmittedSuccessfully
                 setFormSubmittedSuccessfully(true)
                 localStorage.setItem("userType",  "influencer")
                 localStorage.setItem("userName", userName);
+
             }
         } catch (error) {
             console.error('There was a problem with the fetch operation:', error)
