@@ -15,7 +15,7 @@ function createData(_id, title, description, location) {
 
 const fetchData = async () => {
   // This is used to fetch all the jobs for a company, and display them on the dashboard 
-  const companyId = localStorage.getItem('companyId');
+  const companyId = localStorage.getItem('userId');
 
   try {
     const response = await fetch(`/api/jobs/${companyId}`);
