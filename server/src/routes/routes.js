@@ -73,7 +73,7 @@ router.post('/api/createNewInfluencer', async (req, res) => {
 router.post('/api/createNewCompany', async (req, res) => {
     try {
         const data = req.body;
-        await createNewCompany(data.userId, data.companyName, data.address)
+        await createNewCompany(data.userId, data.companyName, data.address, data.email)
         res.status(201).send({message: "New company added"});
     } catch (error) {
         res.status(500).send(error);

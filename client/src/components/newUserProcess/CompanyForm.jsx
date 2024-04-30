@@ -8,9 +8,10 @@ const CompanyForm = ({formSubmittedSuccessfully, setFormSubmittedSuccessfully}) 
     const userId = currentUser.uid
     const [companyName, setCompanyName] = useState("");
     const [address, setAddress] = useState("");
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+        const email = localStorage.getItem("email");
         // Do a request to the database to create new company.
         const response = await fetch('api/createNewCompany', {
             method: 'POST',
@@ -18,11 +19,12 @@ const CompanyForm = ({formSubmittedSuccessfully, setFormSubmittedSuccessfully}) 
                 'Content-Type': 'application/json',
             },
             // Send the email as JSON in the request body
-            body: JSON.stringify({userId, companyName, address}),
+            body: JSON.stringify({userId, companyName, address, email}),
         });
 
         try {
             // Parse the JSON response from the server
+            
             const data = await response.json();
             if (data.message === "New company added") {
                 setFormSubmittedSuccessfully(true)
