@@ -22,7 +22,11 @@ const {
     getAllMessagesRoomsForUser,
     getInfluencerIdByUsername,
     getCompanyIdByName,
-    createNewMessage
+    createNewMessage,
+    updateJob,
+    updateCompanyProfile,
+    updateInfluencerProfile,
+    findExistingChatRoom
 } = require("../database/database");
 
 const router = express.Router()
@@ -91,6 +95,18 @@ router.post('/api/postJob', async (req, res) => {
     } catch (error) {
         console.error('Error posting job:', error);
         res.status(500).send(error);
+    }
+});
+
+// Endpoint that updates a job in the database (providing the jobID matches an actual job in the database). 
+router.put('/api/jobs-updates/:jobId', async (req, res) => {
+    const { jobId } = req.params;
+    const {title, description, location, companyId} = req.body;
+    try {
+        await updateJob(jobId, title, description, location);
+        res.status(200).send({message: 'Job updated successfully'});
+    } catch (error) {
+        console.error('Error updating job:', error);
     }
 });
 
@@ -203,6 +219,10 @@ router.post('/api/createNewChatRoom', async (req, res) => {
         }
         if (user2Id === undefined) {throw Error} // Invited user was not found in any database.
 
+        const existingRoom = await findExistingChatRoom(data.currentUserId, user2Id)
+        if (existingRoom) {
+            return res.status(200).json({message: "Existing chatroom found", chatroomId: existingRoom._id})
+        }
         await createNewMessagesRoom(data.currentUserId, data.currentUserName, user2Id, data.invitedUser)
         // console.log("Createnewchat worked kinda")
         res.status(201).send({message: "New chatroom created"});
@@ -212,13 +232,78 @@ router.post('/api/createNewChatRoom', async (req, res) => {
 });
 
 router.post('/api/createNewMessage', async (req, res) => {
+    const { chatRoomId, senderId, message } = req.body;
+
+    // Validate the incoming data
+    if (!chatRoomId || !senderId || !message) {
+        return res.status(400).json({
+            error: 'Missing required fields',
+            requiredFields: ['chatRoomId', 'senderId', 'message']
+        });
+    }
+
+    // Do the thing
     try {
-        const data = req.body;
-        await createNewMessage(data.chatRoomId, data.senderId, data.message)
-        res.status(201).send({message: "Message Sent"});
+        const result = await createNewMessage(chatRoomId, senderId, message);
+        console.log('Message created:', result);
+        res.status(201).json({ message: "Message sent successfully" });
     } catch (error) {
-        res.status(500).send(error);
+        console.error('Failed to create message:', error);
+        res.status(500).json({
+            error: 'Internal Server Error',
+            message: error.message || 'An unknown error occurred'
+        });
     }
 });
+router.post('/api/updateCompany', async (req, res) => {
+    try {
+        const { name, address, phoneNumber, email, about, username } = req.body;
+        const profileData = {
+            name: name,
+            userName: username,
+            address: address,
+            email: email,
+            phoneNumber: phoneNumber,
+            about: about
+        }
+        const companyId = req.query.id;
+        const updatedCompany = await updateCompanyProfile(companyId, profileData);
+        if (updatedCompany) {
+            res.status(200).json({ message: 'Company profile updated successfully', data: updatedCompany });
+        } else {
+            res.status(404).json({ message: 'Company not found' });
+        }
+    } catch (error) {
+        console.error('Failed to update company profile:', error);
+        res.status(500).json({ message: 'Internal Server Error', error: error.message });
+    }
+});
+
+// Route to update an influencer's profile
+router.post('/api/updateInfluencer', async (req, res) => {
+    try {
+        const { username, email, phoneNumber, about } = req.body;
+        const influencerId = req.query.id; 
+
+        // Constructing profile data object to pass to the database function
+        const profileData = {
+            userName: username,
+            email: email,
+            phoneNumber: phoneNumber,
+            about: about
+        };
+        const updatedInfluencer = await updateInfluencerProfile(influencerId, profileData);
+        res.status(200).json({
+            message: "Influencer profile updated successfully",
+            data: updatedInfluencer
+        });
+    } catch (error) {
+        console.error('Failed to update influencer profile... Routes:', error);
+        res.status(500).json({ message: 'Internal Server Error', error: error.toString() });
+    }
+});
+
+
+
 
 module.exports = router;

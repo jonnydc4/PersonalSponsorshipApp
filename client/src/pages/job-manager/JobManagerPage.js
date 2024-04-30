@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import CommonFrame from '../../components/CommonFrame';
 import InfluencerSearchButton from '../../components/InfluencerSearchButton';
 import JobPostingForm from '../../components/JobPostingForm';
 import InfluencerSearch from '../../InfluencerSearch'; // Import the actual component
-import { Typography } from '@mui/material';
+import { Typography, Button } from '@mui/material';
+import EditJobForm from '../job-manager/components/EditJobForm'
+
 
 const JobManagerPage = () => {
   const [jobs, setJobs] = useState([]);
@@ -11,6 +15,7 @@ const JobManagerPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showInfluencerSearch, setShowInfluencerSearch] = useState(false);
+  const [showEditJob, setShowEditJob] = useState(false);
 
   useEffect(() => {
     const fetchJobs = async () => {
@@ -35,15 +40,20 @@ const JobManagerPage = () => {
 
 
   const handleJobClick = (job) => {
-   // console.log('Selected job with ID:', job._id); // Make sure job._id is not undefined
-   // console.log('Selected entire job: ', job);
+    // console.log('Selected job with ID:', job._id); // Make sure job._id is not undefined
+    // console.log('Selected entire job: ', job);
     setSelectedJob(job);
     setShowInfluencerSearch(false);
+    setShowEditJob(false);
   };
 
 
   const handleInfluencerSearch = () => {
     setShowInfluencerSearch(true); // Show the influencer search component
+  };
+
+  const handleEditJob = () => {
+    setShowEditJob(true);
   };
 
   const addJobToList = (newJob) => {
@@ -53,22 +63,28 @@ const JobManagerPage = () => {
 
 
   return (
-      <CommonFrame items={jobs} onSelectItem={handleJobClick}>
-        {isLoading ? (
-            <Typography>Loading...</Typography>
-        ) : error ? (
-            <Typography color="error">{error}</Typography>
-        ) : showInfluencerSearch ? (
-            <InfluencerSearch jobId={selectedJob?._id} />
-        ) : selectedJob ? (
-            <>
-              <Typography variant="h6">Edit Job: {selectedJob.title}</Typography>
-              <InfluencerSearchButton jobId={selectedJob._id} onSearchClick={handleInfluencerSearch} />
-            </>
-        ) : (
-            <JobPostingForm onJobPost={addJobToList} />
-        )}
-      </CommonFrame>
+    <CommonFrame items={jobs} onSelectItem={handleJobClick}>
+      {isLoading ? (
+        <Typography>Loading...</Typography>
+      ) : error ? (
+        <Typography color="error">{error}</Typography>
+      ) : showInfluencerSearch ? (
+        <InfluencerSearch jobId={selectedJob?._id} />
+      ) : showEditJob && selectedJob ? (
+        <EditJobForm selectedJob={selectedJob} onSave={handleJobClick} />
+      ) : selectedJob ? (
+        <>
+          <Typography variant="h6">
+            <Button variant="contained" color="primary" onClick={handleEditJob}>
+              Edit Job: {selectedJob.title}
+            </Button>
+          </Typography>
+          <InfluencerSearchButton jobId={selectedJob._id} onSearchClick={handleInfluencerSearch} />
+        </>
+      ) : (
+        <JobPostingForm onJobPost={addJobToList} />
+      )}
+    </CommonFrame>
   );
 };
 

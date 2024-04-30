@@ -1,6 +1,6 @@
 const database = require('../database/mongo-db.js');
 const messageSchema = require("./schemas/Message");
-
+const Job = require("./schemas/Job");
 /* ------------------------User Table Queries------------------------ */
 const findUserByEmail = async (email) => {
     return await database.findOne(database.models.User, {email}); // Using the model name as a string
@@ -84,6 +84,27 @@ const getJobsByCompanyId = async (companyId) => {
     }
 };
 
+
+
+
+
+
+const updateJob = async (jobId, title, description, location) => {
+    // Used to update a job in the database with the provided job ID, title, description, and location.
+    try {
+        const updates = { title, description, location };
+        // Use the findByIdAndUpdate method of the Job model directly
+        const updatedJob = await Job.findByIdAndUpdate(jobId, { $set: updates }, { new: true });
+        return updatedJob;
+    } catch (error) {
+        console.error('Error updating job in DB:', error);
+        throw error;
+    }
+};
+
+
+
+
 /* ------------------------Job map Table Queries------------------------ */
 const getJobMapTable = async () => {
     try {
@@ -160,6 +181,19 @@ const createNewCompany = async (id, companyName, address) => {
         throw error; // rethrow the error for further handling
     }
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* ------------------------Influencer Table Queries------------------------ */
 const getInfluencerTable = async () => {
@@ -361,6 +395,23 @@ const getAllMessagesRoomsForUser = async (userId) => {
     }
 }
 
+const findExistingChatRoom = async (user1Id, user2Id) => {
+    try {
+        // Check if there's an existing chatroom with these two users
+        const existingRoom = await database.models.MessageRoom.findOne({
+            $or: [
+                { user1Id: user1Id, user2Id: user2Id },
+                { user1Id: user2Id, user2Id: user1Id } // This line accounts for the order of users being reversed
+            ]
+        });
+        return existingRoom;
+    } catch (error) {
+        console.error('Error finding existing message room:', error);
+        throw error;
+    }
+};
+
+
 const createNewMessagesRoom = async (user1Id, user1Name, user2Id, user2Name) => {
     try {
         const newMessageRoom = new database.models.MessageRoom({
@@ -398,6 +449,41 @@ const createNewMessage = async (messageRoomId, senderId, message) => {
     }
 }
 
+// Function to update a company profile
+const updateCompanyProfile = async (companyId, profileData) => {
+    try {
+        // Assuming your Company model's schema has the fields: name, phoneNumber, email, about
+        const updatedCompany = await database.models.Company.findOneAndUpdate(
+            { id: companyId }, 
+            { $set: profileData },
+            { new: true, runValidators: true }
+        );
+        console.log('Updated Company:', updatedCompany);
+        return updatedCompany;
+    } catch (error) {
+        console.error('Error updating company profile:', error);
+        throw error;
+    }
+};
+
+// Function to update an influencer profile
+const updateInfluencerProfile = async (influencerId, profileData) => {
+    try {
+        const updatedInfluencer = await database.models.Influencer.findOneAndUpdate(
+            { id: influencerId },
+            { $set: profileData },
+            { new: true, runValidators: true }
+        );
+        console.log('Updated Influencer:', updatedInfluencer);
+        return updatedInfluencer;
+    } catch (error) {
+        console.error('Error updating influencer profile:', error);
+        throw error;
+    }
+};
+
+
+
 module.exports = {
     findUserByEmail,
     updateUserPassword,
@@ -417,8 +503,12 @@ module.exports = {
     getInfluencerById,
     getCompanyById,
     createNewMessagesRoom,
+    findExistingChatRoom,
     createNewMessage,
     getAllMessagesRoomsForUser,
     getInfluencerIdByUsername,
-    getCompanyIdByName
+    getCompanyIdByName,
+    updateJob,
+    updateCompanyProfile,
+    updateInfluencerProfile
 };

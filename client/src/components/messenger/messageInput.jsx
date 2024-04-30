@@ -1,17 +1,14 @@
-import {Box, IconButton, InputBase} from "@mui/material";
+import React, { useState } from 'react';
+import { useAuth } from '../../contexts/authContext';
+import { Box, IconButton, InputBase } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
-import React, {useState} from "react";
-import {useAuth} from "../../contexts/authContext";
 
-function MessageInput({selectedContact, chatRooms, renderTrigger, setRenderTrigger}) {
+function MessageInput({selectedRoomId, renderTrigger, setRenderTrigger}) {
     const {currentUser} = useAuth();
-    const userId = currentUser.uid
+    const userId = currentUser.uid;
     const [newMessage, setNewMessage] = useState('');
 
     const handleSendMessage = async () => {
-
-        console.log({chatRoomId: chatRooms[selectedContact]._id, senderId: userId, message: newMessage})
-
         if (newMessage.trim() !== '') {
             try {
                 const response = await fetch('/api/createNewMessage', {
@@ -20,47 +17,42 @@ function MessageInput({selectedContact, chatRooms, renderTrigger, setRenderTrigg
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        chatRoomId: chatRooms[selectedContact]._id,
+                        chatRoomId: selectedRoomId,
                         senderId: userId,
                         message: newMessage
                     }),
-                })
-                setNewMessage('')
+                });
+                setNewMessage('');
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 } else {
-                    // console.log("New message sent successfully messageinput.jsx")
-                    setRenderTrigger(!renderTrigger)
+                    setRenderTrigger(!renderTrigger);
                 }
-
             } catch (error) {
                 console.error('Failed to send message:', error);
-                setNewMessage('')
+                setNewMessage('');
             }
         }
     };
 
-    const handleKeyPress = (e) => {
-        if (e.key === 'Enter') {
-            handleSendMessage();
-        }
-    };
-
     return (
-        <Box sx={{display: 'flex', alignItems: 'center', marginTop: '10px'}}>
+        <Box sx={{ display: 'flex', alignItems: 'center', marginTop: '10px' }}>
             <InputBase
-                sx={{ml: 1, flex: 1}}
+                sx={{ ml: 1, flex: 1 }}
                 placeholder="Type a message"
-                inputProps={{'aria-label': 'type a message'}}
                 value={newMessage}
                 onChange={(e) => setNewMessage(e.target.value)}
-                onKeyPress={handleKeyPress}
+                onKeyPress={(e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        handleSendMessage();
+                    }
+                }}
             />
-            <IconButton sx={{p: '10px'}} aria-label="send" onClick={handleSendMessage}>
-                <SendIcon/>
+            <IconButton sx={{ p: '10px' }} onClick={handleSendMessage} aria-label="send">
+                <SendIcon />
             </IconButton>
         </Box>
-    )
+    );
 }
 
-export default MessageInput
+export default MessageInput;

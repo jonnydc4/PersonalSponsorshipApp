@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -12,6 +13,7 @@ function NewChatRoomDialog({open, setOpen, currentUserId, renderTrigger, setRend
     const [username, setUsername] = useState('');
     const userType = localStorage.getItem('userType')
     const usernameSelf = localStorage.getItem('userName')
+    const navigate = useNavigate();
 
     // Function to handle dialog opening
     const handleClickOpen = () => {
@@ -36,9 +38,13 @@ function NewChatRoomDialog({open, setOpen, currentUserId, renderTrigger, setRend
                 },
                 body: JSON.stringify({ currentUserId: currentUserId, currentUserType: userType, invitedUser: username, currentUserName: usernameSelf }),
             })
-
+            const result = await response.json();
             if (response.ok){
-                setRenderTrigger(!renderTrigger)
+                if(result.message === "Existing chatroom found") {
+                    navigate(`/chat/${result.chatroomId}`);
+                    setRenderTrigger(!renderTrigger)
+                }
+                
             }
             // Reset username field
             setUsername('');
