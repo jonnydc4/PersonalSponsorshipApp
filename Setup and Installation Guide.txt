@@ -1,9 +1,11 @@
 Download and install node.js from nodejs.org/en/download
-Download and install docker from docker.com - it will require you to reboot your machine, then run docker
+Download and install docker from docker.com - it will require you to reboot your machine, then run docker.
+- This should be the most up-to-date version of docker, as the app uses docker-compose version 3.8 and docker version 20.10.7
+- Anything lower will result in the app crashing on startup. 
 Open the project in your IDE of choice, such as Webstorm or Visual Studio Code.
 Navigate to server directory *cd server* and run *npm install*
 Navigate to client directory *cd client* and run *npm install*
-Next run *npm run build* for windows or *npm run build-linux* for mac and linux
+While still in the client directory, run *npm run build* for windows or *npm run build-linux* for mac and linux
 It will ask: Does ..\server\build specify a file name or directory name on the target. Select D for directory
-Run *docker compose up*
+*cd ..*  *docker compose up*
 Navigate to localhost:3000 in your browser to view the app
