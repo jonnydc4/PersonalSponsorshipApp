@@ -1,5 +1,0 @@
-Included in this submission is a document that contains bug reports and notes about features/appearance. We plan on continuing to work on this application to fix the bugs
-and expand the functionality.
-
-Specifically, one of our main goals was to leverage social media APIs to get influencer profiles and to track the success of the partnerships. To do this, we had to have
-a publically available, hosted website. We didn't get to a point where we wanted to do this so we weren't able to implement these integrations.
