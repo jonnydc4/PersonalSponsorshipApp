@@ -1,11 +1,15 @@
 Download and install node.js from nodejs.org/en/download
 Download and install docker from docker.com - it will require you to reboot your machine, then run docker.
 - This should be the most up-to-date version of docker, as the app uses docker-compose version 3.8 and docker version 20.10.7
-- Anything lower will result in the app crashing on startup. 
+- Anything lower will result in the app crashing on startup (This will happen when trying to docker-compose up). 
 Open the project in your IDE of choice, such as Webstorm or Visual Studio Code.
 Navigate to server directory *cd server* and run *npm install*
 Navigate to client directory *cd client* and run *npm install*
+- You will know it's been successful when you see a x Files(s) copied message in the terminal, with the following files above copied it.
 While still in the client directory, run *npm run build* for windows or *npm run build-linux* for mac and linux
 It will ask: Does ..\server\build specify a file name or directory name on the target. Select D for directory
-*cd ..*  *docker compose up*
+From there, *cd ..* and back into the PersonalSponsorshipApp directory and run *docker compose up* in the teriminal.
+- This will build the docker image and run the app.  You will see the app running in the terminal. 
+- To determine if the build was successful, navigate to the docker desktop app and you should see the app running in the containers section.
+- The app will be running on localhost:3000
 Navigate to localhost:3000 in your browser to view the app
