@@ -70,7 +70,7 @@ const Home = () => {
         switch (selectedTab) {
             case 0:
                 return <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
-                    <WelcomeBoard userName={currentUser.displayName || currentUser.email} />
+                    <WelcomeBoard userName={userData.name || userData.userName || currentUser.email} />
                     {/* Depending on usertype, certain screens will be hidden and shown to user */}
                     {userType === 'influencer' && (
                         <>
